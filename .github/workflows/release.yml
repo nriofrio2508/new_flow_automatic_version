@@ -1,0 +1,85 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy release
+
+# Controls when the workflow will run
+on:  
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain'
+        required: true
+        type: choice
+        options:
+          - domain1
+          - domain2
+          - domain3
+        default: 'domain1'
+
+      subdomain:
+        description: 'Subdomain'
+        required: true
+        type: string
+        default: 'subdomain1'      
+      
+      tipo_cambio:
+        description: 'Seleccione tipo cambio'
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+  
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+
+  validate_deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate deploy Step
+        run: echo "Validate deploy OK"
+
+  get_last_tag:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: validate_deploy
+    steps:
+      - name: Get last tag Step
+        run: echo "Get last tag OK"
+        
+  generate_pre_release:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: get_last_tag
+    steps:
+      - name: Generate pre release step
+        run: echo "Generate pre release Step OK"
+
+  promote_prd:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: generate_pre_release
+    environment: promote_prd
+    steps:
+      - name: Promote prd step
+        run: echo "waiting approve"
+
+  generate_release:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: promote_prd
+    steps:
+      - name: Generate release
+        run: echo "Generate release OK"
+
+  validate_deploy_prd:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: generate_release
+    steps:
+      - name: Validate deploy prd
+        run: echo "validate deploy PRD OK"

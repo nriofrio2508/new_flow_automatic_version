@@ -20,7 +20,13 @@ on:
         description: 'Subdomain'
         required: true
         type: string
-        default: 'subdomain1'      
+        default: 'subdomain1'     
+
+      destino:
+        description: 'Destino'
+        required: true
+        type: string
+        default: 'destino1'  
       
       tipo_cambio:
         description: 'Seleccione tipo cambio'

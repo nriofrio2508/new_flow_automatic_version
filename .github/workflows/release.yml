@@ -53,6 +53,9 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     needs: validate_deploy
+    outputs:
+      last_tag_repo: ${{steps.previoustag.outputs.tag}}
+      next_tag_repo: ${{steps.semvers.outputs.patch}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -62,18 +65,51 @@ jobs:
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
-          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
+          fallback: 0.0.0 # Optional fallback tag to use when no tag can be found
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
+      
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+      - name: Get next tag Step
+        run: echo "Next last tag OK ${{ steps.semvers.outputs.patch }}"
+        
         
   generate_pre_release:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     needs: get_last_tag
     steps:
-      - name: Generate pre release step
-        run: echo "Generate pre release Step OK"
-
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+      - name: "Complex Configuration"
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v5
+        with:
+          ignorePreReleases: "true"
+          fromTag: ${{ needs.get_last_tag.outputs.last_tag_repo }}
+          toTag: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PreRelease
+        uses: actions/create-release@v1
+        with:
+          prerelease: true
+          tag_name: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+          release_name: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+          body: |
+            Actor: ${{ github.actor }}
+            ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ${{ steps.build_changelog.outputs.changelog }}
   promote_prd:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest

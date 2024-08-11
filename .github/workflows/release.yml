@@ -98,7 +98,7 @@ jobs:
           echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: "Complex Configuration"
+      - name: "Create changelog"
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v5
         with:

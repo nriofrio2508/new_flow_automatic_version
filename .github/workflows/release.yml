@@ -55,7 +55,7 @@ jobs:
     needs: validate_deploy
     outputs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
-      next_tag_repo: ${{steps.semvers.outputs.patch}}
+      next_tag_repo: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v${{steps.semvers.outputs.patch}}'
     steps:
       - uses: actions/checkout@v3
         with:
@@ -65,7 +65,8 @@ jobs:
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
-          fallback: 0.0.0 # Optional fallback tag to use when no tag can be found
+          prefix: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v'
+          fallback: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v0.0.0' # Optional fallback tag to use when no tag can be found
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
       
@@ -89,7 +90,7 @@ jobs:
       - name: Push new Tag ReleaseCandidate
         id: tag_release_candidate
         run: |
-          tag='v${{ needs.get_last_tag.outputs.next_tag_repo }}-rc1'
+          tag='${{ needs.get_last_tag.outputs.next_tag_repo }}'
           message='${{ needs.get_last_tag.outputs.next_tag_repo }}'
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
@@ -112,8 +113,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           prerelease: true
-          tag_name: 'v${{ needs.get_last_tag.outputs.next_tag_repo }}-rc1'
-          release_name: 'v${{ needs.get_last_tag.outputs.next_tag_repo }}-rc1'
+          tag_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          release_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
           body: |
             Actor: ${{ github.actor }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

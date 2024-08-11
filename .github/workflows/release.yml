@@ -89,7 +89,7 @@ jobs:
       - name: Push new Tag ReleaseCandidate
         id: tag_release_candidate
         run: |
-          tag='${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          tag='v${{ needs.get_last_tag.outputs.next_tag_repo }}-rc1'
           message='${{ needs.get_last_tag.outputs.next_tag_repo }}'
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
@@ -112,8 +112,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           prerelease: true
-          tag_name: ${{ needs.get_last_tag.outputs.next_tag_repo }}
-          release_name: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+          tag_name: v${{ needs.get_last_tag.outputs.next_tag_repo }}-rc1'
+          release_name: v${{ needs.get_last_tag.outputs.next_tag_repo }}-rc1'
           body: |
             Actor: ${{ github.actor }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

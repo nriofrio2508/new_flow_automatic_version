@@ -70,6 +70,20 @@ jobs:
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
 
+      - name: other last
+        uses: rmeneely/git-last-tag@v1
+        id: new_last
+        with:
+          # Tag pattern. The filter to use when searching for the LAST_VERSION tag
+          # Optional
+          # Default: 'v[0-9]*.[0-9]*.[0-9]*'
+          tag_pattern: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v.*-rc.[0-9]+'
+          # Ignore tag pattern: Exclude matching tags from the tag pattern
+          # Optional
+      
+      - name: Get NEW last tag Step
+        run: echo "Get NEW tag OK ${{ steps.new_last.outputs.LAST_TAG }}"
+
       - name: Get only numbers version
         id: version_number_step
         run: |

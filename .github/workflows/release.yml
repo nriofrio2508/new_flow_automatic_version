@@ -69,12 +69,18 @@ jobs:
           fallback: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v0.0.0' # Optional fallback tag to use when no tag can be found
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
+
+      - name: Get only numbers version
+        id: version_number_step
+        run: |
+          echo "version_number=${{ steps.previoustag.outputs.tag }}| awk -F'-v' '{print $2}" >> $GITHUB_OUTPUT
       
       - name: 'Get next minor version'
         id: semvers
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
-          version: ${{ steps.previoustag.outputs.tag }}
+          version: ${{ steps.version_number_step.outputs.version_number }}
+
       - name: Get next tag Step
         run: echo "Next last tag OK ${{ steps.semvers.outputs.patch }}"
         

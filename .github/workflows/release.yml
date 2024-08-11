@@ -73,7 +73,8 @@ jobs:
       - name: Get only numbers version
         id: version_number_step
         run: |
-          version_number=$(echo "${{ steps.previoustag.outputs.tag }}| awk -F'-v' '{print $2}")
+          version_number=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-v' '{print $2})
+          echo $version_number
           echo "version_number=$version_number" >> $GITHUB_OUTPUT
       
       - name: 'Get next minor version'

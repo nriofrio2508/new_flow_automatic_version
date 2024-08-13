@@ -69,20 +69,13 @@ jobs:
           fallback: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v0.0.0' # Optional fallback tag to use when no tag can be found
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
-
-      - name: other last
-        uses: rmeneely/git-last-tag@v1
-        id: new_last
-        with:
-          # Tag pattern. The filter to use when searching for the LAST_VERSION tag
-          # Optional
-          # Default: 'v[0-9]*.[0-9]*.[0-9]*'
-          tag_pattern: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v[0-9]*.[0-9]*.[0-9]*-rc.[0-9]+'
-          # Ignore tag pattern: Exclude matching tags from the tag pattern
-          # Optional
       
-      - name: Get NEW last tag Step
-        run: echo "Get NEW tag OK ${{ steps.new_last.outputs.LAST_TAG }}"
+      - name: Evaluar tag
+        run: |
+          resultado=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
+          if [resultado=='']; then
+            echo "mi resultado: $resultado"
+          fi
 
       - name: Get only numbers version
         id: version_number_step

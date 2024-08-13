@@ -73,8 +73,10 @@ jobs:
       - name: Evaluar tag
         run: |
           resultado=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
-          if [ resultado = '' ]; then
-            echo "mi resultado: $resultado"
+          if [ $resultado = '' ]; then
+            echo "mi resultado SIN RC: $resultado"
+          else
+            echo "mi resultado CON RC: $resultado"
           fi
 
       - name: Get only numbers version

@@ -157,6 +157,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Create PreRelease
         uses: actions/create-release@v1
+        if: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

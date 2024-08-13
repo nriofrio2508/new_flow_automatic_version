@@ -55,7 +55,7 @@ jobs:
     needs: validate_deploy
     outputs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
-      next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version || steps.increment_tag_rc.outputs.new_rc_version }}
+      next_tag_repo: ${{ steps.increment_tag_rc.outputs.new_rc_version || steps.generate_tag_rc.outputs.new_rc_version }}
     steps:
       - uses: actions/checkout@v3
         with:

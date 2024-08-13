@@ -73,7 +73,7 @@ jobs:
       - name: Evaluar tag
         run: |
           resultado=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
-          if [resultado=='']; then
+          if [ resultado = '' ]; then
             echo "mi resultado: $resultado"
           fi
 

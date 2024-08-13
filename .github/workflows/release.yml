@@ -93,14 +93,36 @@ jobs:
         with:
           version: ${{ steps.version_number_step.outputs.version_number }}
       
+      - name: Get next tag Step
+        run: echo "Next last tag OK ${{ steps.semvers.outputs.patch }}"
+
       - name: Generate tag RC
+        if: ${{ steps.evaluar_tag.outputs.rc_version == '' }}
+        run: |
+          new_rc_version="${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}"
+          case "${{inputs.tipo_cambio}}" in
+              major)
+                  echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.major }}-rc.1"  >> $GITHUB_OUTPUT
+                  ;;
+              minor)
+                  echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.minor }}-rc.1"  >> $GITHUB_OUTPUT
+                  ;;
+              patch)
+                  echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.path }}-rc.1"  >> $GITHUB_OUTPUT
+                  ;;
+              *)
+                  echo "$parametro no es major, minor, ni patch"
+                  ;;
+          esac
+          echo new_rc_version
+                
+      - name: Incement tag RC
         id: generate_tag_rc
-        run:
+        run: |
           new_rc_version=$(echo "${{ steps.previoustag.outputs.tag }}" | sed "s/-rc\..*/-rc.${{ steps.evaluar_tag.outputs.rc_version }}/")
           echo "new rc version $new_rc_version"
 
-      - name: Get next tag Step
-        run: echo "Next last tag OK ${{ steps.semvers.outputs.patch }}"
+      
         
         
   generate_pre_release:

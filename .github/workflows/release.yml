@@ -120,7 +120,7 @@ jobs:
         run: |
           new_rc_version=$(echo "${{ steps.previoustag.outputs.tag }}" | sed "s/-rc\..*/-rc.${{ steps.evaluar_tag.outputs.rc_version }}/")
           echo "Mi nueva version=$new_rc_version"
-          echo " new_rc_version=$new_rc_version" >> GITHUB_OUTPUT
+          echo "new_rc_version=$new_rc_version" >> GITHUB_OUTPUT
 
       
         
@@ -136,7 +136,7 @@ jobs:
       - name: Push new Tag ReleaseCandidate
         id: tag_release_candidate
         run: |
-          tag='${{ needs.get_last_tag.outputs.next_tag_repo }}-rc.1'
+          tag='${{ needs.get_last_tag.outputs.next_tag_repo }}'
           message='${{ needs.get_last_tag.outputs.next_tag_repo }}'
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"

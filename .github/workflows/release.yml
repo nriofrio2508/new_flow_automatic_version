@@ -55,7 +55,7 @@ jobs:
     needs: validate_deploy
     outputs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
-      next_tag_repo: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v${{steps.semvers.outputs.patch}}'
+      next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version || steps.increment_tag_rc.outputs.new_rc_version }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -81,6 +81,7 @@ jobs:
 
       - name: Get only numbers version
         id: version_number_step
+        if: ${{ steps.evaluar_tag.outputs.rc_version == ''}}
         run: |
           version_number=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-v' '{print $2}')
           echo $version_number
@@ -97,6 +98,7 @@ jobs:
         run: echo "Next last tag OK ${{ steps.semvers.outputs.patch }}"
 
       - name: Generate tag RC
+        id: generate_tag_rc
         if: ${{ steps.evaluar_tag.outputs.rc_version == '' }}
         run: |
           new_rc_version="${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}"
@@ -116,11 +118,11 @@ jobs:
           esac
           echo new_rc_version
                 
-      - name: Incement tag RC
-        id: generate_tag_rc
+      - name: Increment tag RC
+        id: increment_tag_rc
         run: |
           new_rc_version=$(echo "${{ steps.previoustag.outputs.tag }}" | sed "s/-rc\..*/-rc.${{ steps.evaluar_tag.outputs.rc_version }}/")
-          echo "new rc version $new_rc_version"
+          echo " new_rc_version=$new_rc_version" >> GITHUB_OUTPUT
 
       
         

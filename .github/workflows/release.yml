@@ -96,7 +96,7 @@ jobs:
       - name: Generate tag RC
         id: generate_tag_rc
         run:
-          new_rc_version=${ ${{ steps.previoustag.outputs.tag }}%-rc.*}${{ steps.evaluar_tag.outputs.rc_version }}
+          new_rc_version=$(echo "${{ steps.previoustag.outputs.tag }}" | sed "s/-rc\..*/-rc.${{ steps.evaluar_tag.outputs.rc_version }}/")
           echo "new rc version $new_rc_version"
 
       - name: Get next tag Step

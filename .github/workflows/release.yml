@@ -117,10 +117,11 @@ jobs:
                 
       - name: Increment tag RC
         id: increment_tag_rc
+        if: ${{ steps.evaluar_tag.outputs.rc_version != '' }}
         run: |
           new_rc_version=$(echo "${{ steps.previoustag.outputs.tag }}" | sed "s/-rc\..*/-rc.${{ steps.evaluar_tag.outputs.rc_version }}/")
           echo "Mi nueva version=$new_rc_version"
-          echo "new_rc_version=$new_rc_version" >> GITHUB_OUTPUT
+          echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
 
       
         

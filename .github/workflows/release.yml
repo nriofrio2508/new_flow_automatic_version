@@ -77,6 +77,8 @@ jobs:
             echo "mi resultado SIN RC: $resultado"
           else
             echo "mi resultado CON RC: $resultado"
+            resultado=((resultado++))            
+            echo "mi resultado CON RC incrementado: $resultado"
           fi
 
       - name: Get only numbers version

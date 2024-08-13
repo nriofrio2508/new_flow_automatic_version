@@ -160,8 +160,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           prerelease: true
-          tag_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}-rc.1'
-          release_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}-rc.1'
+          tag_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          release_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
           body: |
             Actor: ${{ github.actor }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

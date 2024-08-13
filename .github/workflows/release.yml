@@ -71,15 +71,13 @@ jobs:
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
       
       - name: Evaluar tag
+        id: evaluar_tag
         run: |
           resultado=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
-          if [ $resultado = '' ]; then
-            echo "mi resultado SIN RC: $resultado"
-          else
-            echo "mi resultado CON RC: $resultado"
-           ((resultado++))            
-            echo "mi resultado CON RC incrementado: $resultado"
+          if [ $resultado != '' ]; then
+            ((resultado++))            
           fi
+          echo "rc_version=$resultado" >> $GITHUB_OUTPUT
 
       - name: Get only numbers version
         id: version_number_step
@@ -90,9 +88,16 @@ jobs:
       
       - name: 'Get next minor version'
         id: semvers
+        if: ${{ steps.evaluar_tag.outputs.rc_version == ''}}
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.version_number_step.outputs.version_number }}
+      
+      - name: Generate tag RC
+        id: generate_tag_rc
+        run:
+          new_rc_version=${ ${{ steps.previoustag.outputs.tag }}%-rc.*}${{ steps.evaluar_tag.outputs.rc_version }}
+          echo "new rc version $new_rc_version"
 
       - name: Get next tag Step
         run: echo "Next last tag OK ${{ steps.semvers.outputs.patch }}"

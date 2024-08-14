@@ -134,6 +134,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Push new Tag ReleaseCandidate
+        if: false
+        id: tag_release_candidate
+        run: |
+          tag='${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          message='${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag -a "${tag}" -m "${message}"
+          git push origin "${tag}"
+          echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "Create changelog"
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v5

@@ -179,6 +179,7 @@ jobs:
         with:
           releaseNameRegEx: "${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v*"
           prerelease: false
+          doNotFailIfNotFound: true
       - name: Print Last release
         run: |
           echo "Ultimo release: ${{ steps.get_last_release.outputs.name }}"

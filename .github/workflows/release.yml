@@ -107,7 +107,7 @@ jobs:
                   echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.minor }}-rc.1"  >> $GITHUB_OUTPUT
                   ;;
               patch)
-                  echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.path }}-rc.1"  >> $GITHUB_OUTPUT
+                  echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.patch }}-rc.1"  >> $GITHUB_OUTPUT
                   ;;
               *)
                   echo "$parametro no es major, minor, ni patch"

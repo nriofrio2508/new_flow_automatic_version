@@ -200,7 +200,7 @@ jobs:
       - name: Get name new Release
         id: get_name_new_release
         run: |
-          new_release: $(echo ${{ needs.get_last_tag.outputs.next_tag_repo }} | awk -F '-rc.' '${print $1}' )
+          new_release=$(echo ${{ needs.get_last_tag.outputs.next_tag_repo }} | awk -F '-rc.' '{print $1}' )
           echo "new_name_release=$new_release" >> $GITHUB_OUTPUT
       
       - name: Push new Tag ReleaseCandidate

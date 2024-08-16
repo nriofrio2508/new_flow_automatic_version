@@ -197,21 +197,40 @@ jobs:
         run: |
           echo "Ultimo release: ${{ steps.get_last_release.outputs.name }}"
 
+      - name: Get name new Release
+        id: get_name_new_release
+        run: |
+          new_release: $(echo ${{ needs.get_last_tag.outputs.next_tag_repo }} | awk -F '-rc.' '${print $1}' )
+          echo "new_name_release=$new_release" >> $GITHUB_OUTPUT
+      
+      - name: Push new Tag ReleaseCandidate
+        if: false
+        id: tag_release_candidate
+        run: |
+          tag='${{ steps.get_name_new_release.outputs.new_name_release }}'
+          message='${{ steps.get_name_new_release.outputs.new_name_release }}'
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git tag -a "${tag}" -m "${message}"
+          git push origin "${tag}"
+          echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
+
       - name: "Create changelog"
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v5
         with:
           ignorePreReleases: "true"
-          fromTag: ${{ needs.get_last_tag.outputs.last_tag_repo }}
-          toTag: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+          fromTag: ${{ steps.get_last_release.outputs.name }}
+          toTag: ${{ steps.get_name_new_release.outputs.new_name_release}}
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create PreRelease
+
+      - name: Create Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
-          release_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          tag_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
+          release_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
           body: |
             Actor: ${{ github.actor }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

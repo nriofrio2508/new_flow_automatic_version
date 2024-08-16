@@ -223,6 +223,15 @@ jobs:
           toTag: ${{ steps.get_name_new_release.outputs.new_name_release}}
           token: ${{ secrets.GITHUB_TOKEN }}
           mode: "COMMIT"
+      
+      - name: Build Changelog
+        id: changelog_prd
+        uses: metcalfc/changelog-generator@v4.3.1
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+          head-ref: ${{ steps.get_name_new_release.outputs.new_name_release}}
+          base-ref: ${{ steps.get_last_release.outputs.name }}
+          fetch: true
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -234,7 +243,7 @@ jobs:
           body: |
             Actor: ${{ github.actor }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            ${{ steps.build_changelog.outputs.changelog }}
+            ${{ steps.changelog_prd.outputs.changelog }}
 
   validate_deploy_prd:
     # The type of runner that the job will run on

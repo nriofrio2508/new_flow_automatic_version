@@ -203,7 +203,6 @@ jobs:
           echo "new_name_release=$new_release" >> $GITHUB_OUTPUT
       
       - name: Push new Tag ReleaseCandidate
-        if: false
         id: tag_release_candidate
         run: |
           tag='${{ steps.get_name_new_release.outputs.new_name_release }}'

@@ -69,7 +69,17 @@ jobs:
           fallback: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v0.0.0' # Optional fallback tag to use when no tag can be found
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
-      
+
+      - name: Get Last Release Reusable
+        id: get_latest_release_reusable
+        uses: rez0n/actions-github-release@main
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          type: "stable"
+      - name: Get last tag Step
+        run: echo "Get last Reusable release ${{ steps.get_latest_release_reusable.outputs.release }}"
+
       - name: Evaluar tag
         id: evaluar_tag
         run: |

@@ -81,7 +81,48 @@ jobs:
         with:
           releaseNameRegEx: "$domain_version-v*"
           prerelease: false
-          doNotFailIfNotFound: true
+          doNotFailIfNotFound: true        
+      
+      - name: Get SemVer from release
+        id: semver_release_step        
+        run: |
+          echo "Last Release ${{ steps.get_last_release.outputs.name }}"  
+          version_number=$(echo ${{ steps.get_last_release.outputs.name}} | awk -F'-v' '{print $1}')
+          echo $version_number
+          echo "semver_release=$version_number" >> $GITHUB_OUTPUT
+      
+      - name: 'Get all next version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.semver_release_step.outputs.semver_release }}
+
+      - name: Get next release version
+        id: generate_tag_rc
+        run: |
+          case "${{inputs.tipo_cambio}}" in
+              major)
+                  echo "new_release_version=$domain_version-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
+                  ;;
+              minor)
+                  echo "new_release_version=$domain_version-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT
+                  ;;
+              patch)
+                  echo "new_release_version=$domain_version-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT
+                  ;;
+              *)
+                  echo "$parametro no es major, minor, ni patch"
+                  ;;
+          esac
+          echo new_release_version
+      
+      - name: Diff between next release and last tag semver
+        run: |
+          last_tag=$(awk -F'-rc.' '{print $1}' <<< ${{ steps.previoustag.outputs.tag }})
+          if [ $last_tag != ${{steps.semver_release_step.outputs.semver_release}}]; then
+            rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
+          fi
+
 
       - name: Evaluar tag
         id: evaluar_tag
@@ -101,14 +142,14 @@ jobs:
           echo "version_number=$version_number" >> $GITHUB_OUTPUT
       
       - name: 'Get next minor version'
-        id: semvers
+        id: semvers_2
         if: ${{ steps.evaluar_tag.outputs.rc_version == ''}}
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.version_number_step.outputs.version_number }}
 
       - name: Generate tag RC
-        id: generate_tag_rc
+        id: generate_tag_rc_2
         if: ${{ steps.evaluar_tag.outputs.rc_version == '' }}
         run: |
           new_rc_version="${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}"

@@ -1,0 +1,14 @@
+name: merge Demo
+on:
+  push:
+    branches: [main]
+
+jobs:
+  pre-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: no action
+        run: |
+          "sin aprobadores"
+          exit 1

@@ -85,7 +85,7 @@ jobs:
         id: semver_release_step        
         run: |
           echo "Last Release ${{ steps.get_last_release.outputs.name }}"  
-          version_number=$(echo ${{ steps.get_last_release.outputs.name}} | awk -F'-v' '{print $1}')
+          version_number=$(echo ${{ steps.get_last_release.outputs.name}} | awk -F'-v' '{print $2}')
           echo $version_number
           echo "semver_release=$version_number" >> $GITHUB_OUTPUT
       

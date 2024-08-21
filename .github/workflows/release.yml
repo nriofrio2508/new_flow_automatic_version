@@ -118,17 +118,13 @@ jobs:
       - name: Diff between next release and last tag semver
         id: generate_tag_rc
         run: |
-          echo "${{ steps.previoustag.outputs.tag}}" | awk -F'-rc.' '{print $1}'
           last_tag_semver=$(echo "${{ steps.previoustag.outputs.tag}}" | awk -F'-rc.' '{print $1}')
-          echo "new release version: ok ${{steps.get_next_release_version.outputs.new_release_version}}"
-          echo " valor de la version: $last_tag_semver"
           rc=1
           if [ "$last_tag_semver" = "${{steps.get_next_release_version.outputs.new_release_version}}" ]; then
             rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
             ((rc++))
           fi
           new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
-          echo "Mi nueva version=$new_rc_version"
           echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
 
         

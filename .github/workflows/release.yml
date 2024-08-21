@@ -240,7 +240,7 @@ jobs:
             ${{ steps.changelog_prd.outputs.changelog }}
 
   validate_deploy_prd:
-    # The type of runner that the job will run on COMENTARIOS PARA 05
+    # The type of runner that the job will run on COMENTARIOS PARA 01
     runs-on: ubuntu-latest
     needs: generate_release
     steps:

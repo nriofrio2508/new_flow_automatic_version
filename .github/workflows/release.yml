@@ -89,7 +89,6 @@ jobs:
           if [ ${{ steps.get_last_release.outputs.name }} ]; then
             version_number=$(echo ${{ steps.get_last_release.outputs.name}} | awk -F'-v' '{print $2}')          
           fi
-          echo $version_number
           echo "semver_release=$version_number" >> $GITHUB_OUTPUT
       
       - name: 'Get all next version'
@@ -151,15 +150,15 @@ jobs:
           echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: "Create changelog"
+
+      - name: Build Changelog
         id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v5
+        uses: metcalfc/changelog-generator@v4.3.1
         with:
-          ignorePreReleases: "true"
-          fromTag: ${{ needs.get_last_tag.outputs.last_tag_repo }}
-          toTag: ${{ needs.get_last_tag.outputs.next_tag_repo }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          mode: "COMMIT"
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+          head-ref: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+          base-ref: ${{ needs.get_last_tag.outputs.last_tag_repo }}
+          fetch: true
       - name: Create PreRelease
         uses: actions/create-release@v1
         env:
@@ -218,16 +217,6 @@ jobs:
           git tag -a "${tag}" -m "${message}"
           git push origin "${tag}"
           echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
-
-      - name: "Create changelog"
-        id: build_changelog
-        uses: mikepenz/release-changelog-builder-action@v5
-        with:
-          ignorePreReleases: "true"
-          fromTag: ${{ steps.get_last_release.outputs.name }}
-          toTag: ${{ steps.get_name_new_release.outputs.new_name_release}}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          mode: "COMMIT"
       
       - name: Build Changelog
         id: changelog_prd

@@ -119,7 +119,7 @@ jobs:
         id: generate_tag_rc
         run: |
           last_tag_semver=$(awk -F'-rc.' '{print $1}' <<< ${{ steps.previoustag.outputs.tag }})
-          $rc=1
+          rc=1
           if [ $last_tag_semver == ${{steps.get_next_release_version.outputs.new_release_version}}]; then
             rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
             ((rc++))

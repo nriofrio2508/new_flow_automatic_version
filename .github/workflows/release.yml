@@ -58,7 +58,7 @@ jobs:
     needs: validate_deploy
     outputs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
-      next_tag_repo: ${{ steps.increment_tag_rc.outputs.new_rc_version || steps.generate_tag_rc.outputs.new_rc_version }}
+      next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -98,7 +98,7 @@ jobs:
           version: ${{ steps.semver_release_step.outputs.semver_release }}
 
       - name: Get next release version
-        id: generate_tag_rc
+        id: get_next_release_version
         run: |
           case "${{inputs.tipo_cambio}}" in
               major)
@@ -117,68 +117,18 @@ jobs:
           echo new_release_version
       
       - name: Diff between next release and last tag semver
+        id: generate_tag_rc
         run: |
-          last_tag=$(awk -F'-rc.' '{print $1}' <<< ${{ steps.previoustag.outputs.tag }})
-          if [ $last_tag != ${{steps.semver_release_step.outputs.semver_release}}]; then
+          last_tag_semver=$(awk -F'-rc.' '{print $1}' <<< ${{ steps.previoustag.outputs.tag }})
+          $rc=1
+          if [ $last_tag_semver == ${{steps.get_next_release_version.outputs.new_release_version}}]; then
             rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
+            ((rc++))
           fi
-
-
-      - name: Evaluar tag
-        id: evaluar_tag
-        run: |
-          resultado=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
-          if [ $resultado != '' ]; then
-            ((resultado++))            
-          fi
-          echo "rc_version=$resultado" >> $GITHUB_OUTPUT
-
-      - name: Get only numbers version
-        id: version_number_step
-        if: ${{ steps.evaluar_tag.outputs.rc_version == ''}}
-        run: |
-          version_number=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-v' '{print $2}')
-          echo $version_number
-          echo "version_number=$version_number" >> $GITHUB_OUTPUT
-      
-      - name: 'Get next minor version'
-        id: semvers_2
-        if: ${{ steps.evaluar_tag.outputs.rc_version == ''}}
-        uses: "WyriHaximus/github-action-next-semvers@v1"
-        with:
-          version: ${{ steps.version_number_step.outputs.version_number }}
-
-      - name: Generate tag RC
-        id: generate_tag_rc_2
-        if: ${{ steps.evaluar_tag.outputs.rc_version == '' }}
-        run: |
-          new_rc_version="${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}"
-          case "${{inputs.tipo_cambio}}" in
-              major)
-                  echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.major }}-rc.1"  >> $GITHUB_OUTPUT
-                  ;;
-              minor)
-                  echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.minor }}-rc.1"  >> $GITHUB_OUTPUT
-                  ;;
-              patch)
-                  echo "new_rc_version=$new_rc_version-v${{steps.semvers.outputs.patch }}-rc.1"  >> $GITHUB_OUTPUT
-                  ;;
-              *)
-                  echo "$parametro no es major, minor, ni patch"
-                  ;;
-          esac
-          echo new_rc_version
-                
-      - name: Increment tag RC
-        id: increment_tag_rc
-        if: ${{ steps.evaluar_tag.outputs.rc_version != '' }}
-        run: |
-          new_rc_version=$(echo "${{ steps.previoustag.outputs.tag }}" | sed "s/-rc\..*/-rc.${{ steps.evaluar_tag.outputs.rc_version }}/")
+          new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
           echo "Mi nueva version=$new_rc_version"
           echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
 
-      
-        
         
   generate_pre_release:
     # The type of runner that the job will run on

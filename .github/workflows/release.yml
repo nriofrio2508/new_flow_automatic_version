@@ -98,7 +98,7 @@ jobs:
       - name: Get next release version
         id: get_next_release_version
         run: |
-          $domain_version=${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}
+          domain_version="${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}"
           case "${{inputs.tipo_cambio}}" in
               major)
                   echo "new_release_version=$domain_version-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT

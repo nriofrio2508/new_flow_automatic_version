@@ -120,7 +120,7 @@ jobs:
         run: |
           last_tag_semver=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F '-rc.' '{print $1}' )
           echo "new release version: ok ${{steps.get_next_release_version.outputs.new_release_version}}"
-          echo "last_tag_semver"
+          echo " valor de la version: $last_tag_semver"
           rc=1
           if [ $last_tag_semver == ${{steps.get_next_release_version.outputs.new_release_version}}]; then
             rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')

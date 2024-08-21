@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Deploy release desde branch demo
+name: Deploy release
 
 # Controls when the workflow will run
 on:  
@@ -70,6 +70,9 @@ jobs:
 
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
+      
+      - name: NUEVO STEP SALUDO
+        run: echo "SALUDO DESDE BRANCH DEMO"
 
       - name: Get last stable release
         uses: cardinalby/git-get-release-action@v1

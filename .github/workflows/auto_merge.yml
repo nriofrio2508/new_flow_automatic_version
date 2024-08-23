@@ -2,7 +2,7 @@ name: Auto Merge QA
 on:
   push:
     branches:
-      - 'feature/demo_**'
+      - 'feature/**'
 
 jobs:
   merge_qa:

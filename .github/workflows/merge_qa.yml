@@ -12,7 +12,7 @@ jobs:
       
       - name: merge branch
         run: |
-          echo "Current Branch: ${{ github.ref }}"
+          echo "Current Branch: ${{ github.ref_name }}"
           git pull
           git merge ${{ github.ref }}
           git push origin qa

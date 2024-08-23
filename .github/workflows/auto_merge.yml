@@ -1,6 +1,8 @@
-name: Merge QA
+name: Auto Merge QA
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - 'feature/**'
 
 jobs:
   merge_qa:
@@ -22,5 +24,3 @@ jobs:
           git commit -S -m "Merge branch $branch_origin into qa"
           git push origin qa
           echo "Finalizo merge"
-
-          

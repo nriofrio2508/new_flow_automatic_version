@@ -16,3 +16,4 @@ jobs:
           git pull
           git merge ${{ github.ref }}
           git push origin qa
+          echo "Finalizo merge"

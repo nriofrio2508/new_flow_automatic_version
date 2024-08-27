@@ -20,4 +20,6 @@ jobs:
       - name: Delete release
         run: |
           gh release delete --cleanup-tag -y domain1_subdomain1_destino1-v5.2.0-rc.* 
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           

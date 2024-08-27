@@ -19,5 +19,5 @@ jobs:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
       - name: Delete release
         run: |
-          gh release delete domain1_subdomain1_destino1-v5.2.0-rc.* --cleanup-tag domain1_subdomain1_destino1-v5.2.0-rc.*
+          gh release delete --cleanup-tag domain1_subdomain1_destino1-v5.2.0-rc.* domain1_subdomain1_destino1-v5.2.0-rc.* 
           

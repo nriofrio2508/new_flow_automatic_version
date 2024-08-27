@@ -18,8 +18,10 @@ jobs:
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
       - name: 
+        #gh release list | grep "domain1_subdomain1_destino1-v5.2.0-rc. | awk 'print{ $1}'"
         run: |
-          gh release list | grep "domain1_subdomain1_destino1-v5.2.0-rc. | awk 'print{ $1}'"
+          gh release list | awk -F 'domain1_subdomain1_destino1-v5.2.0-rc.*' '{print $3}' 
+          
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Delete release

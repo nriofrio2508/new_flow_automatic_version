@@ -70,27 +70,6 @@ jobs:
 
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
-
-      - name: Get Last Tag Reusbale
-        uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get_latest_tag_reusable
-        with:
-          semver_only: true
-
-      - name: Print last tag reusable
-        run: echo "Get last tag OK ${{ steps.get_latest_tag_reusable.outputs.tag }}"
-
-      - name: Get Last Release Reusable
-        id: get_latest_release_reusable
-        uses: rez0n/actions-github-release@main
-        env:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          type: "stable"
-
-      - name: Print last Release Reusable
-        run: echo "Get last tag OK ${{ steps.get_latest_release_reusable.outputs.release }}"
-  
       
       - name: Get last stable release
         uses: cardinalby/git-get-release-action@v1

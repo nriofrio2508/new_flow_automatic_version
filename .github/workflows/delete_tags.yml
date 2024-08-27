@@ -20,7 +20,7 @@ jobs:
       - name: 
         #gh release list | grep "domain1_subdomain1_destino1-v5.2.0-rc. | awk 'print{ $1}'"
         run: |
-          gh release list | awk -F 'domain1_subdomain1_destino1-v5.2.0-rc.*' '{print $1}' 
+          gh release list | grep "domain1_subdomain1_destino1-v5.2.0-rc. | awk -F 'domain1_subdomain1_destino1-v5.2.0-rc.*' '{print $1}' 
           
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

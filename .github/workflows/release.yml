@@ -137,7 +137,7 @@ jobs:
         run: echo ${{ steps.generate_tag_rc.outputs.delete_trash_rc }}
       
       - name: Delete trash release
-        if: ${{ steps.generate_tag_rc.outputs.delete_trash_rc == 'S' }}
+        if: steps.generate_tag_rc.outputs.delete_trash_rc == 'S'
         run: |
           gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'
           for tag in $(gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'); do

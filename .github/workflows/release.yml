@@ -34,6 +34,7 @@ run-name: Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.de
 
 env:
   SEPARATOR: "-"
+  PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -53,8 +54,8 @@ jobs:
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
-          prefix: '${{inputs.domain}}$SEPARATOR${{inputs.subdomain}}$SEPARATOR${{inputs.destination}}-v'
-          fallback: '${{inputs.domain}}$SEPARATOR${{inputs.subdomain}}$SEPARATOR${{inputs.destination}}-v0.0.0' # Optional fallback tag to use when no tag can be found
+          prefix: '${{ env.PREFIX_REPO }}-v'
+          fallback: '${{ env.PREFIX_REPO }}-v0.0.0' # Optional fallback tag to use when no tag can be found
 
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"

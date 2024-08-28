@@ -134,7 +134,14 @@ jobs:
           echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
       
       - name: Print rc
-        run: echo ${{ steps.generate_tag_rc.outputs.delete_trash_rc }}
+        run: |
+          echo ${{ steps.generate_tag_rc.outputs.delete_trash_rc }}
+          gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'
+          for tag in $(gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'); do
+            gh release delete --yes --cleanup-tag $tag 
+          done          
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: MY IF
         if: steps.generate_tag_rc.outputs.delete_trash_rc == 'S'
@@ -146,14 +153,10 @@ jobs:
           gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'
           for tag in $(gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'); do
             gh release delete --yes --cleanup-tag $tag 
-          done
-          
+          done          
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      
 
-        
   generate_pre_release:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest

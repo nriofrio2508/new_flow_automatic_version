@@ -126,7 +126,7 @@ jobs:
       - name: Delete trash RC
         if: steps.generate_tag_rc.outputs.delete_trash_rc == 'Y'
         run: |
-          echo ${{ steps.generate_tag_rc.outputs.rc_to_delete }}
+          echo "RC a eliminar ${{ steps.generate_tag_rc.outputs.rc_to_delete }}-rc.*"
           gh release list | grep "^${{ steps.generate_tag_rc.outputs.rc_to_delete }}-rc." | awk '{print $1}'
           for tag in $(gh release list | grep "^${{ steps.generate_tag_rc.outputs.rc_to_delete }}-rc." | awk '{print $1}'); do
             gh release delete --yes --cleanup-tag $tag 

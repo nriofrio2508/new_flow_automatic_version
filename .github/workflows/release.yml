@@ -133,6 +133,9 @@ jobs:
           new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
           echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
       
+      - name: Print rc
+        run: echo ${{ steps.generate_tag_rc.outputs.delete_trash_rc }}
+      
       - name: Delete trash release
         if: ${{ steps.generate_tag_rc.outputs.delete_trash_rc == 'S' }}
         run: |

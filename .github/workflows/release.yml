@@ -33,7 +33,6 @@ on:
 run-name: Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.actor }}
 
 env:
-  SEPARATOR: "-"
   PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

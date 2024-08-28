@@ -117,7 +117,7 @@ jobs:
             ((rc++))
           else            
             echo "delete_trash_rc=Y" >> $GITHUB_OUTPUT
-            echo "rc_to_delete=$last_tag_semver"
+            echo "rc_to_delete=$last_tag_semver" >> $GITHUB_OUTPUT
           fi
 
           new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
@@ -126,9 +126,9 @@ jobs:
       - name: Delete trash RC
         if: steps.generate_tag_rc.outputs.delete_trash_rc == 'Y'
         run: |
-          echo ${{ steps.generate_tag_rc.outputs.last_rc }}
-          gh release list | grep "^${{ steps.generate_tag_rc.outputs.last_rc }}-rc." | awk '{print $1}'
-          for tag in $(gh release list | grep "^${{ steps.generate_tag_rc.outputs.last_rc }}-rc." | awk '{print $1}'); do
+          echo ${{ steps.generate_tag_rc.outputs.rc_to_delete }}
+          gh release list | grep "^${{ steps.generate_tag_rc.outputs.rc_to_delete }}-rc." | awk '{print $1}'
+          for tag in $(gh release list | grep "^${{ steps.generate_tag_rc.outputs.rc_to_delete }}-rc." | awk '{print $1}'); do
             gh release delete --yes --cleanup-tag $tag 
           done          
         env:

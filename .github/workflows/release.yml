@@ -127,7 +127,7 @@ jobs:
             rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
             ((rc++))
           else
-            echo "delete_trash_rc='S'" >> $GITHUB_OUTPUT
+            echo "delete_trash_rc=S" >> $GITHUB_OUTPUT
           fi
 
           new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"

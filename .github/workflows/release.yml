@@ -134,6 +134,7 @@ jobs:
           echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
       
       - name: Print rc
+        if: steps.generate_tag_rc.outputs.delete_trash_rc == 'S'
         run: |
           echo ${{ steps.generate_tag_rc.outputs.delete_trash_rc }}
           gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'

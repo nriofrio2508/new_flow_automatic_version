@@ -3,7 +3,7 @@
 name: Deploy release
 
 # Controls when the workflow will run
-on:  
+on:
   workflow_dispatch:
     inputs:
       domain:
@@ -11,32 +11,26 @@ on:
         required: true
         type: choice
         options:
-          - domain1
-          - domain2
-          - domain3
-        default: 'domain1'
-
+          - dominio1
+          - dominio2
       subdomain:
         description: 'Subdomain'
         required: true
         type: string
-        default: 'subdomain1'     
-
-      destino:
-        description: 'Destino'
+      destination:
+        description: 'Destination'
         required: true
         type: string
-        default: 'destino1'  
-      
-      tipo_cambio:
-        description: 'Seleccione tipo cambio'
+      version_type:
+        description: 'Version Type'
         required: true
         type: choice
         options:
           - major
           - minor
           - patch
-  
+
+run-name: Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.actor }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -65,8 +59,8 @@ jobs:
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         with:
-          prefix: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v'
-          fallback: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v0.0.0' # Optional fallback tag to use when no tag can be found
+          prefix: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destination}}-v'
+          fallback: '${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destination}}-v0.0.0' # Optional fallback tag to use when no tag can be found
 
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
@@ -77,7 +71,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          releaseNameRegEx: "${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v*"
+          releaseNameRegEx: "${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destination}}-v*"
           prerelease: false
           doNotFailIfNotFound: true        
       
@@ -100,8 +94,8 @@ jobs:
       - name: Get next release version
         id: get_next_release_version
         run: |
-          domain_version="${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}"
-          case "${{inputs.tipo_cambio}}" in
+          domain_version="${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destination}}"
+          case "${{inputs.version_type}}" in
               major)
                   echo "new_release_version=$domain_version-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
                   ;;
@@ -209,7 +203,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          releaseNameRegEx: "${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destino}}-v*"
+          releaseNameRegEx: "${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destination}}-v*"
           prerelease: false
           doNotFailIfNotFound: true
       - name: Print Last release

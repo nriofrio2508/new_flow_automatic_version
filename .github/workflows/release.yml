@@ -43,7 +43,7 @@ jobs:
     outputs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
       next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
-      lat_stable_release: ${{ steps.get_last_release.outputs.name }}
+      last_stable_release: ${{ steps.get_last_release.outputs.name }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -67,7 +67,10 @@ jobs:
         with:
           releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
           prerelease: false
-          doNotFailIfNotFound: true        
+          doNotFailIfNotFound: true
+           
+      - name: Print last stable release
+        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    
       
       - name: Get SemVer from release
         id: semver_release_step        
@@ -108,14 +111,13 @@ jobs:
         id: generate_tag_rc
         run: |
           last_tag_semver=$(echo "${{ steps.previoustag.outputs.tag}}" | awk -F'-rc.' '{print $1}')
-          last_rc=$(echo "${{ steps.previoustag.outputs.tag}}" | awk -F'-rc.' '{print $2}')
           rc=1
           if [ "$last_tag_semver" = "${{steps.get_next_release_version.outputs.new_release_version}}" ]; then
             rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
             ((rc++))
           else            
             echo "delete_trash_rc=Y" >> $GITHUB_OUTPUT
-            echo "rc_to_delete=$last_rc"
+            echo "rc_to_delete=$last_tag_semver"
           fi
 
           new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
@@ -166,7 +168,7 @@ jobs:
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
           head-ref: ${{ needs.get_last_tag.outputs.next_tag_repo }}
-          base-ref: ${{ needs.get_last_tag.outputs.lat_stable_release }}
+          base-ref: ${{ needs.get_last_tag.outputs.last_stable_release }}
           fetch: true
       - name: Create PreRelease
         uses: actions/create-release@v1

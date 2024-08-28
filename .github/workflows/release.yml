@@ -136,6 +136,10 @@ jobs:
       - name: Print rc
         run: echo ${{ steps.generate_tag_rc.outputs.delete_trash_rc }}
       
+      - name: MY IF
+        if: steps.generate_tag_rc.outputs.delete_trash_rc == 'S'
+        run: echo "hello"
+      
       - name: Delete trash release
         if: steps.generate_tag_rc.outputs.delete_trash_rc == 'S'
         run: |

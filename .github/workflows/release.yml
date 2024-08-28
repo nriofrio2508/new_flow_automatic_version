@@ -43,7 +43,7 @@ jobs:
     outputs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
       next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
-      last_stable_release: ${{ steps.get_last_release.outputs.name }}
+      last_stable_release: ${{ steps.get_last_release.outputs.name || steps.generate_tag_rc.outputs.new_rc_version }}
     steps:
       - uses: actions/checkout@v3
         with:

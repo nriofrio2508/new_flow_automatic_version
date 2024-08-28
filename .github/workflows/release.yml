@@ -65,7 +65,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          releaseNameRegEx: "${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destination}}-v*"
+          releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
           prerelease: false
           doNotFailIfNotFound: true        
       
@@ -88,16 +88,15 @@ jobs:
       - name: Get next release version
         id: get_next_release_version
         run: |
-          domain_version="${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destination}}"
           case "${{inputs.version_type}}" in
               major)
-                  echo "new_release_version=$domain_version-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
+                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
                   ;;
               minor)
-                  echo "new_release_version=$domain_version-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT
+                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT
                   ;;
               patch)
-                  echo "new_release_version=$domain_version-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT
+                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT
                   ;;
               *)
                   echo "$parametro no es major, minor, ni patch"
@@ -114,8 +113,9 @@ jobs:
           if [ "$last_tag_semver" = "${{steps.get_next_release_version.outputs.new_release_version}}" ]; then
             rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
             ((rc++))
-          else
+          else            
             echo "delete_trash_rc=Y" >> $GITHUB_OUTPUT
+            echo "rc_to_delete=$last_rc"
           fi
 
           new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
@@ -125,8 +125,8 @@ jobs:
         if: steps.generate_tag_rc.outputs.delete_trash_rc == 'Y'
         run: |
           echo ${{ steps.generate_tag_rc.outputs.delete_trash_rc }}
-          gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'
-          for tag in $(gh release list | grep "^domain1_subdomain1_destino1-v5.2.0-rc." | awk '{print $1}'); do
+          gh release list | grep "^${{ steps.generate_tag_rc.outputs.last_rc }}-rc." | awk '{print $1}'
+          for tag in $(gh release list | grep "^${{ steps.generate_tag_rc.outputs.last_rc }}-rc." | awk '{print $1}'); do
             gh release delete --yes --cleanup-tag $tag 
           done          
         env:
@@ -203,7 +203,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          releaseNameRegEx: "${{inputs.domain}}_${{inputs.subdomain}}_${{inputs.destination}}-v*"
+          releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
           prerelease: false
           doNotFailIfNotFound: true
       - name: Print Last release

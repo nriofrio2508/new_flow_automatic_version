@@ -143,6 +143,13 @@ jobs:
           ref: main
       - name: Version car
         run: cat README.md
+      
+      - name: Create custom Branch
+        run: |
+          git checkout -b 'release/${{ needs.get_last_tag.outputs.next_tag_repo }}_nico'
+          git push origin 'release/${{ needs.get_last_tag.outputs.next_tag_repo }}_nico'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - uses: peterjgrainger/action-create-branch@v2.2.0
         env:

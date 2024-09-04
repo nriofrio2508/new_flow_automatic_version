@@ -211,11 +211,14 @@ jobs:
   generate_release:
     runs-on: ubuntu-latest
     needs: [promote_prd,get_last_tag]
+    outputs:
+      new_release_id: ${{ steps.create_release_step.outputs.id }}
+      new_name_release: ${{ steps.get_name_new_release.outputs.new_name_release}}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: release/${{ needs.get_last_tag.outputs.next_tag_repo }}
+          ref: tag/${{ needs.get_last_tag.outputs.next_tag_repo }}
       - uses: cardinalby/git-get-release-action@v1
         id: get_last_release
         env:
@@ -256,6 +259,7 @@ jobs:
 
       - name: Create Release
         uses: actions/create-release@v1
+        id: create_release_step
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

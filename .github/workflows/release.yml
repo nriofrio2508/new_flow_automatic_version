@@ -139,12 +139,12 @@ jobs:
     needs: get_last_tag
     steps:
       - name: hello
-        run: echo "HELLO"
+        run: exit 1
 
   create_branch:
     runs-on: ubuntu-latest
     if: ${{ always() && needs.get_last_tag.result == 'success'}}
-    needs: get_last_tag
+    needs: [deploy_datadog,get_last_tag]
     steps:
       - uses: actions/checkout@v4
         with:

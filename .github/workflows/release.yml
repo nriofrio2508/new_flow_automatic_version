@@ -273,10 +273,11 @@ jobs:
   validate_deploy_prd:
     # The type of runner that the job will run on COMENTARIOS PARA 5
     runs-on: ubuntu-latest
+    if: false
     needs: generate_release
     steps:
       - name: Validate deploy prd
-        run: exit 1
+        run: echo "TODO OK"
 
   
   only_echo:

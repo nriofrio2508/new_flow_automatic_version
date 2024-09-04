@@ -276,4 +276,13 @@ jobs:
     needs: generate_release
     steps:
       - name: Validate deploy prd
-        run: echo "validate deploy PRD OK"
+        run: exit 1
+
+  
+  only_echo:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: validate_deploy_prd
+    steps:
+      - name: saludo
+        run: echo "saludo"

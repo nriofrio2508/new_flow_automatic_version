@@ -121,7 +121,6 @@
           with:
             branch: release/${{ needs.get_last_tag.outputs.next_release_version}}
         - name: PRINT CONDICION
-          if: ${{ inputs.use_azure_login == true }}
           run: echo ${{ inputs.use_azure_login }}
         - name: CONDICION
           if: ${{ inputs.use_azure_login == true }}

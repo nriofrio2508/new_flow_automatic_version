@@ -112,6 +112,6 @@
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
-            branch: ${{ needs.get_last_tag.outputs.next_release_version}}
+            branch: release/${{ needs.get_last_tag.outputs.next_release_version}}
         
   

@@ -112,15 +112,11 @@
       runs-on: ubuntu-latest
       steps:
         - uses: peterjgrainger/action-create-branch@v3.0.0
+          id: create_branch
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             branch: release/${{ needs.get_last_tag.outputs.next_release_version}}
-    resultado:
-      needs: create_branch
-      runs-on: ubuntu-latest
-      steps:
-        - name: Resultado
-          run: echo ${{ needs.create_branch.outputs.created }}
-        
+        - name: Print resultado
+          run: echo ${{ steps.create_branch.outputs.create_branch }}
   

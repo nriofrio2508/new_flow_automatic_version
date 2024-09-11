@@ -119,7 +119,7 @@
             branch: release/${{ needs.get_last_tag.outputs.next_release_version}}
         - name: Print result
           run: |
-            echo "${{ steps.create_branch.outputs.created  }}"
+            echo ${{ steps.create_branch.outputs.created  }}
         - name: Validate branch
           if: ${{ !steps.create_branch.outputs.created  }}
           run: |

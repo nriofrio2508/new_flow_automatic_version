@@ -118,5 +118,5 @@
           with:
             branch: release/${{ needs.get_last_tag.outputs.next_release_version}}
         - name: Print resultado
-          run: echo ${{ steps.create_branch.outputs.create_branch }}
+          run: echo ${{ steps.create_branch.outputs.created }}
   

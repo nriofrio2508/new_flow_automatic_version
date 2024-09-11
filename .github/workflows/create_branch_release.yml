@@ -120,6 +120,9 @@
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             branch: release/${{ needs.get_last_tag.outputs.next_release_version}}
+        - name: CONDICION
+          if: ${{ inputs.use_azure_login == true }}
+          run: echo "VALOR"
         - name: Print result
           run: |
             echo ${{ steps.create_branch.outputs.created  }}

@@ -102,7 +102,10 @@
                     echo "$parametro no es major, minor, ni patch"
                     ;;
             esac
-            echo new_release_version      
+            echo new_release_version    
+        - name: Print next release
+          run: echo ${{ steps.get_next_release_version.outputs.new_release_version }}
+          
   
     create_branch:
       needs: ['get_last_tag']

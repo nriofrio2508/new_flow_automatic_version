@@ -31,6 +31,7 @@
         use_azure_login:
           description: 'login'
           required: true
+          type: boolean
   
   run-name: Generate branch release [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.actor }}
   

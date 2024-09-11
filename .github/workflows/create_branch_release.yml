@@ -116,5 +116,11 @@
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             branch: release/${{ needs.get_last_tag.outputs.next_release_version}}
+    resultado:
+      needs: create_branch
+      runs-on: ubuntu-latest
+      steps:
+        - name: Resultado
+          run: echo ${{ needs.create_branch.outputs.created }}
         
   

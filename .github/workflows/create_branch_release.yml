@@ -111,7 +111,7 @@
       needs: ['get_last_tag']
       runs-on: ubuntu-latest
       steps:
-        - uses: peterjgrainger/action-create-branch@v2.2.0
+        - uses: peterjgrainger/action-create-branch@v3.0.0
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:

@@ -28,6 +28,9 @@
             - patch
             - minor
             - major
+        use_azure_login:
+          description: 'login'
+          required: true
   
   run-name: Generate branch release [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.actor }}
   
@@ -121,8 +124,11 @@
           run: |
             echo ${{ steps.create_branch.outputs.created  }}
         - name: Validate branch
-          if: ${{ steps.create_branch.outputs.created == false }}
+          if: ${{ steps.create_branch.outputs.created }} == false 
           run: |
             echo "Ya existe branch release/${{ needs.get_last_tag.outputs.next_release_version}}"
             exit 1
+        - name: CONDICION
+          if: ${{ inputs.use_azure_login == true }}
+          run: echo "VALOR"
   

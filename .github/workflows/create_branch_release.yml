@@ -1,0 +1,117 @@
+---
+  name: Generate branch release
+  
+  # Trigger this workflow whenever a pull request is opened against the repo's
+  # main branch or an existing pull request's head branch is updated.
+  on:
+    workflow_dispatch:
+      inputs:
+        domain:
+          description: 'Domain'
+          required: true
+          type: choice
+          options:
+            - technology
+        subdomain:
+          description: 'Subdomain'
+          required: true
+          type: string
+        destination:
+          description: 'Destination'
+          required: true
+          type: string
+        version_type:
+          description: 'Version Type'
+          required: true
+          type: choice
+          options:
+            - patch
+            - minor
+            - major
+  
+  run-name: Generate branch release [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.actor }}
+  
+  env:
+    PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'
+  
+  
+  jobs:
+    get_last_tag:
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+      outputs:
+        next_release_version: ${{ steps.get_next_release_version.outputs.new_release_version }}
+      steps:
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+        
+        - name: 'Get Previous tag'
+          id: previoustag
+          uses: "WyriHaximus/github-action-get-previous-tag@v1"
+          with:
+            prefix: '${{ env.PREFIX_REPO }}-v'
+            fallback: '${{ env.PREFIX_REPO }}-v0.0.0' # Optional fallback tag to use when no tag can be found
+  
+        - name: Get last tag Step
+          run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
+        
+        - name: Get last stable release
+          uses: cardinalby/git-get-release-action@v1
+          id: get_last_release
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
+            prerelease: false
+            doNotFailIfNotFound: true
+             
+        - name: Print last stable release
+          run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    
+        
+        - name: Get SemVer from release
+          id: semver_release_step        
+          run: |
+            version_number="0.0.0"
+            echo "Last Release ${{ steps.get_last_release.outputs.name }}"  
+            if [ ${{ steps.get_last_release.outputs.name }} ]; then
+              version_number=$(echo ${{ steps.get_last_release.outputs.name}} | awk -F'-v' '{print $2}')          
+            fi
+            echo "semver_release=$version_number" >> $GITHUB_OUTPUT
+        
+        - name: 'Get all next version'
+          id: semvers
+          uses: "WyriHaximus/github-action-next-semvers@v1"
+          with:
+            version: ${{ steps.semver_release_step.outputs.semver_release }}
+  
+        - name: Get next release version
+          id: get_next_release_version
+          run: |
+            case "${{inputs.version_type}}" in
+                major)
+                    echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
+                    ;;
+                minor)
+                    echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT
+                    ;;
+                patch)
+                    echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT
+                    ;;
+                *)
+                    echo "$parametro no es major, minor, ni patch"
+                    ;;
+            esac
+            echo new_release_version      
+  
+    create_branch:
+      needs: ['get_last_tag']
+      runs-on: ubuntu-latest
+      steps:
+        - uses: peterjgrainger/action-create-branch@v3.0.0
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            branch: ${{ needs.get_last_tag.outputs.next_release_version}}
+        
+  

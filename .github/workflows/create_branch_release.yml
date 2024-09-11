@@ -121,7 +121,7 @@
           run: |
             echo ${{ steps.create_branch.outputs.created  }}
         - name: Validate branch
-          if: ${{ steps.create_branch.outputs.created  }}
+          if: ${{ ! steps.create_branch.outputs.created }}
           run: |
             echo "Ya existe branch release/${{ needs.get_last_tag.outputs.next_release_version}}"
             exit 1

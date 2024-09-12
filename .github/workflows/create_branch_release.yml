@@ -28,10 +28,6 @@
             - patch
             - minor
             - major
-        use_azure_login:
-          description: 'login'
-          required: true
-          type: boolean
   
   run-name: Generate branch release [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.actor }}
   
@@ -44,7 +40,7 @@
       # The type of runner that the job will run on
       runs-on: ubuntu-latest
       outputs:
-        next_release_version: ${{ steps.get_next_release_version.outputs.new_release_version }}
+        next_rc_version: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
       steps:
         - uses: actions/checkout@v3
           with:
@@ -106,9 +102,25 @@
                     echo "$parametro no es major, minor, ni patch"
                     ;;
             esac
-            echo new_release_version    
-        - name: Print next release
-          run: echo ${{ steps.get_next_release_version.outputs.new_release_version }}
+            echo new_release_version   
+        - name: Diff between next release and last tag semver
+          id: generate_tag_rc
+          run: |
+            last_tag_semver=$(echo "${{ steps.previoustag.outputs.tag}}" | awk -F'-rc.' '{print $1}')
+            rc=1
+            if [ "$last_tag_semver" = "${{steps.get_next_release_version.outputs.new_release_version}}" ]; then
+              rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
+              ((rc++))
+            else            
+              echo "delete_trash_rc=Y" >> $GITHUB_OUTPUT
+              echo "rc_to_delete=$last_tag_semver" >> $GITHUB_OUTPUT
+            fi
+  
+            new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
+            echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
+
+        - name: Print next release candidate
+          run: echo ${{ steps.generate_tag_rc.outputs.new_rc_version }}
           
   
     create_branch:
@@ -120,21 +132,6 @@
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
-            branch: release/${{ needs.get_last_tag.outputs.next_release_version}}
+            branch: release/${{ needs.get_last_tag.outputs.next_rc_version}}
         - name: PRINT CONDICION
-          run: echo ${{ inputs.use_azure_login }}
-        - name: CONDICION
-          if: ${{ inputs.use_azure_login == true }}
-          run: echo "VALOR"
-        - name: Print result
-          run: |
-            echo ${{ steps.create_branch.outputs.created  }}
-        - name: Validate branch
-          if: ${{ steps.create_branch.outputs.created }} == 'false'
-          run: |
-            echo "Ya existe branch release/${{ needs.get_last_tag.outputs.next_release_version}}"
-            exit 1
-        - name: CONDICION
-          if: ${{ inputs.use_azure_login == true }}
-          run: echo "VALOR"
-  
+          run: echo 'NUEVO'

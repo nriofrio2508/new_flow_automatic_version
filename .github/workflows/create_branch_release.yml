@@ -121,7 +121,6 @@
 
         - name: Print next release candidate
           run: echo ${{ steps.generate_tag_rc.outputs.new_rc_version }}
-          
   
     create_branch:
       needs: ['get_last_tag']
@@ -133,5 +132,8 @@
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             branch: release/${{ needs.get_last_tag.outputs.next_rc_version}}
-        - name: PRINT CONDICION
-          run: echo 'NUEVO'
+        - name: Validate Branch
+          if: ${{ steps.create_branch.outputs.created == 'false' }}
+          run: |
+            echo "Ya existe la rama: release/${{ needs.get_last_tag.outputs.next_rc_version}}"
+            exit 1

@@ -137,3 +137,10 @@
           run: |
             echo "Ya existe la rama: release/${{ needs.get_last_tag.outputs.next_rc_version}}"
             exit 1
+        - name: Get Name Branch
+          if: ${{ steps.create_branch.outputs.created == 'true' }}
+          run: |
+            echo "Branch generado:  release/${{ needs.get_last_tag.outputs.next_rc_version}}"
+            
+          
+        

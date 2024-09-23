@@ -80,6 +80,8 @@ jobs:
           cat all_releases.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: exit
+        run: exit 1
       - name: Print last stable release
         run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    
        

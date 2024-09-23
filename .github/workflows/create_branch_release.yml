@@ -1,8 +1,6 @@
 ---
   name: Generate branch release
   
-  # Trigger this workflow whenever a pull request is opened against the repo's
-  # main branch or an existing pull request's head branch is updated.
   on:
     workflow_dispatch:
       inputs:
@@ -33,8 +31,7 @@
   
   env:
     PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'
-  
-  
+
   jobs:
     get_last_tag:
       # The type of runner that the job will run on
@@ -111,9 +108,6 @@
             if [ "$last_tag_semver" = "${{steps.get_next_release_version.outputs.new_release_version}}" ]; then
               rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
               ((rc++))
-            else            
-              echo "delete_trash_rc=Y" >> $GITHUB_OUTPUT
-              echo "rc_to_delete=$last_tag_semver" >> $GITHUB_OUTPUT
             fi
   
             new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
@@ -137,7 +131,7 @@
           run: |
             echo "Ya existe la rama: release/${{ needs.get_last_tag.outputs.next_rc_version}}"
             exit 1
-        - name: Get Name Branch
+        - name: Get Branch Name
           if: ${{ steps.create_branch.outputs.created == 'true' }}
           run: |
             echo "Branch generado:  release/${{ needs.get_last_tag.outputs.next_rc_version}}"

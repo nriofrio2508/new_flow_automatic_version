@@ -80,6 +80,11 @@ jobs:
           cat all_releases.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get release API
+        run: |
+          gh release list --limit 30 --page=2 --exclude-pre-releases --json tagName --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' > releases.json
+          cat releases.json 
       - name: Print last stable release
         run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    
        

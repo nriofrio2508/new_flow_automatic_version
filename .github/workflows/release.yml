@@ -83,7 +83,7 @@ jobs:
 
       - name: Get release API
         run: |
-          gh release list --limit 30 --page=2 --exclude-pre-releases --json tagName --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' > releases.json
+          gh release list --limit 30 --paginate --page=2 --exclude-pre-releases --json tagName --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' > releases.json
           cat releases.json 
       - name: Print last stable release
         run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    

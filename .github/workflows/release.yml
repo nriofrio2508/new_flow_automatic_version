@@ -72,6 +72,9 @@ jobs:
           releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
           prerelease: false
           doNotFailIfNotFound: true
+      - name: Get stable release GH
+        run: |
+          gh release list --json name -jq '.[] | select(.tagName | startswith("demo")) | .tagName'                                                                                                
            
       - name: Print last stable release
         run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    

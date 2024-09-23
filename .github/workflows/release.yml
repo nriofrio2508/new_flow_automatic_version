@@ -84,7 +84,7 @@ jobs:
       - name: Get release API
         run: |
             response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=100&page=100")
-            if [ jq -e 'if length == 0 then true else false end' "$response" > /dev/null ]; then
+            if jq -e 'if length == 0 then true else false end' "$response" > /dev/null ; then
               echo "Arreglo vacio"
             else
               echo "arreglo lleno"

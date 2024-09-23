@@ -83,7 +83,7 @@ jobs:
 
       - name: Get release API
         run: |
-            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository_owner}}/releases?per_page=30&page=2")
+            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=30&page=1")
             echo "$response" | jq '.[] | {tagName: .tag_name, name: .name, createdAt: .created_at}' > release.json
             cat release.json
             

@@ -83,7 +83,7 @@ jobs:
 
       - name: Get release API
         run: |
-          gh api repos/${{github.repository_owner}}/releases --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' --page=2 > releases.json
+          gh api repos/${{github.repository_owner}}/releases --paginate --per-page=30 --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' --page=2 > releases.json
           cat releases.json 
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

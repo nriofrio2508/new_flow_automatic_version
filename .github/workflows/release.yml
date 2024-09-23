@@ -83,8 +83,10 @@ jobs:
 
       - name: Get release API
         run: |
-          gh release list --limit 30 --paginate --page=2 --exclude-pre-releases --json tagName --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' > releases.json
+          gh api repos/${{github.repository_owner}}/releases --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' --page=2 > releases.json
           cat releases.json 
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print last stable release
         run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    
        

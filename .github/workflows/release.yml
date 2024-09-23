@@ -78,7 +78,8 @@ jobs:
            
       - name: Print last stable release
         run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    
-      
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get SemVer from release
         id: semver_release_step        
         run: |

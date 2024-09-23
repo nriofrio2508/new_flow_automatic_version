@@ -84,7 +84,10 @@ jobs:
       - name: Get release API
         run: |
             response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=30&page=1")
-            echo "$response" | jq '.[] | select(.tagName ) | .tagName' > release.json
+            echo "$response" > nuevo.json
+            cat nuevo.json
+
+            echo "$response" | jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | .tag_name' > release.json
             cat release.json
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

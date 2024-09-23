@@ -83,7 +83,10 @@ jobs:
 
       - name: Get release API
         run: |
-            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=100&page=1")
+            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=100&page=100")
+            if [ -z "$response" ]; then
+              echo "Esta vacio"
+            fi
             echo "$response" | jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | .tag_name' > release.json
             cat release.json
         env:

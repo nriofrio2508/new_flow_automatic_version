@@ -74,7 +74,7 @@ jobs:
           doNotFailIfNotFound: true
       - name: Get stable release GH
         run: |
-          gh release list --json tagName --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' > releases.json
+          gh release list --exclude-pre-releases --json tagName --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' > releases.json
           gh release list --json tagName  > all_releases.json
           cat releases.json
           cat all_releases.json

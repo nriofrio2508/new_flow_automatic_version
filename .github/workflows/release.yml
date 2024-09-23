@@ -83,8 +83,10 @@ jobs:
 
       - name: Get release API
         run: |
-          gh api repos/${{github.repository_owner}}/releases --paginate --per-page=30 --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' --page=2 > releases.json
-          cat releases.json 
+            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository_owner}}/releases?per_page=30&page=2")
+            echo "$response" | jq '.[] | {tagName: .tag_name, name: .name, createdAt: .created_at}' > release.json
+            cat release.json
+            
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print last stable release

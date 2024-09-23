@@ -86,6 +86,8 @@ jobs:
             response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=100&page=100")
             if [ -z "$response" ]; then
               echo "Esta vacio"
+            else
+             echo "NO VACIO O.o"
             fi
             echo "$response" | jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | .tag_name' > release.json
             cat release.json

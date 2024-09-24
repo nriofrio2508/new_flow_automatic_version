@@ -85,15 +85,21 @@ jobs:
         run: |
             page=1
             while : ;do
-              response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=100&page=$page" \
-                      --jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | select(.prerelease == false) | .tag_name' )
-              if [ -z "$response" ] ; then
-                echo "Arreglo vacio"
-                
+              response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=100&page=$page")
+                            
+              if  echo "$response" | jq -e 'if length == 0 then true else false end'  > /dev/null ; then
+                echo "No se encontraron mas recursos"
+                break
               else
-                echo "arreglo lleno"
-                
+                response_filter= "$response" --jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | select(.prerelease == false) | .tag_name | first'                 
               fi
+
+              if [ -n "$response_filter" ]; then
+                echo "$response_filter" > final.json
+                cat finalt.json
+                break
+              fi
+              ((page++))
             done
             
             

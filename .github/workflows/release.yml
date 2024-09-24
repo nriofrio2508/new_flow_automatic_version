@@ -87,13 +87,15 @@ jobs:
           for i in $(seq 1 10000); do
             tag_name="version0.0.$i"
             git tag "$tag_name"
+            
             if [ "$control" -eq 500 ]; then
               control=0
               git push --tags
-            else
-             ((control++))
             fi
+            control=$((control + 1))
           done
+          
+          # Empujar los tags restantes
           git push --tags
           
 

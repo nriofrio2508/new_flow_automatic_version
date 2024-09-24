@@ -93,7 +93,7 @@ jobs:
                 echo "result_next_last_api=${{ env.PREFIX_REPO }}-v0.0.0" >> $GITHUB_OUTPUT
                 break
               else
-                response_filter= "$response" --jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | select(.prerelease == false) | .tag_name '                 
+                response_filter=$(echo "$response" | jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | select(.prerelease == false) | .tag_name' | head -n 1 )
               fi
 
               if [ -n "$response_filter" ]; then

@@ -84,16 +84,17 @@ jobs:
       - name: Get release API
         run: |
             page=1
-            
-            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=100&page=$page" \
-                    --jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v"))  | .tag_name' )
-            if [ -z "$response" ] ; then
-              echo "Arreglo vacio"
-              
-            else
-              echo "arreglo lleno"
-              
-            fi
+            while : ;do
+              response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=100&page=$page" \
+                      --jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | select(.prerelease == false) | .tag_name' )
+              if [ -z "$response" ] ; then
+                echo "Arreglo vacio"
+                
+              else
+                echo "arreglo lleno"
+                
+              fi
+            done
             
             
             

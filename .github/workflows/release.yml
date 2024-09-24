@@ -87,7 +87,7 @@ jobs:
             page=1
             per_page=100
             while : ;do
-              response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases?per_page=$per_page&page=$page")
+              response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releasesXA?per_page=$per_page&page=$page")
               echo "$page"             
               if  echo "$response" | jq -e 'if length == 0 then true else false end'  > /dev/null ; then
                 echo "No se encontraron mas recursos"
@@ -98,8 +98,6 @@ jobs:
               fi
 
               if [ -n "$response_filter" ]; then
-                echo "$response_filter" > final.json
-                cat final.json
                  echo "result_next_last_api=$response_filter" >> $GITHUB_OUTPUT
                 break
               fi

@@ -89,12 +89,12 @@ jobs:
                     --jq '.[] | select(.tag_name | startswith("${{ env.PREFIX_REPO }}-v")) | select(.prerelease == false) | .tag_name' )
             if [ -z "$response" ] ; then
               echo "Arreglo vacio"
-              break
+              
             else
               echo "arreglo lleno"
-              break
+              
             fi
-            break
+            
             
             
 

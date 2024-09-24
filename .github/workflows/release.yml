@@ -83,11 +83,18 @@ jobs:
 
       - name: Generate 10 k release
         run: |
+          control=0
           for i in $(seq 1 10000); do
             tag_name="version0.0.$i"
             git tag "$tag_name"
+            if [ "$control" == 500 ]; then
+              control=0
+              git push --tags
+            else
+             ((control++))
+            fi
           done
-          git push --tags
+          
 
       - name: Get release API
         id: get_last_release_api

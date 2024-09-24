@@ -83,7 +83,7 @@ jobs:
 
       - name: Get release API
         run: |
-            $page=100
+            page=100
             while: ; do
 
             done

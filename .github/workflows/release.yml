@@ -104,7 +104,8 @@ jobs:
             tag_name="version0.0.$i"
             gh release create "$tag_name"
           done
-          
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get release API
         id: get_last_release_api

@@ -81,6 +81,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Generate 10 k release
+        run: |
+          for i in $(seq 1 10000); do
+            tag_name="version0.0.$i"
+            git tag "$tag_name"
+          done
+          git push --tags
+
       - name: Get release API
         id: get_last_release_api
         run: |

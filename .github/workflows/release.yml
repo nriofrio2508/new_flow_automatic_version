@@ -82,6 +82,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate 10 k release
+        if: false
         run: |
           control=0
           for i in $(seq 1 10000); do
@@ -97,6 +98,12 @@ jobs:
           
           # Empujar los tags restantes
           git push --tags
+      - name: Create 10 k release
+        run: |
+          for i in $(seq 1 10000); do
+            tag_name="version0.0.$i"
+            gh release create "$tag_name"
+          done
           
 
       - name: Get release API

@@ -113,10 +113,10 @@ jobs:
           tags=$(git tag -l '${{ env.PREFIX_REPO }}-v*' --sort=-taggerdate)
 
           if [ -n "$tags" ]; then
-            filtered_tags=$(echo "$tags" | grep -E '^dominio1-subdomino2-destino5-v[0-9]+\.[0-9]+\.[0-9]+$')
+            filtered_tags=$(echo "$tags" | grep -E '^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$')
             for tag in $filtered_tags; do
               echo "$tag"
-              response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/nriofrio2508/new_flow_automatic_version/releases/tags/$tag" || true)
+              response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag" || true)
             
               if echo "$response" | jq -e '.status' > /dev/null 2>&1; then
                 continue

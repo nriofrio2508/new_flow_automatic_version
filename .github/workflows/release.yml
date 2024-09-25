@@ -109,7 +109,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get last stable release by TAG
         id: get_last_release_by_tag
-        working-directory: .github/workflows/scripts
+        working-directory: ./.github/workflows/scripts
         run: |
           chmod +x ~/get_last_release_by_tag.sh
           ~/get_last_release_by_tag.sh

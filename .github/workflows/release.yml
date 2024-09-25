@@ -117,7 +117,7 @@ jobs:
               echo "Tag $tag not found, continuing to next tag."
               continue
             fi
-            echo "$response" | jq '.tag_name'
+            echo "$response"
             
           done
         env:

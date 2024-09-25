@@ -1,3 +1,4 @@
+set -x
 repository_name=$1
 prefix_repo=$2
 result_next_last_tag="$prefix_repo-v0.0.0"

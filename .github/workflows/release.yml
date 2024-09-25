@@ -112,7 +112,7 @@ jobs:
         working-directory: ./.github/workflows/scripts
         run: |
           chmod +x get_last_release_by_tag.sh
-          ./get_last_release_by_tag.sh
+          ./get_last_release_by_tag.sh ${{github.repository}}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -120,7 +120,7 @@ jobs:
             fi
             response_filter=$(echo "$response" | jq 'select(.prerelease == false) | select(.draft == false) | .tag_name')
             if [ -n "$response_filter" ]; then
-              result_next_last_tag=response_filter
+              result_next_last_tag="$response_filter"
               break
             fi
           done

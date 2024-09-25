@@ -118,7 +118,7 @@ jobs:
               continue
             fi
             response_filter=$(echo "$response" | jq 'select(.prerelease == false) | select(.draft == false) | .tag_name')
-            echo "$response_filter"
+            echo "Filtro obtenido $response_filter"
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -117,8 +117,8 @@ jobs:
               echo "Tag $tag not found, continuing to next tag."
               continue
             fi
-            response_filter=$(echo "$response" | jq 'select(.prerelease == false) | select(.draft == false) | .tag_name')
-            echo "FILTER $response_filter"
+            echo "$response" | jq '.tag_name'
+            
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

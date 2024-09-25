@@ -112,9 +112,7 @@ jobs:
           tags=$(git tag -l '${{ env.PREFIX_REPO }}-v*' --sort=-taggerdate | grep -E '^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$')
           for tag in $tags; do
             echo "$tag"
-            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag" || echo "No se encontro el recurso")
-            status=$(echo "$response" | grep HTTP | awk '{print $2}')
-            echo "HTTP status: $status"
+            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag")
             echo "$response"
           done
         env:

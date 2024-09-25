@@ -194,15 +194,15 @@ jobs:
           fetch-depth: 0
       - name: Get last stable release by TAG
         id: get_last_release
-        working-directory: ./.github/workflows
+        working-directory: ./.github/scripts
         run: |
           chmod +x get_last_release_by_tag.sh
           ./get_last_release_by_tag.sh ${{github.repository}} ${{ env.PREFIX_REPO }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Print Last release
-        run: |
-          echo "Ultimo release: ${{ steps.get_last_release.outputs.name }}"
+
+      - name: Print last stable release TAG
+        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"
 
       - name: Get name new Release
         id: get_name_new_release

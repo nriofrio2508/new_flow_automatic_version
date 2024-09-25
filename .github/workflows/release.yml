@@ -114,6 +114,7 @@ jobs:
 
           if [ -n "$tags" ]; then
             filtered_tags=$(echo "$tags" | grep -E '^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$')
+            echo "$filtered_tags"
             for tag in $filtered_tags; do
               echo "$tag"
               response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag" || true)

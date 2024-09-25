@@ -111,8 +111,8 @@ jobs:
         id: get_last_release_by_tag
         working-directory: ./.github/workflows/scripts
         run: |
-          chmod +x ~/get_last_release_by_tag.sh
-          ~/get_last_release_by_tag.sh
+          chmod +x get_last_release_by_tag.sh
+          ./get_last_release_by_tag.sh
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

@@ -15,6 +15,4 @@ if [ -n "$tags" ]; then
         break
         fi
     done
-else
-    echo "name=$result_next_last_tag" >> $GITHUB_OUTPUT
 fi

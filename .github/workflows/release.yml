@@ -118,12 +118,13 @@ jobs:
               continue
             fi
             echo "$response"
-            
+            echo "$response" | jq '.tag_name'
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get release API
+        if: false
         id: get_last_release_api
         run: |
             page=1

@@ -194,7 +194,7 @@ jobs:
           fetch-depth: 0
       - name: Get last stable release by TAG
         id: get_last_release
-        working-directory: ./.github/workflows/scripts
+        working-directory: ./.github/workflows
         run: |
           chmod +x get_last_release_by_tag.sh
           ./get_last_release_by_tag.sh ${{github.repository}} ${{ env.PREFIX_REPO }}

@@ -9,7 +9,7 @@ if [ -n "$tags" ]; then
         if echo "$response_release" | jq -e '.status' > /dev/null 2>&1; then
             continue
         fi
-        filter_only_release=$(echo "$response_release" | jq 'select(.prerelease == false) | select(.draft == false) | .tag_name')
+        filter_only_release=$(echo "$response_release" | jq  -r 'select(.prerelease == false) | select(.draft == false) | .tag_name')
         if [ -n "$filter_only_release" ]; then
             echo "name=$filter_only_release" >> $GITHUB_OUTPUT
         break

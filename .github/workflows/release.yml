@@ -112,27 +112,27 @@ jobs:
           last_stable_release_by_tag="${{ env.PREFIX_REPO }}-v0.0.0"
           tags=$(git tag -l '${{ env.PREFIX_REPO }}-v*' --sort=-taggerdate)
 
-          if [ -z "$tags" ]; then
-            echo "last_stable_release_by_tag=$last_stable_release_by_tag" >> $GITHUB_OUTPUT
-            exit 0            
+          if [ -n "$tags" ]; then
+            filtered_tags=$(echo "$tags" | grep -E '^dominio1-subdomino2-destino5-v[0-9]+\.[0-9]+\.[0-9]+$')
+            for tag in $filtered_tags; do
+              echo "$tag"
+              response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/nriofrio2508/new_flow_automatic_version/releases/tags/$tag" || true)
+            
+              if echo "$response" | jq -e '.status' > /dev/null 2>&1; then
+                continue
+              fi
+              response_filter=$(echo "$response" | jq 'select(.prerelease == false) | select(.draft == false) | .tag_name')
+              if [ -n "$response_filter" ]; then
+                result_next_last_tag="$response_filter"
+                break
+              fi
+            done
+            
           fi
-
-          filtered_semver_tags=$(echo "$tags" | grep -E '^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$')
-          for tag in $filtered_semver_tags; do
-            response_release=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag" || true)
           
-            if echo "$response_release" | jq -e '.status' > /dev/null 2>&1; then
-              continue
-            fi
-
-            filtered_only_active_release=$(echo "$response_release" | jq 'select(.prerelease == false) | select(.draft == false) | .tag_name')
-            if [ -n "$filtered_only_active_release" ]; then
-              last_stable_release_by_tag="$filtered_only_active_release"
-              break
-            fi
-          done
-          
-          echo "last_stable_release_by_tag=$last_stable_release_by_tag" >> $GITHUB_OUTPUT          
+          echo "$result_next_last_tag"
+          echo "result_next_last_tag=$result_next_last_tag" >> $GITHUB_OUTPUT
+             
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       

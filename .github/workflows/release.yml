@@ -61,17 +61,7 @@ jobs:
           fallback: '${{ env.PREFIX_REPO }}-v0.0.0' # Optional fallback tag to use when no tag can be found
 
       - name: Get last tag Step
-        run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
-      
-      - name: Get last stable release
-        uses: cardinalby/git-get-release-action@v1
-        id: get_last_release_OLD
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
-          prerelease: false
-          doNotFailIfNotFound: true
+        run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"    
 
       - name: Get last stable release by TAG
         id: get_last_release
@@ -83,10 +73,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print last stable release TAG
-        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"
-      
-      - name: Print last stable release
-        run: echo "Get last tag OK ${{ steps.get_last_release_OLD.outputs.name }}"    
+        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"         
        
       - name: Get SemVer from release
         id: semver_release_step        

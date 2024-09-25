@@ -111,6 +111,8 @@ jobs:
         run: |
           result_next_last_tag="${{ env.PREFIX_REPO }}-v0.0.0"
           tags=$(git tag -l '${{ env.PREFIX_REPO }}-v*' --sort=-taggerdate | grep -E '^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$')
+          echo "-----------------"
+          echo "$tags"
           for tag in $tags; do
             echo "$tag"
             response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag" || true)
@@ -128,6 +130,7 @@ jobs:
           echo "result_next_last_tag=$result_next_last_tag" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
 
       - name: Get release API
         if: false

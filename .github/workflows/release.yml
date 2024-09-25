@@ -114,7 +114,7 @@ jobs:
 
           if [ -n "$tags" ]; then
             echo "entre al ig tags $tags"
-            filtered_tags=$(echo "$tags" | grep -E "^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$")
+            filtered_tags=$(printf "%s\n" "$tags" | grep -E "^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$")
             echo "mis filtros tags $filtered_tags"
             for tag in $filtered_tags; do
               echo "$tag"

@@ -73,32 +73,6 @@ jobs:
           prerelease: false
           doNotFailIfNotFound: true
 
-      - name: Generate 10 k release
-        if: false
-        run: |
-          control=0
-          for i in $(seq 1 10000); do
-            tag_name="version0.0.$i"
-            git tag "$tag_name"
-            
-            if [ "$control" -eq 500 ]; then
-              control=0
-              git push --tags
-            fi
-            control=$((control + 1))
-          done
-          
-          # Empujar los tags restantes
-          git push --tags
-      - name: Create 10 k release
-        if: false
-        run: |
-          for i in $(seq 1 10000); do
-            tag_name="version0.0.$i"
-            gh release create "$tag_name"
-          done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get last stable release by TAG
         id: get_last_release
         working-directory: ./.github/workflows/scripts
@@ -229,14 +203,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: cardinalby/git-get-release-action@v1
+      - name: Get last stable release by TAG
         id: get_last_release
+        working-directory: ./.github/workflows/scripts
+        run: |
+          chmod +x get_last_release_by_tag.sh
+          ./get_last_release_by_tag.sh ${{github.repository}} ${{ env.PREFIX_REPO }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
-          prerelease: false
-          doNotFailIfNotFound: true
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Print Last release
         run: |
           echo "Ultimo release: ${{ steps.get_last_release.outputs.name }}"

@@ -115,6 +115,7 @@ jobs:
             response=$(gh api -i -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag" || echo "No se encontro el recurso")
             status=$(echo "$response" | grep HTTP | awk '{print $2}')
             echo "HTTP status: $status"
+            echo "$response"
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

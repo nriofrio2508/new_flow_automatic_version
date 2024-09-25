@@ -112,7 +112,7 @@ jobs:
         run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"
       
       - name: Print last stable release
-        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    
+        run: echo "Get last tag OK ${{ steps.get_last_release_OLD.outputs.name }}"    
        
       - name: Get SemVer from release
         id: semver_release_step        

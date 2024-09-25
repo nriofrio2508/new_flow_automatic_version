@@ -113,7 +113,7 @@ jobs:
           for tag in $tags; do
             echo "$tag"
             response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag" || true)
-            echo "$response"
+            echo "$response" | jq .
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

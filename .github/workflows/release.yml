@@ -109,9 +109,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get last stable release by TAG
         run: |
-          last_stable_release_by_tag="${{ env.PREFIX_REPO }}-v0.0.0"
+          result_next_last_tag="${{ env.PREFIX_REPO }}-v0.0.0"
           tags=$(git tag -l '${{ env.PREFIX_REPO }}-v*' --sort=-taggerdate)
-
+          echo "$tags"
           if [ -n "$tags" ]; then
             filtered_tags=$(echo "$tags" | grep -E '^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$')
             echo "$filtered_tags"
@@ -131,7 +131,7 @@ jobs:
             
           fi
           
-          echo "$result_next_last_tag"
+          echo $result_next_last_tag
           echo "result_next_last_tag=$result_next_last_tag" >> $GITHUB_OUTPUT
              
         env:

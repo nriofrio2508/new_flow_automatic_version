@@ -114,7 +114,7 @@ jobs:
 
           if [ -n "$tags" ]; then
             echo "entre al ig tags $tags"
-            filtered_tags=$(echo "$tags" | grep -E "^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$")
+            filtered_tags=$(echo "$tags" | grep -E "^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$" || true)
             
             if [ -z "$filtered_tags"]; then
               echo "result_next_last_tag=$result_next_last_tag" >> $GITHUB_OUTPUT

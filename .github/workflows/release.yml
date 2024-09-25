@@ -65,21 +65,13 @@ jobs:
       
       - name: Get last stable release
         uses: cardinalby/git-get-release-action@v1
-        id: get_last_release
+        id: get_last_release_OLD
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
           prerelease: false
           doNotFailIfNotFound: true
-      - name: Get stable release GH
-        run: |
-          gh release list --limit 30 --exclude-pre-releases --json tagName --jq '.[] | select(.tagName | startswith("${{ env.PREFIX_REPO }}-v")) | .tagName' > releases.json
-          gh release list --json tagName  > all_releases.json
-          cat releases.json
-          cat all_releases.json
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate 10 k release
         if: false
@@ -108,7 +100,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get last stable release by TAG
-        id: get_last_release_by_tag
+        id: get_last_release
         working-directory: ./.github/workflows/scripts
         run: |
           chmod +x get_last_release_by_tag.sh
@@ -117,7 +109,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print last stable release TAG
-        run: echo "Get last tag OK ${{ steps.get_last_release_by_tag.outputs.name }}"
+        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"
       
       - name: Print last stable release
         run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    

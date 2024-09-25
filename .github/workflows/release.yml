@@ -111,7 +111,11 @@ jobs:
         run: |
           tags=$(git tag -l '${{ env.PREFIX_REPO }}-v*' --sort=-taggerdate | grep -E '^${{ env.PREFIX_REPO }}-v[0-9]+\.[0-9]+\.[0-9]+$')
           for tag in $tags; do
-            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag")
+            response=$(gh api -H "Accept: application/vnd.github.v3+json" "/repos/${{github.repository}}/releases/tags/$tag" || echo "404")
+            if [[ "$response" == "404" ]]; then
+              echo "Tag $tag not found, continuing to next tag."
+              continue
+            fi
             echo "$response" > tag.txt
             cat tag.txt
           done

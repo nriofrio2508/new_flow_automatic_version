@@ -123,9 +123,11 @@
             if [ -n "$exists_branch" ]; then
               latest_branch=$(git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/remotes/ | grep "^release/${{steps.get_next_release_version.outputs.new_release_version}}.rc" | head -n 1 || true)
               last_rc=$(echo "$latest_branch" | awk -F'-rc.' '{print $2}')
-              echo $last_rc
+              echo "salida=$last_rc" >> $GITHUB_OUTPUT
               
             fi
+        - name: 
+          run: "Salida ${{ steps.validate_exists_branch.outputs.salida }}"
             
   
     create_branch:

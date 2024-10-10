@@ -115,6 +115,11 @@
 
         - name: Print next release candidate
           run: echo ${{ steps.generate_tag_rc.outputs.new_rc_version }}
+        
+        - name: validate if branch exists
+          run: |
+            exists_branch=$(git branch -r | grep "release/${{ steps.generate_tag_rc.outputs.new_rc_version }}")
+            echo $exists_branch
   
     create_branch:
       needs: ['get_last_tag']

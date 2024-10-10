@@ -118,7 +118,7 @@
         
         - name: validate if branch exists
           run: |
-            exists_branch=$(git branch -r | grep "release/${{ steps.generate_tag_rc.outputs.new_rc_version }}")
+            exists_branch=$(git branch -r | grep "release/${{ steps.generate_tag_rc.outputs.new_rc_version }}" || true)
             
   
     create_branch:

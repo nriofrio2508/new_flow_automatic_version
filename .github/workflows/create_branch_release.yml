@@ -124,8 +124,7 @@
               latest_branch=$(git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/remotes/ | grep "^origin/elease/${{steps.get_next_release_version.outputs.new_release_version}}-rc." | head -n 1 || true)
               last_rc=$(echo "$latest_branch" | awk -F'-rc.' '{print $2}')
               echo "salida=$last_rc" >> $GITHUB_OUTPUT
-              ((last_rc++))
-              echo "new_rc_version_validate=${{ steps.generate_tag_rc.outputs.new_rc_version }}-rc.$last_rc" >> $GITHUB_OUTPUT
+              
             fi
         - name: 
           run: echo "Salida ${{ steps.validate_exists_branch.outputs.salida }}"

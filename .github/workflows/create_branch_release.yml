@@ -53,18 +53,17 @@
         - name: Get last tag Step
           run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"
         
-        - name: Get last stable release
-          uses: cardinalby/git-get-release-action@v1
+        - name: Get last stable release by TAG
           id: get_last_release
+          working-directory: ./.github/scripts
+          run: |
+            chmod +x get_last_release_by_tag.sh
+            ./get_last_release_by_tag.sh ${{github.repository}} ${{ env.PREFIX_REPO }}
           env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            releaseNameRegEx: "${{ env.PREFIX_REPO }}-v*"
-            prerelease: false
-            doNotFailIfNotFound: true
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
              
-        - name: Print last stable release
-          run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"    
+        - name: Print last stable release TAG
+          run: echo "Last release by TAG ${{ steps.get_last_release.outputs.name }}" 
         
         - name: Get SemVer from release
           id: semver_release_step        
@@ -123,16 +122,13 @@
             if [ -n "$exists_branch" ]; then
               latest_branch=$(git for-each-ref --sort=-refname --format='%(refname:short)' refs/remotes/ | grep "^origin/release/${{steps.get_next_release_version.outputs.new_release_version}}-rc." | head -n 1 || true)
               last_rc=$(echo "$latest_branch" | awk -F'-rc.' '{print $2}')
-              echo "last_rc=$last_rc" >> $GITHUB_OUTPUT
               ((last_rc++))
               echo "new_rc_version_validate=${{steps.get_next_release_version.outputs.new_release_version}}-rc.$last_rc" >> $GITHUB_OUTPUT
             fi
-        - name: 
+        - name: Result Validate Branch
           run: |
-            echo "Salida ${{ steps.validate_exists_branch.outputs.new_rc_version_validate }}"
-            echo "last_rc ${{ steps.validate_exists_branch.outputs.last_rc}}"
-            
-  
+            echo "Output ${{ steps.validate_exists_branch.outputs.new_rc_version_validate }}"
+
     create_branch:
       needs: ['get_last_tag']
       runs-on: ubuntu-latest

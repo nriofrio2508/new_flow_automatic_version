@@ -41,6 +41,8 @@
       outputs:
         next_rc_version: ${{  steps.validate_exists_branch.outputs.new_rc_version_validate || steps.generate_tag_rc.outputs.new_rc_version }}
       steps:
+        - name: Display Branch Name
+          run: echo "Current Branch: ${{ github.ref }}"
         - uses: actions/checkout@v3
           with:
             fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags

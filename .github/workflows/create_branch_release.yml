@@ -47,6 +47,10 @@
         - name: Display Branch Name
           run: |
             echo "Current branch: ${GITHUB_REF##*/}"
+        - name: Display Branch Name github.ref_name
+          run: |
+            echo "Current branch: ${{github.ref_name}}"
+          
           
         - uses: actions/checkout@v3
           with:

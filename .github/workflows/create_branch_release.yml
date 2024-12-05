@@ -26,6 +26,10 @@
             - patch
             - minor
             - major
+        deploy_stg:
+          type: boolean
+          description: 'Deploy in STG'
+          required: false
   
   run-name: Generate branch release [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.actor }}
   
@@ -146,6 +150,8 @@
     create_branch:
       needs: ['get_last_tag']
       runs-on: ubuntu-latest
+      outputs: 
+        release_branch_name: ${{ needs.get_last_tag.outputs.next_rc_version}}
       steps:
         - uses: peterjgrainger/action-create-branch@v3.0.0
           id: create_branch
@@ -162,6 +168,15 @@
           if: ${{ steps.create_branch.outputs.created == 'true' }}
           run: |
             echo "Branch generado:  release/${{ needs.get_last_tag.outputs.next_rc_version}}"
+    
+    deploy_stg:
+      if: ${{ inputs.deploy_stg }}
+      needs: ['create_branch']
+      runs-on: ubuntu-latest
+      steps:
+        - name: Call workflow New Release Flow Auto Version
+          run: |
+            gh workflow run release.yaml  -f domain=${{ inputs.domain }} -f subdomain=${{ inputs.subdomain }} -f destination=${{ inputs.destination }} -f version_type=${{ inputs.version_type }} --ref=${{ needs.create_branch.outputs.release_branch_name}}
             
           
         

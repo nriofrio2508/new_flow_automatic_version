@@ -151,7 +151,7 @@
       needs: ['get_last_tag']
       runs-on: ubuntu-latest
       outputs: 
-        release_branch_name: ${{ needs.get_last_tag.outputs.next_rc_version}}
+        release_branch_name: "release/${{ needs.get_last_tag.outputs.next_rc_version}}"
       steps:
         - uses: peterjgrainger/action-create-branch@v3.0.0
           id: create_branch

@@ -174,6 +174,10 @@
       needs: ['create_branch']
       runs-on: ubuntu-latest
       steps:
+        - uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+
         - name: Call workflow New Release Flow Auto Version
           run: |
             gh workflow run release.yaml  -f domain=${{ inputs.domain }} -f subdomain=${{ inputs.subdomain }} -f destination=${{ inputs.destination }} -f version_type=${{ inputs.version_type }} --ref=${{ needs.create_branch.outputs.release_branch_name}}

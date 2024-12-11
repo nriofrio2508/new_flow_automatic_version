@@ -59,7 +59,7 @@ jobs:
       
       - name: Nuevo
         run: |
-          cat ${{ toJSON(github.event.sender) }}
+          echo ${{ toJSON(github.event.sender) }} | jq
       
       - name: 'Get Previous tag'
         id: previoustag

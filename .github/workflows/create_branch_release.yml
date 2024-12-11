@@ -180,7 +180,7 @@
 
         - name: Call workflow New Release Flow Auto Version
           run: |
-            gh workflow run release.yml  -f domain=${{ inputs.domain }} -f subdomain=${{ inputs.subdomain }} -f destination=${{ inputs.destination }} -f version_type=${{ inputs.version_type }} --ref=${{ needs.create_branch.outputs.release_branch_name}}
+            gh workflow run release.yml  -f my_actor=${{ github.actor }} -f domain=${{ inputs.domain }} -f subdomain=${{ inputs.subdomain }} -f destination=${{ inputs.destination }} -f version_type=${{ inputs.version_type }} --ref=${{ needs.create_branch.outputs.release_branch_name}}
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             

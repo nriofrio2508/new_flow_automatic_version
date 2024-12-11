@@ -35,7 +35,7 @@ on:
         description: 'No usar'
 
 
-run-name:  ${{ inputs.actor }} ... Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.triggering_actor }}
+run-name:  Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
 
 env:
   PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'

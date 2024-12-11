@@ -30,8 +30,12 @@ on:
           - major
           - minor
           - patch
+      actor:
+        required: false
+        description: 'No usar'
 
-run-name:  ${{ github.actor }} ... Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.triggering_actor }}
+
+run-name:  ${{ github.actor  || github.actor }} ... Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.triggering_actor }}
 
 env:
   PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'

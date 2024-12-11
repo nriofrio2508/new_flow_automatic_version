@@ -30,6 +30,7 @@
           type: boolean
           description: 'Deploy in STG'
           required: false
+          
   
   run-name: Generate branch release [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.actor }}
   
@@ -183,6 +184,7 @@
             gh workflow run release.yml  -f my_actor=${{ github.actor }} -f domain=${{ inputs.domain }} -f subdomain=${{ inputs.subdomain }} -f destination=${{ inputs.destination }} -f version_type=${{ inputs.version_type }} --ref=${{ needs.create_branch.outputs.release_branch_name}}
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        my_actor: ${{ github.actor }} 
             
           
         

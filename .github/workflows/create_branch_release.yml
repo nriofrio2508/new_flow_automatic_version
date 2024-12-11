@@ -175,6 +175,9 @@
       needs: ['create_branch']
       runs-on: ubuntu-latest
       steps:
+
+        - name: JSON
+          run: echo ${{ toJSON(github.event) }}
         - uses: actions/checkout@v3
           with:
             fetch-depth: 0

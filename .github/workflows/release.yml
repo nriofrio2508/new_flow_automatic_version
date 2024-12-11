@@ -57,9 +57,9 @@ jobs:
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
       
-      - name:
+      - name: Nuevo
         run: |
-          echo ${{toJson(github.event) }}
+          echo ${{ toJSON(github.event) }}
       
       - name: 'Get Previous tag'
         id: previoustag

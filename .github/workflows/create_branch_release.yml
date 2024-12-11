@@ -177,7 +177,7 @@
       steps:
 
         - name: JSON
-          run: echo ${{ toJSON(github.event.sender) }}
+          run: cat ${{ toJSON(github.event.sender) }}
         - uses: actions/checkout@v3
           with:
             fetch-depth: 0

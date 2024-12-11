@@ -32,13 +32,14 @@ on:
           - patch
       actor:
         required: false
-        description: 'No usar'
+        description: 'Leave Empty'
 
 
 run-name:  Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
 
 env:
   PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'
+  USER_ACTOR:  ${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -150,8 +151,8 @@ jobs:
         run: |
           tag='${{ needs.get_last_tag.outputs.next_tag_repo }}'
           message='${{ needs.get_last_tag.outputs.next_tag_repo }}'
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name "${{ env.USER_ACTOR }}"
+          git config user.email "${{ env.USER_ACTOR }}@users.noreply.github.com"
           git tag -a "${tag}" -m "${message}"
           git push origin "${tag}"
           echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
@@ -175,7 +176,7 @@ jobs:
           tag_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
           release_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
           body: |
-            Actor: ${{ github.actor }}
+            Actor: ${{ env.USER_ACTOR }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             ${{ steps.build_changelog.outputs.changelog }}
 
@@ -219,8 +220,8 @@ jobs:
         run: |
           tag='${{ steps.get_name_new_release.outputs.new_name_release }}'
           message='${{ steps.get_name_new_release.outputs.new_name_release }}'
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config user.name "${{ env.USER_ACTOR }}"
+          git config user.email "${{ env.USER_ACTOR }}@users.noreply.github.com"
           git tag -a "${tag}" -m "${message}"
           git push origin "${tag}"
           echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
@@ -242,7 +243,7 @@ jobs:
           tag_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
           release_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
           body: |
-            Actor: ${{ github.actor }}
+            Actor: ${{ env.USER_ACTOR }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             ${{ steps.changelog_prd.outputs.changelog }}
 

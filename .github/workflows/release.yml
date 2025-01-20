@@ -60,7 +60,7 @@ jobs:
       
       - name: 'Get Previous tag'
         id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        uses: "WyriHaximus/github-action-get-previous-tag@04e8485ecb6487243907e330d522ff60f02283ce"
         with:
           prefix: '${{ env.PREFIX_REPO }}-v'
           fallback: '${{ env.PREFIX_REPO }}-v0.0.0' # Optional fallback tag to use when no tag can be found
@@ -161,7 +161,7 @@ jobs:
 
       - name: Build Changelog
         id: build_changelog
-        uses: metcalfc/changelog-generator@v4.3.1
+        uses: metcalfc/changelog-generator@d552ecf3366cf9d6da9fd7dbe425325d3d095aa8
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
           head-ref: ${{ needs.get_last_tag.outputs.next_tag_repo }}
@@ -228,7 +228,7 @@ jobs:
       
       - name: Build Changelog
         id: changelog_prd
-        uses: metcalfc/changelog-generator@v4.3.1
+        uses: metcalfc/d552ecf3366cf9d6da9fd7dbe425325d3d095aa8
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
           head-ref: ${{ steps.get_name_new_release.outputs.new_name_release}}

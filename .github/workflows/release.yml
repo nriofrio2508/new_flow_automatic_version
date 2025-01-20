@@ -228,7 +228,7 @@ jobs:
       
       - name: Build Changelog
         id: changelog_prd
-        uses: metcalfc/d552ecf3366cf9d6da9fd7dbe425325d3d095aa8
+        uses: metcalfc/changelog-generator@d552ecf3366cf9d6da9fd7dbe425325d3d095aa8
         with:
           myToken: ${{ secrets.GITHUB_TOKEN }}
           head-ref: ${{ steps.get_name_new_release.outputs.new_name_release}}

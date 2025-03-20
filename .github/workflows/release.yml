@@ -167,9 +167,9 @@ jobs:
           #head-ref: ${{ needs.get_last_tag.outputs.next_tag_repo }}
           #base-ref: ${{ needs.get_last_tag.outputs.last_stable_release }}
           #fetch: true
-        uses: mikepenz/release-changelog-builder-action@{latest-release}
+        uses: mikepenz/release-changelog-builder-action@9a903f73f4cccdc8241077da63578b3faba06403
         with:
-          ignorePreReleases: "false"
+          ignorePreReleases: "true"
           fromTag: ${{ needs.get_last_tag.outputs.last_stable_release }}
           toTag: ${{ needs.get_last_tag.outputs.next_tag_repo }}
           token: ${{ secrets.GITHUB_TOKEN }}

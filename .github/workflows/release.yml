@@ -161,13 +161,19 @@ jobs:
 
       - name: Build Changelog
         id: build_changelog
-        uses: metcalfc/changelog-generator@d552ecf3366cf9d6da9fd7dbe425325d3d095aa8
+        #uses: metcalfc/changelog-generator@d552ecf3366cf9d6da9fd7dbe425325d3d095aa8
+        #with:
+          #myToken: ${{ secrets.GITHUB_TOKEN }}
+          #head-ref: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+          #base-ref: ${{ needs.get_last_tag.outputs.last_stable_release }}
+          #fetch: true
+        uses: mikepenz/release-changelog-builder-action@{latest-release}
         with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          head-ref: ${{ needs.get_last_tag.outputs.next_tag_repo }}
-          base-ref: ${{ needs.get_last_tag.outputs.last_stable_release }}
-          fetch: true
-      - name: Create PreRelease
+          ignorePreReleases: "false"
+          fromTag: ${{ needs.get_last_tag.outputs.last_stable_release }}
+          toTag: ${{ needs.get_last_tag.outputs.next_tag_repo }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PreRelease        
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

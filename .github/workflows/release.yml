@@ -161,18 +161,13 @@ jobs:
 
       - name: Build Changelog
         id: build_changelog
-        #uses: metcalfc/changelog-generator@d552ecf3366cf9d6da9fd7dbe425325d3d095aa8
-        #with:
-          #myToken: ${{ secrets.GITHUB_TOKEN }}
-          #head-ref: ${{ needs.get_last_tag.outputs.next_tag_repo }}
-          #base-ref: ${{ needs.get_last_tag.outputs.last_stable_release }}
-          #fetch: true
-        uses: mikepenz/release-changelog-builder-action@9a903f73f4cccdc8241077da63578b3faba06403
-        with:
-          ignorePreReleases: "true"
-          fromTag: ${{ needs.get_last_tag.outputs.last_stable_release }}
-          toTag: ${{ needs.get_last_tag.outputs.next_tag_repo }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          chmod +x get_changelog.sh
+          {
+            echo 'changelog<<EOF'
+            ./get_changelog.sh ${{ needs.get_last_tag.outputs.last_stable_release }} ${{ needs.get_last_tag.outputs.next_tag_repo }} ${{github.repository}} false true ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}
+          } >> "GITHUB_OUTPUT"
+
       - name: Create PreRelease        
         uses: actions/create-release@v1
         env:
@@ -234,12 +229,12 @@ jobs:
       
       - name: Build Changelog
         id: changelog_prd
-        uses: metcalfc/changelog-generator@d552ecf3366cf9d6da9fd7dbe425325d3d095aa8
-        with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          head-ref: ${{ steps.get_name_new_release.outputs.new_name_release}}
-          base-ref: ${{ steps.get_last_release.outputs.name || ''}} 
-          fetch: true
+        run: |
+          chmod +x get_changelog.sh
+          {
+            echo 'changelog<<EOF'
+            ./get_changelog.sh ${{ steps.get_name_new_release.outputs.new_name_release}} ${{ steps.get_last_release.outputs.name || ''}} ${{github.repository}} false true ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}
+          } >> "GITHUB_OUTPUT"
 
       - name: Create Release
         uses: actions/create-release@v1

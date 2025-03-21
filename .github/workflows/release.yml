@@ -161,11 +161,12 @@ jobs:
 
       - name: Build Changelog
         id: build_changelog
+        working-directory: ./.github/scripts
         run: |
           chmod +x get_changelog.sh
           {
             echo 'changelog<<EOF'
-            ./get_changelog.sh ${{ needs.get_last_tag.outputs.last_stable_release }} ${{ needs.get_last_tag.outputs.next_tag_repo }} ${{github.repository}} false true ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}
+            ./get_changelog.sh ${{ needs.get_last_tag.outputs.last_stable_release || '' }} ${{ needs.get_last_tag.outputs.next_tag_repo }} ${{github.repository}} false true ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}
           } >> "GITHUB_OUTPUT"
 
       - name: Create PreRelease        
@@ -227,8 +228,9 @@ jobs:
           git push origin "${tag}"
           echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
       
-      - name: Build Changelog
+      - name: Build Changelog        
         id: changelog_prd
+        working-directory: ./.github/scripts
         run: |
           chmod +x get_changelog.sh
           {

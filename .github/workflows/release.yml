@@ -236,7 +236,7 @@ jobs:
           chmod +x get_changelog.sh
           {
             echo 'changelog<<EOF'
-            ./get_changelog.sh "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" ${{ steps.get_last_release.outputs.name || ''}} ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
+            ./get_changelog.sh "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" "${{ steps.get_last_release.outputs.name || ''}}" ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
              echo EOF
           } >> "GITHUB_OUTPUT"
 

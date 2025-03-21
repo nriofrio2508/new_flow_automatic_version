@@ -161,6 +161,7 @@ jobs:
 
       - name: Build Changelog
         id: build_changelog
+        working-directory: ./.github/scripts
         run: |
           chmod +x get_changelog.sh
           {
@@ -227,8 +228,9 @@ jobs:
           git push origin "${tag}"
           echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
       
-      - name: Build Changelog
+      - name: Build Changelog        
         id: changelog_prd
+        working-directory: ./.github/scripts
         run: |
           chmod +x get_changelog.sh
           {

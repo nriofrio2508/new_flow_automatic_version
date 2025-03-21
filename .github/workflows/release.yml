@@ -166,11 +166,7 @@ jobs:
         working-directory: ./.github/scripts
         run: |
           chmod +x get_changelog.sh
-          {
-            echo 'changelog<<EOF'
-            ./get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
-             echo EOF
-          } >> "GITHUB_OUTPUT"
+          ./get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
 
       - name: Create PreRelease        
         uses: actions/create-release@v1
@@ -236,11 +232,7 @@ jobs:
         working-directory: ./.github/scripts
         run: |
           chmod +x get_changelog.sh
-          {
-            echo 'changelog<<EOF'
-            ./get_changelog.sh "${{ steps.get_last_release.outputs.name || ''}}" "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
-             echo EOF
-          } >> "GITHUB_OUTPUT"
+          ./get_changelog.sh "${{ steps.get_last_release.outputs.name || ''}}" "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
 
       - name: Create Release
         uses: actions/create-release@v1

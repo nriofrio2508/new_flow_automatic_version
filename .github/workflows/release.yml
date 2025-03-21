@@ -166,7 +166,7 @@ jobs:
           chmod +x get_changelog.sh
           {
             echo 'changelog<<EOF'
-            ./get_changelog.sh ${{ needs.get_last_tag.outputs.last_stable_release }} ${{ needs.get_last_tag.outputs.next_tag_repo }} ${{github.repository}} false true ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}
+            ./get_changelog.sh ${{ needs.get_last_tag.outputs.last_stable_release || "" }} ${{ needs.get_last_tag.outputs.next_tag_repo }} ${{github.repository}} false true ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}
           } >> "GITHUB_OUTPUT"
 
       - name: Create PreRelease        

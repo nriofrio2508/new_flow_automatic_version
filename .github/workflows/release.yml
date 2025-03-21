@@ -169,7 +169,7 @@ jobs:
           chmod +x get_changelog.sh
           {
             echo 'changelog<<EOF'
-            ./get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true "$path_filer"
+            ./get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true 
             echo EOF
           } >> "$GITHUB_OUTPUT"
           

@@ -160,7 +160,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: simple git
         run: |
-          git log "${{ needs.get_last_tag.outputs.last_stable_release || '' }}"..."${{ needs.get_last_tag.outputs.next_tag_repo }}" --pretty=format:"- [%h](http://github.com/${{github.repository}}/commit/%H) - %s"
+          git log "${{ needs.get_last_tag.outputs.last_stable_release || '' }}"..."${{ needs.get_last_tag.outputs.next_tag_repo }}" --pretty=format:"- [%h](http://github.com/${{github.repository}}/commit/%H) - %s "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
       - name: Build Changelog
         id: build_changelog
         working-directory: ./.github/scripts

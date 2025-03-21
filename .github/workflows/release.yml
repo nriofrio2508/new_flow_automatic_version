@@ -163,11 +163,12 @@ jobs:
           git log "${{ needs.get_last_tag.outputs.last_stable_release || '' }}"..."${{ needs.get_last_tag.outputs.next_tag_repo }}" --pretty=format:"- [%h](http://github.com/${{github.repository}}/commit/%H) - %s"
       - name: Build Changelog
         id: build_changelog
+        working-directory: ./.github/scripts
         run: |
           chmod +x get_changelog.sh
           {
             echo 'changelog<<EOF'
-            ./scripts_workflow/.github/scripts/get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
+            ./get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
             echo EOF
           } >> "$GITHUB_OUTPUT"
           

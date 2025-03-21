@@ -36,7 +36,7 @@ fi
 # and thats not a valid arg.
 log=$(git log "${base_ref}"..."${head_ref}" \
   --pretty=format:"- [%h](http://github.com/${repo_url}/commit/%H) - %s" \
-  ${extra_flags} -- dominio1/mi_subdominio/path3 )
+  ${extra_flags} -- dominio1/mi_subdominio/path3)
 
 if [ -z "$log" ];
 then

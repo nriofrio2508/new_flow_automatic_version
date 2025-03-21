@@ -13,10 +13,6 @@ fi
 fetch=$5
 path_filter=${6:-""}
 
-if [ -n "$path_filter"];
-then
-  path_filter='-- $path_filter'
-fi
 
 # By default a GitHub action checkout is shallow. Get all the tags, branches,
 # and history. Redirect output to standard error which we can collect in the

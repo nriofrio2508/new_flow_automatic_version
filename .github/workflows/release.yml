@@ -165,11 +165,11 @@ jobs:
         id: build_changelog
         working-directory: ./.github/scripts
         run: |
-          extra_command= "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
+          path_filer= "${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
           chmod +x get_changelog.sh
           {
             echo 'changelog<<EOF'
-            ./get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true "$extra_command"
+            ./get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true "$path_filer"
             echo EOF
           } >> "$GITHUB_OUTPUT"
           

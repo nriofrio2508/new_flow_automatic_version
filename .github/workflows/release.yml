@@ -237,8 +237,12 @@ jobs:
         working-directory: ./.github/scripts
         run: |
           chmod +x get_changelog.sh
-          ./get_changelog.sh "${{ steps.get_last_release.outputs.name || ''}}" "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
-
+          {
+            echo 'changelog<<EOF'
+            ./get_changelog.sh "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" "${{ steps.get_last_release.outputs.name || ''}}" ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+          
       - name: Create Release
         uses: actions/create-release@v1
         env:

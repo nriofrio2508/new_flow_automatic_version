@@ -41,5 +41,4 @@ if [ -z "$log" ];
 then
   log="No Changes."
 fi
-
-echo "$log"
+echo "changelog=$log" >> $GITHUB_OUTPUT

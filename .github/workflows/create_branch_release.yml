@@ -9,6 +9,8 @@
           required: true
           type: choice
           options:
+            - dominio1
+            - dominio2
             - technology
         subdomain:
           description: 'Subdomain'

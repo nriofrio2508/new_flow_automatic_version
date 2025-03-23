@@ -159,6 +159,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: simple git
+        working-directory: ./.github/scripts
         run: |
           git log "dominio1-mi_subdominio-path3-v0.0.7"..."dominio1-mi_subdominio-path3-v0.0.8-rc.34" --pretty=format:"- [%h](http://github.com/nriofrio2508/new_flow_automatic_version/commit/%H) - %s"  --reverse -- dominio1/mi_subdominio/path3
       - name: Build Changelog

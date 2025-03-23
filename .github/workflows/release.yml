@@ -162,7 +162,7 @@ jobs:
         id: build_changelog
         run: |
           
-          chmod +x /.github/scripts/get_changelog.sh
+          chmod +x ./.github/scripts/get_changelog.sh
           {
             echo 'changelog<<EOF'
             ./.github/scripts/get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"            

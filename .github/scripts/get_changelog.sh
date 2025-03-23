@@ -13,7 +13,7 @@ fi
 fetch=$5
 path_filter=${6:-""}
 
-log_2=$(git log "${base_ref}"..."${head_ref}" --pretty=format: --name-only  -- dominio1/mi_subdominio/path3/local.txt)
+log_2=$(git log "dominio1-mi_subdominio-path3-v0.0.7"..."dominio1-mi_subdominio-path3-v0.0.8-rc.34" --pretty=format:"- [%h](http://github.com/nriofrio2508/new_flow_automatic_version/commit/%H) - %s"  --reverse -- dominio1/mi_subdominio/path3)
 
 # By default a GitHub action checkout is shallow. Get all the tags, branches,
 # and history. Redirect output to standard error which we can collect in the

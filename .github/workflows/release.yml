@@ -160,7 +160,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: simple git
         run: |
-          git log "${{ needs.get_last_tag.outputs.last_stable_release || '' }}"..."${{ needs.get_last_tag.outputs.next_tag_repo }}" --pretty=format:"- [%h](http://github.com/${{github.repository}}/commit/%H) - %s"  --reverse -- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}
+          git log "dominio1-mi_subdominio-path3-v0.0.7"..."dominio1-mi_subdominio-path3-v0.0.8-rc.34" --pretty=format:"- [%h](http://github.com/nriofrio2508/new_flow_automatic_version/commit/%H) - %s"  --reverse -- dominio1/mi_subdominio/path3
       - name: Build Changelog
         id: build_changelog
         working-directory: ./.github/scripts

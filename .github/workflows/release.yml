@@ -160,8 +160,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Changelog
         id: build_changelog
-        run: |
-          
+        run: |          
           chmod +x ./.github/scripts/get_changelog.sh
           {
             echo 'changelog<<EOF'
@@ -231,12 +230,11 @@ jobs:
       
       - name: Build Changelog        
         id: changelog_prd
-        working-directory: ./.github/scripts
         run: |
-          chmod +x get_changelog.sh
+          chmod +x ./.github/scripts/get_changelog.sh
           {
             echo 'changelog<<EOF'
-            ./get_changelog.sh "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" "${{ steps.get_last_release.outputs.name || ''}}" ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
+            ./.github/scripts/get_changelog.sh "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" "${{ steps.get_last_release.outputs.name || ''}}" ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
             echo EOF
           } >> "$GITHUB_OUTPUT"
           

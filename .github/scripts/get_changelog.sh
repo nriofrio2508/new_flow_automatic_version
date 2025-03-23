@@ -13,7 +13,7 @@ fi
 fetch=$5
 path_filter=${6:-""}
 
-log_2=$(git log "${base_ref}"..."${head_ref}" --pretty=format: --name-only  -- dominio1/mi_subdominio/path3)
+log_2=$(git log "${base_ref}"..."${head_ref}" --pretty=format: --name-only  -- dominio1/mi_subdominio/path3/)
 
 # By default a GitHub action checkout is shallow. Get all the tags, branches,
 # and history. Redirect output to standard error which we can collect in the

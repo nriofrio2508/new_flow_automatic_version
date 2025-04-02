@@ -60,7 +60,7 @@ jobs:
 
       - name: Get 3th level
         run:
-          find . -mindepth 1 -maxdepth 3 -type d
+          find . -mindepth 3 -maxdepth 3 -type d
       
       - name: 'Get Previous tag'
         id: previoustag

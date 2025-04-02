@@ -1,0 +1,265 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy Multi release
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain'
+        required: true
+        type: choice
+        options:
+          - dominio1
+          - dominio2
+          - technology
+      subdomain:
+        description: 'Subdomain'
+        required: true
+        type: string
+      destination:
+        description: 'Destination'
+        required: true
+        type: string
+      version_type:
+        description: 'Version Type'
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+      actor:
+        required: false
+        description: 'Leave Empty'
+
+
+run-name:  Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
+
+env:
+  PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'
+  USER_ACTOR:  ${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  get_last_tag:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment:
+      name: stg-multi
+
+    outputs:
+      last_tag_repo: ${{steps.previoustag.outputs.tag}}
+      next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
+      last_stable_release: ${{ steps.get_last_release.outputs.name || '' }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+
+      - name: Get 3th level
+        run:
+          pwd
+      
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@04e8485ecb6487243907e330d522ff60f02283ce"
+        with:
+          prefix: '${{ env.PREFIX_REPO }}-v'
+          fallback: '${{ env.PREFIX_REPO }}-v0.0.0' # Optional fallback tag to use when no tag can be found
+
+      - name: Get last tag Step
+        run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"    
+
+      - name: Get last stable release by TAG
+        id: get_last_release
+        working-directory: ./.github/scripts
+        run: |
+          chmod +x get_last_release_by_tag.sh
+          ./get_last_release_by_tag.sh ${{github.repository}} ${{ env.PREFIX_REPO }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Print last stable release TAG
+        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"
+      - name: Print PATH
+        run: ls    
+       
+      - name: Get SemVer from release
+        id: semver_release_step        
+        run: |
+          version_number="0.0.0"
+          echo "Last Release ${{ steps.get_last_release.outputs.name }}"  
+          if [ ${{ steps.get_last_release.outputs.name }} ]; then
+            version_number=$(echo ${{ steps.get_last_release.outputs.name}} | awk -F'-v' '{print $2}')          
+          fi
+          echo "semver_release=$version_number" >> $GITHUB_OUTPUT
+      
+      - name: 'Get all next version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93"
+        with:
+          version: ${{ steps.semver_release_step.outputs.semver_release }}
+
+      - name: Get next release version
+        id: get_next_release_version
+        run: |
+          case "${{inputs.version_type}}" in
+              major)
+                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
+                  ;;
+              minor)
+                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT
+                  ;;
+              patch)
+                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT
+                  ;;
+              *)
+                  echo "$parametro no es major, minor, ni patch"
+                  ;;
+          esac
+          echo new_release_version
+      
+      - name: Diff between next release and last tag semver
+        id: generate_tag_rc
+        run: |
+          last_tag_semver=$(echo "${{ steps.previoustag.outputs.tag}}" | awk -F'-rc.' '{print $1}')
+          rc=1
+          if [ "$last_tag_semver" = "${{steps.get_next_release_version.outputs.new_release_version}}" ]; then
+            rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
+            ((rc++))
+          fi
+
+          new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
+          echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
+      
+
+  validate_deploy:
+    runs-on: ubuntu-latest
+    if: false
+    needs: get_last_tag
+    steps:
+      - name: Hello
+        run: echo "deploy ok"
+
+  generate_pre_release:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: [validate_deploy, get_last_tag] 
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Push new Tag ReleaseCandidate
+        id: tag_release_candidate
+        run: |
+          tag='${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          message='${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          git config user.name "${{ env.USER_ACTOR }}"
+          git config user.email "${{ env.USER_ACTOR }}@users.noreply.github.com"
+          git tag -a "${tag}" -m "${message}"
+          git push origin "${tag}"
+          echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Changelog
+        id: build_changelog
+        working-directory: ./.github/scripts
+        run: |
+          chmod +x get_changelog.sh
+          {
+            echo 'changelog<<EOF'
+            ./get_changelog.sh "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" "${{ needs.get_last_tag.outputs.next_tag_repo }}" ${{github.repository}} false true "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
+             echo EOF
+          } >> "GITHUB_OUTPUT"
+
+      - name: Create PreRelease        
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prerelease: true
+          tag_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          release_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          body: |
+            Actor: ${{ env.USER_ACTOR }}
+            ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ${{ steps.build_changelog.outputs.changelog }}
+
+  promote_prd:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: generate_pre_release
+    environment: promote_prd
+    steps:
+      - name: Promote prd step
+        run: echo "waiting approve"
+
+  generate_release:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    needs: [promote_prd,get_last_tag]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Get last stable release by TAG
+        id: get_last_release
+        working-directory: ./.github/scripts
+        run: |
+          chmod +x get_last_release_by_tag.sh
+          ./get_last_release_by_tag.sh ${{github.repository}} ${{ env.PREFIX_REPO }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Print last stable release TAG
+        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"
+
+      - name: Get name new Release
+        id: get_name_new_release
+        run: |
+          new_release=$(echo ${{ needs.get_last_tag.outputs.next_tag_repo }} | awk -F '-rc.' '{print $1}' )
+          echo "new_name_release=$new_release" >> $GITHUB_OUTPUT
+      
+      - name: Push new Tag ReleaseCandidate
+        id: tag_release_candidate
+        run: |
+          tag='${{ steps.get_name_new_release.outputs.new_name_release }}'
+          message='${{ steps.get_name_new_release.outputs.new_name_release }}'
+          git config user.name "${{ env.USER_ACTOR }}"
+          git config user.email "${{ env.USER_ACTOR }}@users.noreply.github.com"
+          git tag -a "${tag}" -m "${message}"
+          git push origin "${tag}"
+          echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
+      
+      - name: Build Changelog        
+        id: changelog_prd
+        working-directory: ./.github/scripts
+        run: |
+          chmod +x get_changelog.sh
+          {
+            echo 'changelog<<EOF'
+            ./get_changelog.sh ${{ steps.get_name_new_release.outputs.new_name_release}} ${{ steps.get_last_release.outputs.name || ''}} ${{github.repository}} false true ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}
+          } >> "GITHUB_OUTPUT"
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
+          release_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
+          body: |
+            Actor: ${{ env.USER_ACTOR }}
+            ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ${{ steps.changelog_prd.outputs.changelog }}
+
+  validate_deploy_prd:
+    # The type of runner that the job will run on COMENTARIOS PARA 5
+    runs-on: ubuntu-latest
+    needs: generate_release
+    steps:
+      - name: Validate deploy prd
+        run: echo "validate deploy PRD OK"

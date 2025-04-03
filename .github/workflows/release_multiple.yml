@@ -56,6 +56,7 @@ jobs:
           BLACKLIST=("demo" "dominio1")
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*")
+          DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
           JOBS="jobs=[${DIRECTORIES// /,}]"
           echo "$JOBS" >> "$GITHUB_OUTPUT"
       

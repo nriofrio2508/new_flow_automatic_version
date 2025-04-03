@@ -63,6 +63,9 @@ jobs:
           JOBS="jobs=[${DIRECTORIES_WITH//$'\n'/,}]"
           echo "$JOBS" >> "$GITHUB_OUTPUT"
           echo "$JOBS"
+      - name: print
+        run: |
+          echo ${{ steps.generate_matrix.outputs.jobs}}
       
     
   get_last_tag:

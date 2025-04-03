@@ -57,12 +57,12 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-
+      #find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
       - name: Get 3th level
         run: |
-          BLACKLIST=(".git")
+          BLACKLIST=("demo" "dominio1")
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
-          find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
+          find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*"
         
       
       - name: 'Get Previous tag'

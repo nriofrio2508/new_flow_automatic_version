@@ -61,8 +61,7 @@ jobs:
       - name: Get 3th level
         run: |
           find . -mindepth 3 -maxdepth 3 -type d
-          echo "${{github}}" > data.json
-          cat data.json
+          echo ${{ toJSON(github)}}
       
       - name: 'Get Previous tag'
         id: previoustag

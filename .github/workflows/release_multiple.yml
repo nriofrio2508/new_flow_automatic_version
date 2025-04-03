@@ -62,6 +62,7 @@ jobs:
           DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
           JOBS="jobs=[${DIRECTORIES_WITH//$'\n'/,}]"
           echo "$JOBS" >> "$GITHUB_OUTPUT"
+          echo""$JOBS"
       
     
   get_last_tag:

@@ -91,8 +91,8 @@ jobs:
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@04e8485ecb6487243907e330d522ff60f02283ce"
         with:
-          prefix: '${{ env.PREFIX_REPO }}-v'
-          fallback: '${{ env.PREFIX_REPO }}-v0.0.0' # Optional fallback tag to use when no tag can be found
+          prefix: '${{ matrix.dominio }}-v'
+          fallback: '${{ matrix.dominio }}-v0.0.0' # Optional fallback tag to use when no tag can be found
 
       - name: Get last tag Step
         run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"    
@@ -102,7 +102,7 @@ jobs:
         working-directory: ./.github/scripts
         run: |
           chmod +x get_last_release_by_tag.sh
-          ./get_last_release_by_tag.sh ${{github.repository}} ${{ env.PREFIX_REPO }}
+          ./get_last_release_by_tag.sh ${{github.repository}} ${{ matrix.dominio }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -132,13 +132,13 @@ jobs:
         run: |
           case "${{inputs.version_type}}" in
               major)
-                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
+                  echo "new_release_version=${{ matrix.dominio }}-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
                   ;;
               minor)
-                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT
+                  echo "new_release_version=${{ matrix.dominio }}-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT
                   ;;
               patch)
-                  echo "new_release_version=${{ env.PREFIX_REPO }}-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT
+                  echo "new_release_version=${{ matrix.dominio }}-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT
                   ;;
               *)
                   echo "$parametro no es major, minor, ni patch"

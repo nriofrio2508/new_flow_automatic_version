@@ -60,7 +60,7 @@ jobs:
 
       - name: Get 3th level
         run: |
-          BLACKLIST=("dominio1" "dominio2" "technology")
+          BLACKLIST=(".git")
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
         

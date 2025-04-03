@@ -48,7 +48,9 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: stg-multi
-
+    strategy:
+      matrix:
+        dominio: [dominio1, dominio2]
     outputs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
       next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
@@ -60,6 +62,7 @@ jobs:
       #find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
       - name: Get 3th level
         run: |
+          echo ${{matrix.dominio}}
           BLACKLIST=("demo" "dominio1")
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*"

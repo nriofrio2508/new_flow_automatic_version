@@ -60,11 +60,10 @@ jobs:
 
       - name: Get 3th level
         run: |
-          BLACKLIST = ("dominio1" "dominio2" "technology")
+          BLACKLIST=("dominio1" "dominio2" "technology")
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})$"
-          echo "${{ toJSON(github)}}" >data.json
-          cat data.json
+        
       
       - name: 'Get Previous tag'
         id: previoustag

@@ -62,7 +62,6 @@ jobs:
           DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
           JOBS="jobs=[$(echo "$DIRECTORIES_WITH" | sed 's/^/"/;s/$/"/' | tr '\n' ',')]"
           echo "$JOBS" >> "$GITHUB_OUTPUT"
-          echo "$JOBS"
       #DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
       - name: print
         run: |
@@ -72,7 +71,6 @@ jobs:
   get_last_tag:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    if: false
     needs: get_dynamic_jobs
     environment:
       name: stg-multi

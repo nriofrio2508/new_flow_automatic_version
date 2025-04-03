@@ -49,14 +49,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-      - name: 'get dynamic jobs'
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+      #find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
+      - name: Get 3th level
         run: |
           BLACKLIST=("demo" "dominio1")
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
-          DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*")
-          JOBS="jobs=[${DIRECTORIES// /,}]"
-          echo '$JOBS' >> "$GITHUB_OUTPUT"
+          find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*"
       
     
   get_last_tag:

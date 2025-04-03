@@ -43,6 +43,19 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
+
+  get_dynamic_jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'get dynamic jobs'
+        run: |
+          BLACKLIST=("demo" "dominio1")
+          BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
+          DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*")
+          JOBS="jobs=[${DIRECTORIES// /,}]"
+          echo '$JOBS' >> "$GITHUB_OUTPUT"
+      
+    
   get_last_tag:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -50,7 +63,7 @@ jobs:
       name: stg-multi
     strategy:
       matrix:
-        dominio: [dominio1, dominio2]
+        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
     outputs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
       next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
@@ -60,14 +73,7 @@ jobs:
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
       #find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
-      - name: Get 3th level
-        run: |
-          echo ${{matrix.dominio}}
-          BLACKLIST=("demo" "dominio1")
-          BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
-          find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*"
-        
-      
+
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@04e8485ecb6487243907e330d522ff60f02283ce"

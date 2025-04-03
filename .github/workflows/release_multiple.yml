@@ -47,12 +47,17 @@ jobs:
   get_dynamic_jobs:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: 'get dynamic jobs'
         run: |
           BLACKLIST=("demo" "dominio1")
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
-          find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*"
-
+          DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*")
+          JOBS="jobs=[${DIRECTORIES// /,}]"
+          echo '$JOBS' >> "$GITHUB_OUTPUT"
+      
     
   get_last_tag:
     # The type of runner that the job will run on

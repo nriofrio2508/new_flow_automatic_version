@@ -58,11 +58,12 @@ jobs:
         run: |
           BLACKLIST=("demo" "dominio1")
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
-          DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*")
+          DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*")      
           DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
-          JOBS="jobs=[${DIRECTORIES_WITH//$'\n'/,}]"
+          JOBS="jobs=[$(echo "$DIRECTORIES_WITH" | sed 's/^/"/;s/$/"/' | tr '\n' ',')]"
           echo "$JOBS" >> "$GITHUB_OUTPUT"
           echo "$JOBS"
+      #DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
       - name: print
         run: |
           echo ${{ steps.generate_matrix.outputs.jobs}}

@@ -57,7 +57,7 @@ jobs:
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*")
           JOBS="jobs=[${DIRECTORIES// /,}]"
-          echo '$JOBS' >> "$GITHUB_OUTPUT"
+          echo "$JOBS" >> "$GITHUB_OUTPUT"
       
     
   get_last_tag:

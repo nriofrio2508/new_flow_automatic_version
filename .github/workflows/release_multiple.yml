@@ -81,7 +81,7 @@ jobs:
       last_tag_repo: ${{steps.previoustag.outputs.tag}}
       next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
       last_stable_release: ${{ steps.get_last_release.outputs.name || '' }}
-      matrix: ${{ matrix }}
+      matrix: ${{ toJson(matrix)}}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -166,6 +166,8 @@ jobs:
     steps:
       - name: Hello
         run: echo "deploy ok"
+      - name: print
+        run: echo ${{ needs.get_last_tag.outputs.matrix}}
 
   generate_pre_release:
     # The type of runner that the job will run on
@@ -178,7 +180,7 @@ jobs:
       - name: print next tag
         run: |
           echo " ${{ needs.get_last_tag.outputs.matrix}}"
-     
+
 
   promote_prd:
     # The type of runner that the job will run on

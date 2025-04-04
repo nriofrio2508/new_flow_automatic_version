@@ -185,7 +185,6 @@ jobs:
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
     needs: [validate_deploy, get_last_tag,get_dynamic_jobs] 
-    if: false    
     steps:
       - uses: actions/checkout@v4
         with:

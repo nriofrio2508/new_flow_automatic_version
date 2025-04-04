@@ -167,15 +167,27 @@ jobs:
         with:
           name: ${{ matrix.dominio }}
           path: "${{ matrix.dominio }}.json"
+          retention-days: 1
       
   validate_deploy:
     runs-on: ubuntu-latest
-    needs: get_last_tag
+    strategy:
+      matrix:
+        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
+    needs: [get_last_tag,get_dynamic_jobs]
     steps:
       - name: Hello
         run: echo "deploy ok"
       - name: print matrix
         run: echo ${{ toJson(needs.get_last_tag.outputs.matrix)}}
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
+        with:
+          name: ${{ matrix.dominio }}
+      - name: Cat dominio
+        run: |
+          cat "${{ matrix.dominio }}.json"
 
   generate_pre_release:
     # The type of runner that the job will run on

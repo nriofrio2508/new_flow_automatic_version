@@ -162,6 +162,11 @@ jobs:
       - name: Generate JSON
         run: |
           echo '{"last_tag_repo": "${{steps.previoustag.outputs.tag}}" , "next_tag_repo": "${{ steps.generate_tag_rc.outputs.new_rc_version }}", "last_stable_release": "${{ steps.get_last_release.outputs.name }}" }'> "${{ matrix.dominio }}.json"
+      - name: Upload pre release  
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: ${{ matrix.dominio }}
+          path: "${{ matrix.dominio }}.json"
       
   validate_deploy:
     runs-on: ubuntu-latest

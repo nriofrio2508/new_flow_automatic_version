@@ -82,7 +82,6 @@ jobs:
       next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
       last_stable_release: ${{ steps.get_last_release.outputs.name || '' }}
       matrix: ${{ toJson(matrix)}}
-      "${{ matrix.domain }}-value" : ""
     steps:
       - uses: actions/checkout@v3
         with:
@@ -160,6 +159,9 @@ jobs:
 
           new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
           echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
+      - name: Generate JSON
+        run: |
+          echo '{"last_tag_repo": "${{steps.previoustag.outputs.tag}}" , "next_tag_repo": "${{ steps.generate_tag_rc.outputs.new_rc_version }}", "last_stable_release": "${{ steps.get_last_release.outputs.name }}" }'> "${{ matrix.dominio }}.json"
       
   validate_deploy:
     runs-on: ubuntu-latest
@@ -167,7 +169,7 @@ jobs:
     steps:
       - name: Hello
         run: echo "deploy ok"
-      - name: print
+      - name: print matrix
         run: echo ${{ toJson(needs.get_last_tag.outputs.matrix)}}
 
   generate_pre_release:

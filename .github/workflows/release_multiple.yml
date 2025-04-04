@@ -167,12 +167,13 @@ jobs:
       - name: Hello
         run: echo "deploy ok"
       - name: print
-        run: echo ${{ needs.get_last_tag.outputs.matrix}}
+        run: echo ${{ toJson(needs.get_last_tag.outputs.matrix)}}
 
   generate_pre_release:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     needs: [validate_deploy, get_last_tag] 
+    if: false    
     steps:
       - uses: actions/checkout@v4
         with:
@@ -180,7 +181,42 @@ jobs:
       - name: print next tag
         run: |
           echo " ${{ needs.get_last_tag.outputs.matrix}}"
+      - name: Push new Tag ReleaseCandidate
+        id: tag_release_candidate
+        run: |
+          tag='${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          message='${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          git config user.name "${{ env.USER_ACTOR }}"
+          git config user.email "${{ env.USER_ACTOR }}@users.noreply.github.com"
+          git tag -a "${tag}" -m "${message}"
+          git push origin "${tag}"
+          echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build Changelog
+        id: build_changelog
+        working-directory: ./.github/scripts
+        run: |
+          chmod +x get_changelog.sh
+          {
+            echo 'changelog<<EOF'
+            ./get_changelog.sh "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" "${{ needs.get_last_tag.outputs.next_tag_repo }}" ${{github.repository}} false true "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
+             echo EOF
+          } >> "GITHUB_OUTPUT"
+
+      - name: Create PreRelease        
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          prerelease: true
+          tag_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          release_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          body: |
+            Actor: ${{ env.USER_ACTOR }}
+            ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            ${{ steps.build_changelog.outputs.changelog }}
 
   promote_prd:
     # The type of runner that the job will run on

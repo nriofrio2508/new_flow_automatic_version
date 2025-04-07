@@ -197,10 +197,12 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/jobs)
-          job_id=$(echo $jobs | jq -r '.jobs[] | select(.name=="get_last_tag") | .id')
+          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
+          job_id=$(echo $jobs | jq -r '.jobs[] | select(.runner_name=="${{ runner.name }}") | .id')
           echo "job_id=$job_id" >> $GITHUB_OUTPUT
-       
+      - name: print job_id
+        run: |
+          echo "JOB ID: ${{ steps.get-job-id.outputs.job_id }}"
       - name: check the jobs # get the matrix job status and combination info jobstatus=$(curl -X GET -s -u "admin:${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/ | jq ".jobs[] | {job_status: .conclusion, matrix: .name}")
         run: |
           jobstatus=$(curl -X GET -s -u "admin:${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/actions/jobs/${{ steps.get-job-id.outputs.job_id}} | jq "{job_status: .conclusion, matrix: .name}")

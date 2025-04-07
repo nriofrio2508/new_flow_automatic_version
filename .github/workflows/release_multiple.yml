@@ -198,7 +198,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} #job_id=$(echo $jobs | jq -r '.jobs[] | select(.name | startswith("get_last_tag")) | select(.conclusion == "success") | length > 0')
         run: |
           jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
-          job_id=$(echo $jobs | jq -r 'any(.jobs[]; .name | startswith("get_last_tag") and .conclusion == "success" )'
+          job_id=$(echo $jobs | jq -r 'any(.jobs[]; .name | startswith("get_last_tag") and .conclusion == "success" )')
           echo "job_id=$job_id" >> $GITHUB_OUTPUT
       - name: print job_id
         run: |

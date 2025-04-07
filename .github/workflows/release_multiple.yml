@@ -318,7 +318,7 @@ jobs:
           chmod +x get_changelog.sh
           {
             echo 'changelog<<EOF'
-            ./get_changelog.sh ${{ steps.get_name_new_release.outputs.new_name_release}} ${{ steps.get_last_release.outputs.name || ''}} ${{github.repository}} false true ${{steps.outputs_matrix.outputs.domain}}/${{steps.outputs_matrix.outputs.subdomain}}/${{steps.outputs_matrix.outputs.destination}}
+            ./get_changelog.sh ${{ steps.get_name_new_release.outputs.new_name_release}} "${{ steps.get_last_release.outputs.name || ''}}" ${{github.repository}} false true ${{steps.outputs_matrix.outputs.domain}}/${{steps.outputs_matrix.outputs.subdomain}}/${{steps.outputs_matrix.outputs.destination}}
           } >> "GITHUB_OUTPUT"
 
       - name: Create Release

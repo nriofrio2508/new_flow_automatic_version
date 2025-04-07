@@ -193,7 +193,7 @@ jobs:
         run: echo ${{ toJson(needs.get_last_tag.outputs.matrix)}}
       - name: pest
         run: |
-           echo ${{fromJSON(needs.get_last_tag.outputs.last_tag_repo)[0]}}
+           echo ${{fromJSON(needs.get_last_tag.outputs.last_tag_repo)}}
           
 
   generate_pre_release:

@@ -89,7 +89,7 @@ jobs:
 
       - name: fix
         run: |
-          if [${{ matrix.dominio }} eq "dominio1-mi_subdominio-path3"]; then
+          if [ "${{ matrix.dominio }}" = "dominio1-mi_subdominio-path3"]; then
             exit 1
           fi
       - name: 'Get Previous tag'

@@ -87,6 +87,11 @@ jobs:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
       #find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
 
+      - name: fix
+        run: |
+          if [${{ matrix.dominio }} eq "dominio1-mi_subdominio-path3"]
+            exit 1
+          fi
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@04e8485ecb6487243907e330d522ff60f02283ce"

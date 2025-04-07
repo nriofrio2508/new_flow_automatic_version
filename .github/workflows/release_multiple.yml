@@ -192,6 +192,10 @@ jobs:
       - name: print matrix
         run: echo ${{ toJson(needs.get_last_tag.outputs.matrix)}}
       
+      - name: print job value
+        run: |
+          echo "${{ github.job }}"
+      
       - name: Get Job ID from GH API
         id: get-job-id
         env:

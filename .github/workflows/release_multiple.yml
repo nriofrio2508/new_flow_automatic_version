@@ -75,6 +75,7 @@ jobs:
     environment:
       name: stg-multi
     strategy:
+      fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
     outputs:

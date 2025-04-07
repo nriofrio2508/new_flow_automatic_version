@@ -191,10 +191,12 @@ jobs:
         run: echo "deploy ok"
       - name: print matrix
         run: echo ${{ toJson(needs.get_last_tag.outputs.matrix)}}
-      - name: pest
+      
+      - name: check the jobs # get the matrix job status and combination info
         run: |
-           echo ${{fromJSON(needs.get_last_tag.outputs.last_tag_repo)}}
-          
+          jobstatus=$(curl -X GET -s -u "admin:${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs | jq ".jobs[] | {job_status: .conclusion, matrix: .name}")
+          echo $jobstatus
+                
 
   generate_pre_release:
     # The type of runner that the job will run on

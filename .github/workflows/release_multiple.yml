@@ -167,10 +167,18 @@ jobs:
           name: ${{ matrix.dominio }}
           path: "${{ matrix.dominio }}.json"
           retention-days: 1
+  
+  mi_job:
+    needs: [ get_last_tag,get_dynamic_jobs]
+    strategy:
+      matrix:
+        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
+    uses: nriofrio2508/my_reusable/.github/workflows/call_other_workflow.yml@main
+    secrets: inherit
       
   validate_deploy:
     runs-on: ubuntu-latest
-    needs: [get_last_tag]
+    needs: [get_last_tag,mi_job]
     steps:
       - name: Hello
         run: echo "deploy ok"

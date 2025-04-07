@@ -191,6 +191,9 @@ jobs:
         run: echo "deploy ok"
       - name: print matrix
         run: echo ${{ toJson(needs.get_last_tag.outputs.matrix)}}
+      - name: pest
+        run: |
+           echo ${{fromJSON(needs.get_last_tag.outputs.last_tag_repo)[0]}}
           
 
   generate_pre_release:

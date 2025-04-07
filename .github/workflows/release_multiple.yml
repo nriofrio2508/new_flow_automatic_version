@@ -203,7 +203,7 @@ jobs:
         run: |
           jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
           echo $jobs
-          job_id=$(echo $jobs | jq -r '.jobs[] | select(.name=="get_last_tag") | .id')
+          job_id=$(echo $jobs | jq -r '.jobs[] | select(.name | startswith("get_last_tag")) | select(.conclusion == "success") | length > 0')
           echo "job_id=$job_id" >> $GITHUB_OUTPUT
       - name: print job_id
         run: |

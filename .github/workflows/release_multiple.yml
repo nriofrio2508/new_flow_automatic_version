@@ -187,6 +187,8 @@ jobs:
         run: |
           jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
           echo $jobs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: validate matrix
         id: validate_matrix
         run: |

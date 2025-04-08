@@ -177,33 +177,17 @@ jobs:
           retention-days: 1
    
 
-  validate_matrix_get_last_tag:
-    runs-on: ubuntu-latest
+  validate_status_matrix_get_last_tag:
     needs: [get_last_tag]
-    outputs:
-      paths_success: ${{ steps.validate_matrix.outputs.paths_success }}
-    steps:
-      - name: validate matrix0
-        run: |
-          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
-          echo $jobs
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: validate matrix # paths_success=$(echo "$jobs" | jq -r '[.jobs[] | select(.conclusion == "success" and (.name | tostring | startswith("get_last_tag"))) | .name] | join(", ")')
-        id: validate_matrix
-        run: |
-          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
-          paths_success=$(echo "$jobs" | jq -r '.jobs | map(select(.conclusion == "success" and (.name | tostring | startswith("get_last_tag")))) | map(.name) | join("|")')
-          echo "paths_success=$paths_success" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: OREOS
-        run: |
-          echo "path: ${{ steps.validate_matrix.outputs.paths_success}}"
-
+    uses: nriofrio2508/my_reusable/.github/workflows/get_status_matrix.yml@main
+    secrets: inherit
+    with:
+      status: "success"
+      job_name: "get_last_tag"
+    
   validate_deploy:
     runs-on: ubuntu-latest
-    needs: [get_last_tag,validate_matrix_get_last_tag]
+    needs: [get_last_tag,validate_status_matrix_get_last_tag]
     steps:
       - name: Hello
         run: echo "deploy ok"
@@ -227,10 +211,10 @@ jobs:
     strategy:
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
-    needs: [validate_deploy, get_last_tag,get_dynamic_jobs,validate_matrix_get_last_tag] 
+    needs: [validate_deploy, get_last_tag,get_dynamic_jobs,validate_status_matrix_get_last_tag] 
     uses: nriofrio2508/my_reusable/.github/workflows/generate_pre_release.yml@main
     with:
-      execute_matrix: ${{ contains(needs.validate_matrix_get_last_tag.outputs.paths_success, matrix.dominio )}}
+      execute_matrix: ${{ contains(needs.validate_status_matrix_get_last_tag.outputs.paths_success, matrix.dominio )}}
       matrix_dominio: ${{ matrix.dominio }}
     secrets: inherit
 

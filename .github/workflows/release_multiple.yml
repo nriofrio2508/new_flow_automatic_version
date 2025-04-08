@@ -18,10 +18,12 @@ on:
         description: 'Subdomain'
         required: true
         type: string
+        default: subdomain2
       destination:
         description: 'Destination'
         required: true
         type: string
+        default: destination3
       version_type:
         description: 'Version Type'
         required: true
@@ -187,10 +189,12 @@ jobs:
           jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
           paths_success=$(echo $jobs | jq -r '[.jobs[]] | select(.conclusion == "success") | .name')
           echo "paths_success=$paths_success" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   validate_deploy:
     runs-on: ubuntu-latest
-    needs: [get_last_tag]
+    needs: [get_last_tag,validate_matrix_get_last_tag]
     steps:
       - name: Hello
         run: echo "deploy ok"

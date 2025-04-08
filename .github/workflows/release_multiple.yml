@@ -193,7 +193,7 @@ jobs:
         id: validate_matrix
         run: |
           jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
-          paths_success=$(echo "$jobs" | jq -r '.jobs | map(select(.conclusion == "success" and .name | tostring | startswith("get_last_tag"))) | map(.name) | join("|")')
+          paths_success=$(echo "$jobs" | jq -r '.jobs | map(select(.conclusion == "success" and (.name | tostring | startswith("get_last_tag")))) | map(.name) | join("|")')
           echo "paths_success=$paths_success" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -191,6 +191,9 @@ jobs:
           echo "paths_success=$paths_success" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: OREOS
+        run: |
+          echo "path: ${{ steps.validate_matrix.outputs.paths_success}}"
 
   validate_deploy:
     runs-on: ubuntu-latest

@@ -190,7 +190,7 @@ jobs:
     needs: [get_last_tag,validate_status_matrix_get_last_tag]
     steps:
       - name: Hello
-        run: echo "deploy ok"
+        run: echo "${{ toJson(needs.validate_status_matrix_get_last_tag.outputs)}}"
       
       - name: Get Job ID from GH API
         id: get-job-id

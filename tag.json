@@ -1,0 +1,1093 @@
+{
+    "total_count": 10,
+    "jobs": [
+        {
+            "id": 40135359938,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWED9wg",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135359938",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135359938",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2025-04-07T21:50:56Z",
+            "started_at": "2025-04-07T21:51:02Z",
+            "completed_at": "2025-04-07T21:51:12Z",
+            "name": "get_dynamic_jobs",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:02Z",
+                    "completed_at": "2025-04-07T21:51:03Z"
+                },
+                {
+                    "name": "Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:03Z",
+                    "completed_at": "2025-04-07T21:51:09Z"
+                },
+                {
+                    "name": "Get 3th level",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:09Z",
+                    "completed_at": "2025-04-07T21:51:09Z"
+                },
+                {
+                    "name": "print",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4,
+                    "started_at": "2025-04-07T21:51:09Z",
+                    "completed_at": "2025-04-07T21:51:09Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 8,
+                    "started_at": "2025-04-07T21:51:09Z",
+                    "completed_at": "2025-04-07T21:51:10Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 9,
+                    "started_at": "2025-04-07T21:51:10Z",
+                    "completed_at": "2025-04-07T21:51:10Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135359938",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000953,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135370766,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEEoDg",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135370766",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135370766",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2025-04-07T21:51:12Z",
+            "started_at": "2025-04-07T21:51:17Z",
+            "completed_at": "2025-04-07T21:51:42Z",
+            "name": "get_last_tag (dominio1-mi_subdominio-mi_path)",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:18Z",
+                    "completed_at": "2025-04-07T21:51:20Z"
+                },
+                {
+                    "name": "Build WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:20Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:32Z"
+                },
+                {
+                    "name": "fix",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4,
+                    "started_at": "2025-04-07T21:51:32Z",
+                    "completed_at": "2025-04-07T21:51:32Z"
+                },
+                {
+                    "name": "Get Previous tag",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5,
+                    "started_at": "2025-04-07T21:51:32Z",
+                    "completed_at": "2025-04-07T21:51:32Z"
+                },
+                {
+                    "name": "Get last tag Step",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 6,
+                    "started_at": "2025-04-07T21:51:32Z",
+                    "completed_at": "2025-04-07T21:51:32Z"
+                },
+                {
+                    "name": "Get last stable release by TAG",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 7,
+                    "started_at": "2025-04-07T21:51:32Z",
+                    "completed_at": "2025-04-07T21:51:35Z"
+                },
+                {
+                    "name": "Print last stable release TAG",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 8,
+                    "started_at": "2025-04-07T21:51:35Z",
+                    "completed_at": "2025-04-07T21:51:35Z"
+                },
+                {
+                    "name": "Print PATH",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 9,
+                    "started_at": "2025-04-07T21:51:35Z",
+                    "completed_at": "2025-04-07T21:51:35Z"
+                },
+                {
+                    "name": "Get SemVer from release",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 10,
+                    "started_at": "2025-04-07T21:51:35Z",
+                    "completed_at": "2025-04-07T21:51:35Z"
+                },
+                {
+                    "name": "Get all next version",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 11,
+                    "started_at": "2025-04-07T21:51:35Z",
+                    "completed_at": "2025-04-07T21:51:36Z"
+                },
+                {
+                    "name": "Get next release version",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 12,
+                    "started_at": "2025-04-07T21:51:36Z",
+                    "completed_at": "2025-04-07T21:51:36Z"
+                },
+                {
+                    "name": "Diff between next release and last tag semver",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 13,
+                    "started_at": "2025-04-07T21:51:36Z",
+                    "completed_at": "2025-04-07T21:51:36Z"
+                },
+                {
+                    "name": "Generate JSON",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 14,
+                    "started_at": "2025-04-07T21:51:36Z",
+                    "completed_at": "2025-04-07T21:51:36Z"
+                },
+                {
+                    "name": "Upload pre release",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 15,
+                    "started_at": "2025-04-07T21:51:36Z",
+                    "completed_at": "2025-04-07T21:51:37Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 30,
+                    "started_at": "2025-04-07T21:51:37Z",
+                    "completed_at": "2025-04-07T21:51:37Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 31,
+                    "started_at": "2025-04-07T21:51:37Z",
+                    "completed_at": "2025-04-07T21:51:37Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135370766",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000954,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135370767,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEEoDw",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135370767",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135370767",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2025-04-07T21:51:12Z",
+            "started_at": "2025-04-07T21:51:15Z",
+            "completed_at": "2025-04-07T21:51:26Z",
+            "name": "get_last_tag (dominio1-mi_subdominio2-mi_path)",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:16Z",
+                    "completed_at": "2025-04-07T21:51:17Z"
+                },
+                {
+                    "name": "Build WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:17Z",
+                    "completed_at": "2025-04-07T21:51:21Z"
+                },
+                {
+                    "name": "Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:21Z",
+                    "completed_at": "2025-04-07T21:51:23Z"
+                },
+                {
+                    "name": "fix",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4,
+                    "started_at": "2025-04-07T21:51:23Z",
+                    "completed_at": "2025-04-07T21:51:23Z"
+                },
+                {
+                    "name": "Get Previous tag",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5,
+                    "started_at": "2025-04-07T21:51:23Z",
+                    "completed_at": "2025-04-07T21:51:23Z"
+                },
+                {
+                    "name": "Get last tag Step",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 6,
+                    "started_at": "2025-04-07T21:51:23Z",
+                    "completed_at": "2025-04-07T21:51:23Z"
+                },
+                {
+                    "name": "Get last stable release by TAG",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 7,
+                    "started_at": "2025-04-07T21:51:23Z",
+                    "completed_at": "2025-04-07T21:51:24Z"
+                },
+                {
+                    "name": "Print last stable release TAG",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 8,
+                    "started_at": "2025-04-07T21:51:24Z",
+                    "completed_at": "2025-04-07T21:51:24Z"
+                },
+                {
+                    "name": "Print PATH",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 9,
+                    "started_at": "2025-04-07T21:51:24Z",
+                    "completed_at": "2025-04-07T21:51:24Z"
+                },
+                {
+                    "name": "Get SemVer from release",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 10,
+                    "started_at": "2025-04-07T21:51:24Z",
+                    "completed_at": "2025-04-07T21:51:24Z"
+                },
+                {
+                    "name": "Get all next version",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 11,
+                    "started_at": "2025-04-07T21:51:24Z",
+                    "completed_at": "2025-04-07T21:51:24Z"
+                },
+                {
+                    "name": "Get next release version",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 12,
+                    "started_at": "2025-04-07T21:51:24Z",
+                    "completed_at": "2025-04-07T21:51:24Z"
+                },
+                {
+                    "name": "Diff between next release and last tag semver",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 13,
+                    "started_at": "2025-04-07T21:51:24Z",
+                    "completed_at": "2025-04-07T21:51:25Z"
+                },
+                {
+                    "name": "Generate JSON",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 14,
+                    "started_at": "2025-04-07T21:51:25Z",
+                    "completed_at": "2025-04-07T21:51:25Z"
+                },
+                {
+                    "name": "Upload pre release",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 15,
+                    "started_at": "2025-04-07T21:51:25Z",
+                    "completed_at": "2025-04-07T21:51:25Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 30,
+                    "started_at": "2025-04-07T21:51:25Z",
+                    "completed_at": "2025-04-07T21:51:25Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 31,
+                    "started_at": "2025-04-07T21:51:25Z",
+                    "completed_at": "2025-04-07T21:51:25Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135370767",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000955,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135370777,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEEoGQ",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135370777",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135370777",
+            "status": "completed",
+            "conclusion": "failure",
+            "created_at": "2025-04-07T21:51:12Z",
+            "started_at": "2025-04-07T21:51:18Z",
+            "completed_at": "2025-04-07T21:51:31Z",
+            "name": "get_last_tag (dominio1-mi_subdominio-path3)",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:19Z",
+                    "completed_at": "2025-04-07T21:51:20Z"
+                },
+                {
+                    "name": "Build WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:20Z",
+                    "completed_at": "2025-04-07T21:51:25Z"
+                },
+                {
+                    "name": "Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:25Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "fix",
+                    "status": "completed",
+                    "conclusion": "failure",
+                    "number": 4,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get Previous tag",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 5,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get last tag Step",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 6,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get last stable release by TAG",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 7,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Print last stable release TAG",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 8,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Print PATH",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 9,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get SemVer from release",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 10,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get all next version",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 11,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get next release version",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 12,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Diff between next release and last tag semver",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 13,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Generate JSON",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 14,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Upload pre release",
+                    "status": "completed",
+                    "conclusion": "skipped",
+                    "number": 15,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 30,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 31,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135370777",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000957,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135370778,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEEoGg",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135370778",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135370778",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2025-04-07T21:51:12Z",
+            "started_at": "2025-04-07T21:51:18Z",
+            "completed_at": "2025-04-07T21:51:35Z",
+            "name": "get_last_tag (dominio1-mi_subdominio-path2)",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:19Z",
+                    "completed_at": "2025-04-07T21:51:21Z"
+                },
+                {
+                    "name": "Build WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:21Z",
+                    "completed_at": "2025-04-07T21:51:25Z"
+                },
+                {
+                    "name": "Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:25Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "fix",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get Previous tag",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 5,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get last tag Step",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 6,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get last stable release by TAG",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 7,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Print last stable release TAG",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 8,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Print PATH",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 9,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get SemVer from release",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 10,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:28Z"
+                },
+                {
+                    "name": "Get all next version",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 11,
+                    "started_at": "2025-04-07T21:51:28Z",
+                    "completed_at": "2025-04-07T21:51:29Z"
+                },
+                {
+                    "name": "Get next release version",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 12,
+                    "started_at": "2025-04-07T21:51:29Z",
+                    "completed_at": "2025-04-07T21:51:29Z"
+                },
+                {
+                    "name": "Diff between next release and last tag semver",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 13,
+                    "started_at": "2025-04-07T21:51:29Z",
+                    "completed_at": "2025-04-07T21:51:29Z"
+                },
+                {
+                    "name": "Generate JSON",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 14,
+                    "started_at": "2025-04-07T21:51:29Z",
+                    "completed_at": "2025-04-07T21:51:29Z"
+                },
+                {
+                    "name": "Upload pre release",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 15,
+                    "started_at": "2025-04-07T21:51:29Z",
+                    "completed_at": "2025-04-07T21:51:30Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v3",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 30,
+                    "started_at": "2025-04-07T21:51:30Z",
+                    "completed_at": "2025-04-07T21:51:30Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 31,
+                    "started_at": "2025-04-07T21:51:30Z",
+                    "completed_at": "2025-04-07T21:51:30Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135370778",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000956,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135393215,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEF_vw",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135393215",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135393215",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2025-04-07T21:51:42Z",
+            "started_at": "2025-04-07T21:51:50Z",
+            "completed_at": "2025-04-07T21:51:53Z",
+            "name": "mi_job (dominio1-mi_subdominio-path3) / only_job / build",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:50Z",
+                    "completed_at": "2025-04-07T21:51:51Z"
+                },
+                {
+                    "name": "Run actions/checkout@v4",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:51Z",
+                    "completed_at": "2025-04-07T21:51:52Z"
+                },
+                {
+                    "name": "Run a multi-line script",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:52Z",
+                    "completed_at": "2025-04-07T21:51:52Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v4",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 6,
+                    "started_at": "2025-04-07T21:51:52Z",
+                    "completed_at": "2025-04-07T21:51:52Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 7,
+                    "started_at": "2025-04-07T21:51:52Z",
+                    "completed_at": "2025-04-07T21:51:52Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135393215",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000958,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135393216,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEF_wA",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135393216",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135393216",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2025-04-07T21:51:42Z",
+            "started_at": "2025-04-07T21:51:45Z",
+            "completed_at": "2025-04-07T21:51:48Z",
+            "name": "mi_job (dominio1-mi_subdominio-mi_path) / only_job / build",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:45Z",
+                    "completed_at": "2025-04-07T21:51:46Z"
+                },
+                {
+                    "name": "Run actions/checkout@v4",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:46Z",
+                    "completed_at": "2025-04-07T21:51:47Z"
+                },
+                {
+                    "name": "Run a multi-line script",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:47Z",
+                    "completed_at": "2025-04-07T21:51:47Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v4",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 6,
+                    "started_at": "2025-04-07T21:51:47Z",
+                    "completed_at": "2025-04-07T21:51:47Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 7,
+                    "started_at": "2025-04-07T21:51:47Z",
+                    "completed_at": "2025-04-07T21:51:47Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135393216",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000959,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135393219,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEF_ww",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135393219",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135393219",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2025-04-07T21:51:42Z",
+            "started_at": "2025-04-07T21:51:46Z",
+            "completed_at": "2025-04-07T21:51:50Z",
+            "name": "mi_job (dominio1-mi_subdominio2-mi_path) / only_job / build",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:47Z",
+                    "completed_at": "2025-04-07T21:51:47Z"
+                },
+                {
+                    "name": "Run actions/checkout@v4",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:47Z",
+                    "completed_at": "2025-04-07T21:51:48Z"
+                },
+                {
+                    "name": "Run a multi-line script",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:48Z",
+                    "completed_at": "2025-04-07T21:51:48Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v4",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 6,
+                    "started_at": "2025-04-07T21:51:48Z",
+                    "completed_at": "2025-04-07T21:51:48Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 7,
+                    "started_at": "2025-04-07T21:51:48Z",
+                    "completed_at": "2025-04-07T21:51:48Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135393219",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000961,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135393227,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEF_yw",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135393227",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135393227",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2025-04-07T21:51:42Z",
+            "started_at": "2025-04-07T21:51:47Z",
+            "completed_at": "2025-04-07T21:51:51Z",
+            "name": "mi_job (dominio1-mi_subdominio-path2) / only_job / build",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:48Z",
+                    "completed_at": "2025-04-07T21:51:48Z"
+                },
+                {
+                    "name": "Run actions/checkout@v4",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:48Z",
+                    "completed_at": "2025-04-07T21:51:49Z"
+                },
+                {
+                    "name": "Run a multi-line script",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:49Z",
+                    "completed_at": "2025-04-07T21:51:49Z"
+                },
+                {
+                    "name": "Post Run actions/checkout@v4",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 6,
+                    "started_at": "2025-04-07T21:51:49Z",
+                    "completed_at": "2025-04-07T21:51:49Z"
+                },
+                {
+                    "name": "Complete job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 7,
+                    "started_at": "2025-04-07T21:51:49Z",
+                    "completed_at": "2025-04-07T21:51:49Z"
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135393227",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000960,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        },
+        {
+            "id": 40135401453,
+            "run_id": 14320199800,
+            "workflow_name": "Deploy [dominio1 / subdomino2 / destino2 ] Version type :major by @nriofrio2508",
+            "head_branch": "main",
+            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800",
+            "run_attempt": 1,
+            "node_id": "CR_kwDOMhiutM8AAAAJWEGf7Q",
+            "head_sha": "9a6860be1634ab79c8999a42c49e1ee5daa22d69",
+            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40135401453",
+            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14320199800/job/40135401453",
+            "status": "in_progress",
+            "conclusion": null,
+            "created_at": "2025-04-07T21:51:53Z",
+            "started_at": "2025-04-07T21:51:58Z",
+            "completed_at": null,
+            "name": "validate_deploy",
+            "steps": [
+                {
+                    "name": "Set up job",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 1,
+                    "started_at": "2025-04-07T21:51:59Z",
+                    "completed_at": "2025-04-07T21:51:59Z"
+                },
+                {
+                    "name": "Hello",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 2,
+                    "started_at": "2025-04-07T21:51:59Z",
+                    "completed_at": "2025-04-07T21:51:59Z"
+                },
+                {
+                    "name": "print matrix",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 3,
+                    "started_at": "2025-04-07T21:51:59Z",
+                    "completed_at": "2025-04-07T21:51:59Z"
+                },
+                {
+                    "name": "print job value",
+                    "status": "completed",
+                    "conclusion": "success",
+                    "number": 4,
+                    "started_at": "2025-04-07T21:51:59Z",
+                    "completed_at": "2025-04-07T21:51:59Z"
+                },
+                {
+                    "name": "Get Job ID from GH API",
+                    "status": "in_progress",
+                    "conclusion": null,
+                    "number": 5,
+                    "started_at": "2025-04-07T21:51:59Z",
+                    "completed_at": null
+                },
+                {
+                    "name": "print job_id",
+                    "status": "pending",
+                    "conclusion": null,
+                    "number": 6,
+                    "started_at": null,
+                    "completed_at": null
+                },
+                {
+                    "name": "check the jobs",
+                    "status": "pending",
+                    "conclusion": null,
+                    "number": 7,
+                    "started_at": null,
+                    "completed_at": null
+                }
+            ],
+            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40135401453",
+            "labels": [
+                "ubuntu-latest"
+            ],
+            "runner_id": 1000000962,
+            "runner_name": "GitHub Actions",
+            "runner_group_id": 0,
+            "runner_group_name": ""
+        }
+    ]
+}

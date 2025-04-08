@@ -232,7 +232,6 @@ jobs:
     steps:
       - name: validate
         run: |
-          echo ${{ needs.validate_matrix_get_last_tag.outputs.paths_success }}
           echo ${{ contains(needs.validate_matrix_get_last_tag.outputs.paths_success, matrix.dominio )}}
 
   generate_pre_release:

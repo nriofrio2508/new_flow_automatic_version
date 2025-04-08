@@ -223,7 +223,17 @@ jobs:
         run: |
           echo "JOB ID: ${{ steps.get-job-id.outputs.job_id }}"
 
-                
+  generate_pre_release_preview:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
+    needs: [validate_deploy, get_last_tag,get_dynamic_jobs,validate_matrix_get_last_tag] 
+    steps:
+      - name: validate
+        run: |
+          echo ${{ needs.validate_matrix_get_last_tag.outputs.paths_success }}
+          echo ${{ contains(needs.validate_matrix_get_last_tag.outputs.paths_success, matrix.dominio )}}
 
   generate_pre_release:
     strategy:

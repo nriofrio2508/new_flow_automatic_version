@@ -186,25 +186,16 @@ jobs:
       job_name: "get_last_tag"
     
   validate_deploy:
-    runs-on: ubuntu-latest
     needs: [get_last_tag,validate_status_matrix_get_last_tag,get_dynamic_jobs]
     strategy:
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
-    steps:
-      - name: Get Job ID from GH API
-        id: get-job-id
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
-          job_id=$(echo $jobs | jq -r 'any(.jobs[]; (.name | startswith("get_last_tag")) and .conclusion == "success" )')
-          echo "job_id=$job_id" >> $GITHUB_OUTPUT
+    uses: nriofrio2508/my_reusable/.github/workflows/validate_deploy.yml@main
+    secrets: inherit
+    with:
+      execute_matrix: ${{ contains(needs.validate_status_matrix_get_last_tag.outputs.matrix_status, matrix.dominio )}}
 
-      - name: print job_id
-        run: |
-          echo "JOB ID: ${{ steps.get-job-id.outputs.job_id }}"
 
   validate_status_matrix_validate_deploy:
     needs: [validate_deploy]

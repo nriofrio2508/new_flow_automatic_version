@@ -183,6 +183,10 @@ jobs:
     outputs:
       paths_success: ${{ steps.validate_matrix.outputs.paths_success }}
     steps:
+      - name: validate matrix0
+        run: |
+          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
+          echo $jobs
       - name: validate matrix
         id: validate_matrix
         run: |

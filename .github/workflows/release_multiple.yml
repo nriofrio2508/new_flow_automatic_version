@@ -232,6 +232,7 @@ jobs:
     with:
       execute_matrix: ${{ contains(needs.validate_matrix_get_last_tag.outputs.paths_success, matrix.dominio )}}
       matrix_dominio: ${{ matrix.dominio }}
+    secrets: inherit
 
   promote_prd:
     runs-on: ubuntu-latest

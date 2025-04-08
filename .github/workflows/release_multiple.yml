@@ -62,7 +62,6 @@ jobs:
           DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
           JOBS="jobs=[$(echo "$DIRECTORIES_WITH" | sed 's/^/"/;s/$/"/' | tr '\n' ',')]"
           echo "$JOBS" >> "$GITHUB_OUTPUT"
-      #DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
       - name: print
         run: |
           echo ${{ steps.generate_matrix.outputs.jobs}}
@@ -174,18 +173,24 @@ jobs:
           name: ${{ matrix.dominio }}
           path: "${{ matrix.dominio }}.json"
           retention-days: 1
-  
-  mi_job:
-    needs: [ get_last_tag,get_dynamic_jobs]
-    strategy:
-      matrix:
-        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
-    uses: nriofrio2508/my_reusable/.github/workflows/call_other_workflow.yml@main
-    secrets: inherit
-      
+   
+
+  validate_matrix_get_last_tag:
+    runs-on: ubuntu-latest
+    needs: [get_last_tag]
+    outputs:
+      paths_success: ${{ steps.validate_matrix.outputs.paths_success }}
+    steps:
+      - name: validate matrix
+        id: validate_matrix
+        run: |
+          jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
+          paths_success=$(echo $jobs | jq -r '[.jobs[]] | select(.conclusion == "success") | .name')
+          echo "paths_success=$paths_success" >> $GITHUB_OUTPUT
+
   validate_deploy:
     runs-on: ubuntu-latest
-    needs: [get_last_tag,mi_job]
+    needs: [get_last_tag]
     steps:
       - name: Hello
         run: echo "deploy ok"
@@ -195,18 +200,16 @@ jobs:
       - name: Get Job ID from GH API
         id: get-job-id
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} #job_id=$(echo $jobs | jq -r '.jobs[] | select(.name | startswith("get_last_tag")) | select(.conclusion == "success") | length > 0')
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           jobs=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id}}/attempts/${{ github.run_attempt }}/jobs)
           job_id=$(echo $jobs | jq -r 'any(.jobs[]; (.name | startswith("get_last_tag")) and .conclusion == "success" )')
           echo "job_id=$job_id" >> $GITHUB_OUTPUT
+
       - name: print job_id
         run: |
           echo "JOB ID: ${{ steps.get-job-id.outputs.job_id }}"
-      - name: check the jobs # get the matrix job status and combination info jobstatus=$(curl -X GET -s -u "admin:${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/ | jq ".jobs[] | {job_status: .conclusion, matrix: .name}")
-        run: |
-          jobstatus=$(curl -X GET -s -u "admin:${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/actions/jobs/${{ steps.get-job-id.outputs.job_id}} | jq "{job_status: .conclusion, matrix: .name}")
-          echo $jobstatus
+
                 
 
   generate_pre_release:
@@ -215,7 +218,8 @@ jobs:
     strategy:
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
-    needs: [validate_deploy, get_last_tag,get_dynamic_jobs] 
+    needs: [validate_deploy, get_last_tag,get_dynamic_jobs,validate_matrix_get_last_tag] 
+    if: ${{ contains(needs.validate_matrix_get_last_tag.outputs.paths_success, matrix.dominio )}}
     steps:
       - uses: actions/checkout@v4
         with:

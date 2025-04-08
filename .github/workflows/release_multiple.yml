@@ -191,8 +191,6 @@ jobs:
     steps:
       - name: Hello
         run: echo "deploy ok"
-      - name: print matrix
-        run: echo ${{ toJson(needs.get_last_tag.outputs.matrix)}}
       
       - name: Get Job ID from GH API
         id: get-job-id
@@ -214,7 +212,7 @@ jobs:
     needs: [validate_deploy, get_last_tag,get_dynamic_jobs,validate_status_matrix_get_last_tag] 
     uses: nriofrio2508/my_reusable/.github/workflows/generate_pre_release.yml@main
     with:
-      execute_matrix: ${{ contains(needs.validate_status_matrix_get_last_tag.outputs.paths_success, matrix.dominio )}}
+      execute_matrix: ${{ contains(needs.validate_status_matrix_get_last_tag.outputs.matrix_status, matrix.dominio )}}
       matrix_dominio: ${{ matrix.dominio }}
     secrets: inherit
 

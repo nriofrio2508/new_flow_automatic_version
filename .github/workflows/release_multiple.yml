@@ -224,83 +224,24 @@ jobs:
       - name: Promote prd step
         run: echo "waiting approve"
 
+  validate_status_matrix_generate_pre_release:
+    needs: [promote_prd]
+    uses: nriofrio2508/my_reusable/.github/workflows/get_status_matrix.yml@main
+    secrets: inherit
+    with:
+      status: "success"
+      job_name: "generate_pre_release"
+
   generate_release:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
-    needs: [promote_prd,get_last_tag,get_dynamic_jobs]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Download blob reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
-        with:
-          name: ${{ matrix.dominio }}
-      
-      - name: Outputs 
-        id: outputs_matrix
-        run: |
-          last_tag_repo=$(jq -r '.last_tag_repo' ${{ matrix.dominio }}.json)
-          next_tag_repo=$(jq -r '.next_tag_repo' ${{ matrix.dominio }}.json)
-          last_stable_release=$(jq -r '.last_stable_release' ${{ matrix.dominio }}.json)
-          echo "last_tag_repo=$last_tag_repo" >> $GITHUB_OUTPUT
-          echo "next_tag_repo=$next_tag_repo" >> $GITHUB_OUTPUT
-          echo "last_stable_release=$last_stable_release" >> $GITHUB_OUTPUT
-          echo "domain=$(echo $next_tag_repo | cut -d'-' -f1)" >> $GITHUB_OUTPUT
-          echo "subdomain=$(echo $next_tag_repo | cut -d'-' -f2)" >> $GITHUB_OUTPUT
-          echo "destination=$(echo $next_tag_repo | cut -d'-' -f3)" >> $GITHUB_OUTPUT
-      - name: Get last stable release by TAG
-        id: get_last_release
-        working-directory: ./.github/scripts
-        run: |
-          chmod +x get_last_release_by_tag.sh
-          ./get_last_release_by_tag.sh ${{github.repository}} ${{ matrix.dominio }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Print last stable release TAG
-        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"
-
-      - name: Get name new Release
-        id: get_name_new_release
-        run: |
-          new_release=$(echo ${{ steps.outputs_matrix.outputs.next_tag_repo }} | awk -F '-rc.' '{print $1}' )
-          echo "new_name_release=$new_release" >> $GITHUB_OUTPUT
-      
-      - name: Push new Tag ReleaseCandidate
-        id: tag_release_candidate
-        run: |
-          tag='${{ steps.get_name_new_release.outputs.new_name_release }}'
-          message='${{ steps.get_name_new_release.outputs.new_name_release }}'
-          git config user.name "${{ env.USER_ACTOR }}"
-          git config user.email "${{ env.USER_ACTOR }}@users.noreply.github.com"
-          git tag -a "${tag}" -m "${message}"
-          git push origin "${tag}"
-          echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
-      
-      - name: Build Changelog        
-        id: changelog_prd
-        working-directory: ./.github/scripts
-        run: |
-          chmod +x get_changelog.sh
-          {
-            echo 'changelog<<EOF'
-            ./get_changelog.sh ${{ steps.get_name_new_release.outputs.new_name_release}} "${{ steps.get_last_release.outputs.name || ''}}" ${{github.repository}} false true ${{steps.outputs_matrix.outputs.domain}}/${{steps.outputs_matrix.outputs.subdomain}}/${{steps.outputs_matrix.outputs.destination}}
-          } >> "GITHUB_OUTPUT"
-
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
-          release_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
-          body: |
-            Actor: ${{ env.USER_ACTOR }}
-            ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            ${{ steps.changelog_prd.outputs.changelog }}
+    needs: [validate_status_matrix_generate_pre_release,get_last_tag,get_dynamic_jobs]
+    uses: nriofrio2508/my_reusable/.github/workflows/generate_release.yml@main
+    secrets: inherit
+    with:
+      execute_matrix: ${{ contains(needs.validate_status_matrix_generate_pre_release.outputs.matrix_status, matrix.dominio )}}
+      matrix_dominio: ${{ matrix.dominio }}
 
   validate_deploy_prd:
     # The type of runner that the job will run on COMENTARIOS PARA 5

@@ -6,24 +6,6 @@ name: Deploy Multi release
 on:
   workflow_dispatch:
     inputs:
-      domain:
-        description: 'Domain'
-        required: true
-        type: choice
-        options:
-          - dominio1
-          - dominio2
-          - technology
-      subdomain:
-        description: 'Subdomain'
-        required: true
-        type: string
-        default: subdomain2
-      destination:
-        description: 'Destination'
-        required: true
-        type: string
-        default: destination3
       version_type:
         description: 'Version Type'
         required: true
@@ -37,10 +19,9 @@ on:
         description: 'Leave Empty'
 
 
-run-name:  Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
+run-name:  Deploy Multi job by @${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
 
 env:
-  PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'
   USER_ACTOR:  ${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -207,6 +188,7 @@ jobs:
 
   generate_pre_release:
     strategy:
+      fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
     needs: [validate_deploy, get_last_tag,get_dynamic_jobs,validate_status_matrix_get_last_tag,validate_status_matrix_validate_deploy] 
@@ -234,6 +216,7 @@ jobs:
 
   generate_release:
     strategy:
+      fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
     needs: [validate_status_matrix_generate_pre_release,get_last_tag,get_dynamic_jobs]

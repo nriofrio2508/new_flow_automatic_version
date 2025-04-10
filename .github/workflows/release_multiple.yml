@@ -15,7 +15,7 @@ on:
           - minor
           - patch
 
-run-name:  Deploy Multi job by @${{ github.event.sender.type == 'Bot' && github.actor }}
+run-name:  Deploy Multi job by @${{ github.actor }}
 
 jobs:
   get_dynamic_jobs:
@@ -40,6 +40,7 @@ jobs:
           echo ${{ steps.generate_matrix.outputs.jobs}}
       
   get_last_tag:
+    needs: get_dynamic_jobs
     uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
     strategy:
       fail-fast: false

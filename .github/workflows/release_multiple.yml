@@ -14,19 +14,10 @@ on:
           - major
           - minor
           - patch
-      actor:
-        required: false
-        description: 'Leave Empty'
 
+run-name:  Deploy Multi job by @${{ github.event.sender.type == 'Bot' && github.actor }}
 
-run-name:  Deploy Multi job by @${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
-
-env:
-  USER_ACTOR:  ${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-
   get_dynamic_jobs:
     runs-on: ubuntu-latest
     outputs:
@@ -34,8 +25,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      #find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
+          fetch-depth: 0
       - name: Get 3th level
         id: generate_matrix
         run: |
@@ -49,114 +39,16 @@ jobs:
         run: |
           echo ${{ steps.generate_matrix.outputs.jobs}}
       
-    
   get_last_tag:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    needs: get_dynamic_jobs
-    environment:
-      name: stg-multi
+    uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
     strategy:
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
-    outputs:
-      last_tag_repo: ${{steps.previoustag.outputs.tag}}
-      next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
-      last_stable_release: ${{ steps.get_last_release.outputs.name || '' }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      #find . -mindepth 3 -maxdepth 3 -type d | grep -Ev "/(${BLACKLIST_PATTERN})($|/)"
-
-      - name: fix
-        run: |
-          if [ "${{ matrix.dominio }}" = "dominio1-mi_subdominio-path3" ]; then
-            exit 1
-          fi
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@04e8485ecb6487243907e330d522ff60f02283ce"
-        with:
-          prefix: '${{ matrix.dominio }}-v'
-          fallback: '${{ matrix.dominio }}-v0.0.0' # Optional fallback tag to use when no tag can be found
-
-      - name: Get last tag Step
-        run: echo "Get last tag OK ${{ steps.previoustag.outputs.tag }}"    
-
-      - name: Get last stable release by TAG
-        id: get_last_release
-        working-directory: ./.github/scripts
-        run: |
-          chmod +x get_last_release_by_tag.sh
-          ./get_last_release_by_tag.sh ${{github.repository}} ${{ matrix.dominio }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Print last stable release TAG
-        run: echo "Get last tag OK ${{ steps.get_last_release.outputs.name }}"
-      - name: Print PATH
-        run: ls    
-       
-      - name: Get SemVer from release
-        id: semver_release_step        
-        run: |
-          version_number="0.0.0"
-          echo "Last Release ${{ steps.get_last_release.outputs.name }}"  
-          if [ ${{ steps.get_last_release.outputs.name }} ]; then
-            version_number=$(echo ${{ steps.get_last_release.outputs.name}} | awk -F'-v' '{print $2}')          
-          fi
-          echo "semver_release=$version_number" >> $GITHUB_OUTPUT
-      
-      - name: 'Get all next version'
-        id: semvers
-        uses: "WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93"
-        with:
-          version: ${{ steps.semver_release_step.outputs.semver_release }}
-
-      - name: Get next release version
-        id: get_next_release_version
-        run: |
-          case "${{inputs.version_type}}" in
-              major)
-                  echo "new_release_version=${{ matrix.dominio }}-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT
-                  ;;
-              minor)
-                  echo "new_release_version=${{ matrix.dominio }}-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT
-                  ;;
-              patch)
-                  echo "new_release_version=${{ matrix.dominio }}-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT
-                  ;;
-              *)
-                  echo "$parametro no es major, minor, ni patch"
-                  ;;
-          esac
-          echo new_release_version
-      
-      - name: Diff between next release and last tag semver
-        id: generate_tag_rc
-        run: |
-          last_tag_semver=$(echo "${{ steps.previoustag.outputs.tag}}" | awk -F'-rc.' '{print $1}')
-          rc=1
-          if [ "$last_tag_semver" = "${{steps.get_next_release_version.outputs.new_release_version}}" ]; then
-            rc=$(echo ${{ steps.previoustag.outputs.tag }} | awk -F'-rc.' '{print $2}')
-            ((rc++))
-          fi
-
-          new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
-          echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
-      - name: Generate JSON
-        run: |
-          echo '{"last_tag_repo": "${{steps.previoustag.outputs.tag}}" , "next_tag_repo": "${{ steps.generate_tag_rc.outputs.new_rc_version }}", "last_stable_release": "${{ steps.get_last_release.outputs.name }}" }'> "${{ matrix.dominio }}.json"
-      - name: Upload pre release  
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
-        with:
-          name: ${{ matrix.dominio }}
-          path: "${{ matrix.dominio }}.json"
-          retention-days: 1
-   
+    with:
+      bundle_path: ${{ matrix.dominio }}
+      version_type: ${{ inputs.version_type }}
+      is_matrix: true
 
   validate_status_matrix_get_last_tag:
     needs: [get_last_tag]

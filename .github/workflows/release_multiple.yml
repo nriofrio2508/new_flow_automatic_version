@@ -19,7 +19,7 @@ on:
         required: true
         type: choice
         options:
-          - select option
+          - all jobs
           - dominio1
           - dominio2
           - technology
@@ -38,15 +38,21 @@ jobs:
       - name: Get 3th level
         id: generate_matrix
         run: |
-          echo ${{ inputs.domain}}
+          echo "Value:${{ inputs.domain}}"
           BLACKLIST=("demo" "dominio1")
-          if [ "${{ inputs.domain}}" != "select option" ]; then
+          if [ "${{ inputs.domain}}" != "all jobs" ]; then
             BLACKLIST=("${{ inputs.domain }}")
           fi
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*" | sed 's|^\./||')      
-          DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
-          JOBS="jobs=[$(echo "$DIRECTORIES_WITH" | sed 's/^/"/;s/$/"/' | tr '\n' ',')]"
+          DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed '/^$/d' | sed 's|/|-|g')
+
+          # Formatear salida como lista
+          if [ -z "$DIRECTORIES_WITH" ]; then
+            JOBS="jobs=[]"
+          else
+            JOBS="jobs=[$(echo "$DIRECTORIES_WITH" | sed 's/^/"/;s/$/"/' | tr '\n' ',' | sed 's/,$//')]"
+          fi
           echo "$JOBS" >> "$GITHUB_OUTPUT"
       - name: print
         run: |

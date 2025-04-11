@@ -48,7 +48,7 @@ jobs:
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
     with:
-      bundle_path: ${{ matrix.dominio }}
+      version_name: ${{ matrix.dominio }}
       version_type: ${{ inputs.version_type }}
       is_matrix: true
 

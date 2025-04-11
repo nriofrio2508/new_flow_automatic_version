@@ -38,9 +38,10 @@ jobs:
       - name: Get 3th level
         id: generate_matrix
         run: |
+          echo ${{ inputs.domain}}
           BLACKLIST=("demo" "dominio1")
           if [ "${{ inputs.domain}}" != "select option" ]; then
-            BLACKLIST=${{ inputs.domain }}
+            BLACKLIST=("${{ inputs.domain }}")
           fi
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*" | sed 's|^\./||')      

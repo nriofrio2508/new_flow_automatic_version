@@ -63,7 +63,7 @@ jobs:
     uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
     if: ${{ needs.get_dynamic_jobs.outputs.jobs != '[]' }}
     strategy:
-      max-parallel: 2
+      #max-parallel: 10
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}

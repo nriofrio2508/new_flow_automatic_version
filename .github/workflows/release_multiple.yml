@@ -14,6 +14,10 @@ on:
           - major
           - minor
           - patch
+      dominio:
+        type: string
+        required: false
+        description: Domio (optional)
 
 run-name:  Deploy Multi job by @${{ github.actor }}
 
@@ -30,6 +34,9 @@ jobs:
         id: generate_matrix
         run: |
           BLACKLIST=("demo" "dominio1")
+          if [ -z ${{ inputs.dominio}} ]; then
+            BLACKLIST=${{ inputs.dominio }}
+          fi
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*" | sed 's|^\./||')      
           DIRECTORIES_WITH=$(echo "$DIRECTORIES" | sed 's/\//-/g')
@@ -121,7 +128,6 @@ jobs:
       matrix_dominio: ${{ matrix.dominio }}
 
   validate_deploy_prd:
-    # The type of runner that the job will run on COMENTARIOS PARA 5
     runs-on: ubuntu-latest
     needs: generate_release
     steps:

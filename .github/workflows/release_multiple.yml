@@ -61,7 +61,7 @@ jobs:
   get_last_tag:
     needs: get_dynamic_jobs
     uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
-    if: false
+    if: ${{ needs.get_dynamic_jobs.outputs.jobs != '[]' }}
     strategy:
       max-parallel: 2
       fail-fast: false

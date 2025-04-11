@@ -39,7 +39,7 @@ jobs:
         id: generate_matrix
         run: |
           echo "Value:${{ inputs.domain}}"
-          BLACKLIST=("demo" "dominio1")
+          BLACKLIST=("demo" "dominio1" "dominio2")
           if [ "${{ inputs.domain}}" != "all jobs" ]; then
             BLACKLIST=("${{ inputs.domain }}")
           fi
@@ -63,7 +63,7 @@ jobs:
     uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
     if: ${{ needs.get_dynamic_jobs.outputs.jobs != '[]' }}
     strategy:
-      #max-parallel: 10
+      max-parallel: 20
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
@@ -83,6 +83,7 @@ jobs:
   validate_deploy:
     needs: [get_last_tag,validate_status_matrix_get_last_tag,get_dynamic_jobs]
     strategy:
+      max-parallel: 20
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
@@ -102,6 +103,7 @@ jobs:
 
   generate_pre_release:
     strategy:
+      max-parallel: 20
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
@@ -130,6 +132,7 @@ jobs:
 
   generate_release:
     strategy:
+      max-parallel: 20
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}

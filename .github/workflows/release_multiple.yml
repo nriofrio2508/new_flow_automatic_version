@@ -38,7 +38,7 @@ run-name:  Deploy Multi job by @${{ github.actor }}
 jobs:
   get_last_fail_jobs:
     runs-on: ubuntu-latest
-    if: ${{ inputs.execute_only_fails  }}
+    if: ${{ inputs.execute_only_fails == true  }}
     steps:
       - name: Get last fail jobs
         run: |          

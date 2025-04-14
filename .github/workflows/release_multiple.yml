@@ -46,17 +46,29 @@ jobs:
           response=$(curl -s -H "Authorization: Bearer ${{  secrets.GITHUB_TOKEN  }}" "$URL")
           last_run_id=$(echo "$response" | jq '.workflow_runs[0].id')
           last_run_attempt$(echo "$response" | jq '.workflow_runs[0].run_attempt')
-      - uses: nriofrio2508/my_reusable/.github/workflows/get_status_matrix.yml@main
-        with:
-          status: "fail"
-          job_name: "validate_deploy"
-          run_id: $last_run_id
-          run_attempt: $last_run_attempt
+          echo "last_run_id=$last_run_id" >> "$GITHUB_OUTPUT"
+          echo "last_run_attempt=$last_run_attempt" >> "$GITHUB_OUTPUT"
 
+  get_list_matrix_fail:
+    needs: get_last_fail_jobs
+    uses: nriofrio2508/my_reusable/.github/workflows/get_status_matrix.yml@main
+    with:
+      status: "fail"
+      job_name: "validate_deploy"
+      run_id: $last_run_id
+      run_attempt: $last_run_attempt
+    
+  print_data:
+    needs: get_list_matrix_fail
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        run: |
+          echo ${{ needs.get_list_matrix_fail.outputs.matrix_status}}
 
   get_dynamic_jobs:
     runs-on: ubuntu-latest
-    if: ${{ ! inputs.execute_only_fails }}
+    if: ${{ ! inputs.execute_only_fails && false }}
     outputs:
       jobs: ${{ steps.generate_matrix.outputs.jobs}}
     steps:

@@ -46,7 +46,7 @@ jobs:
           fetch-depth: 0
       - name: print github
         run: |
-          echo ${{ toJson(github) }}
+          echo "${{ toJson(github) }}"
       - name: Validate Re execute Fails
         id: re_execute_fails
         if: ${{ inputs.execute_only_fails }}

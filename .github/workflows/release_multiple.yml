@@ -57,8 +57,8 @@ jobs:
     with:
       status: "fail"
       job_name: "validate_deploy"
-      run_id: $last_run_id
-      run_attempt: $last_run_attempt
+      run_id: ${{ needs.get_last_fail_jobs.outputs.last_run_id }}
+      run_attempt: ${{ needs.get_last_fail_jobs.outputs.last_run_attempt }}
     
   print_data:
     needs: get_list_matrix_fail

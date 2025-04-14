@@ -48,6 +48,8 @@ jobs:
           last_run_attempt=$(echo "$response" | jq '.workflow_runs[0].run_attempt')
           echo "last_run_id=$last_run_id" >> "$GITHUB_OUTPUT"
           echo "last_run_attempt=$last_run_attempt" >> "$GITHUB_OUTPUT"
+          echo "last_run_id $last_run_id"
+          echo "last_run_attempt $last_run_attempt"
 
   get_list_matrix_fail:
     needs: get_last_fail_jobs

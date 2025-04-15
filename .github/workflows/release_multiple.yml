@@ -125,7 +125,7 @@ jobs:
             jobs="${{ needs.generate_fail_matrix.outputs.jobs }}"
           fi
           echo "$jobs"
-          echo "jobs=$jobs" >> "$GITHUB_OUTPUT"
+          echo "$jobs" >> "$GITHUB_OUTPUT"
   print_result:
     runs-on: ubuntu-latest
     needs: [get_dynamic_jobs]

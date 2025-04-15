@@ -115,7 +115,7 @@ jobs:
     needs: [get_jobs_matrix,generate_fail_matrix]
     if: ${{ always() }}
     outputs:
-      jobs: ${{ steps.generate_matrix.outputs.jobs}}
+      jobs: ${{ inputs.execute_only_fails == true && needs.generate_fail_matrix.outputs.jobs|| steps.generate_matrix.outputs.jobs}}
     steps:
       - name: get matrix list
         id: generate_matrix

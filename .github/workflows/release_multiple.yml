@@ -66,7 +66,10 @@ jobs:
     steps:
       - name: print
         run: |
-          valores=($(echo "${{ needs.get_list_matrix_fail.outputs.matrix_status}}" | sed -n 's/[^)]*)/(&\n)/g;p' | grep -oP '\(\K[^)]*(?=\))' || true))
+          valores='[]'
+          if [ -n "${{ needs.get_list_matrix_fail.outputs.matrix_status}}" ]; then
+            valores=($(echo "${{ needs.get_list_matrix_fail.outputs.matrix_status}}" | sed -n 's/[^)]*)/(&\n)/g;p' | grep -oP '\(\K[^)]*(?=\))' || true))
+          fi
           echo "jobs=$valores" >> "$GITHUB_OUTPUT"
 
   get_dynamic_jobs:

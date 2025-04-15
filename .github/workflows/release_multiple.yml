@@ -118,6 +118,7 @@ jobs:
       jobs: ${{ steps.generate_matrix.outputs.jobs}}
     steps:
       - name: get matrix list
+        id: generate_matrix
         run: |
           jobs="${{ needs.get_jobs_matrix.outputs.jobs }}"
           if [ "${{ inputs.execute_only_fails }}" = "true" ]; then

@@ -135,7 +135,7 @@ jobs:
       max-parallel: 20
       fail-fast: false
       matrix:
-        dominio: ${{ fromJSON(needs.generate_fail_matrix.outputs.jobs)  }}
+        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs)  }}
     with:
       version_name: ${{ matrix.dominio }}
       version_type: ${{ inputs.version_type }}

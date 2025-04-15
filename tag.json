@@ -1,764 +1,225 @@
 {
-    "total_count": 6,
-    "jobs": [
-        {
-            "id": 40148941268,
-            "run_id": 14325056586,
-            "workflow_name": "Deploy [dominio1 / subdomain2 / destination3 ] Version type :major by @nriofrio2508",
-            "head_branch": "main",
-            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586",
-            "run_attempt": 1,
-            "node_id": "CR_kwDOMhiutM8AAAAJWRA51A",
-            "head_sha": "b7497245647aaad1d093f28b2a71e783422e1b8c",
-            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40148941268",
-            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586/job/40148941268",
-            "status": "completed",
-            "conclusion": "success",
-            "created_at": "2025-04-08T04:21:16Z",
-            "started_at": "2025-04-08T04:21:18Z",
-            "completed_at": "2025-04-08T04:21:23Z",
-            "name": "get_dynamic_jobs",
-            "steps": [
-                {
-                    "name": "Set up job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 1,
-                    "started_at": "2025-04-08T04:21:19Z",
-                    "completed_at": "2025-04-08T04:21:19Z"
-                },
-                {
-                    "name": "Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 2,
-                    "started_at": "2025-04-08T04:21:19Z",
-                    "completed_at": "2025-04-08T04:21:22Z"
-                },
-                {
-                    "name": "Get 3th level",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 3,
-                    "started_at": "2025-04-08T04:21:22Z",
-                    "completed_at": "2025-04-08T04:21:22Z"
-                },
-                {
-                    "name": "print",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 4,
-                    "started_at": "2025-04-08T04:21:22Z",
-                    "completed_at": "2025-04-08T04:21:22Z"
-                },
-                {
-                    "name": "Post Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 8,
-                    "started_at": "2025-04-08T04:21:22Z",
-                    "completed_at": "2025-04-08T04:21:22Z"
-                },
-                {
-                    "name": "Complete job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 9,
-                    "started_at": "2025-04-08T04:21:22Z",
-                    "completed_at": "2025-04-08T04:21:22Z"
-                }
-            ],
-            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40148941268",
-            "labels": [
-                "ubuntu-latest"
-            ],
-            "runner_id": 1000001084,
-            "runner_name": "GitHub Actions",
-            "runner_group_id": 0,
-            "runner_group_name": ""
+    "total_count": 1,
+    "workflow_runs": [
+      {
+        "id": 30433642,
+        "name": "Build",
+        "node_id": "MDEyOldvcmtmbG93IFJ1bjI2OTI4OQ==",
+        "check_suite_id": 42,
+        "check_suite_node_id": "MDEwOkNoZWNrU3VpdGU0Mg==",
+        "head_branch": "master",
+        "head_sha": "acb5820ced9479c074f688cc328bf03f341a511d",
+        "path": ".github/workflows/build.yml@main",
+        "run_number": 562,
+        "event": "push",
+        "display_title": "Update README.md",
+        "status": "queued",
+        "conclusion": null,
+        "workflow_id": 159038,
+        "url": "https://api.github.com/repos/octo-org/octo-repo/actions/runs/30433642",
+        "html_url": "https://github.com/octo-org/octo-repo/actions/runs/30433642",
+        "pull_requests": [],
+        "created_at": "2020-01-22T19:33:08Z",
+        "updated_at": "2020-01-22T19:33:08Z",
+        "actor": {
+          "login": "octocat",
+          "id": 1,
+          "node_id": "MDQ6VXNlcjE=",
+          "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/octocat",
+          "html_url": "https://github.com/octocat",
+          "followers_url": "https://api.github.com/users/octocat/followers",
+          "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+          "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+          "organizations_url": "https://api.github.com/users/octocat/orgs",
+          "repos_url": "https://api.github.com/users/octocat/repos",
+          "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/octocat/received_events",
+          "type": "User",
+          "site_admin": false
         },
-        {
-            "id": 40148945170,
-            "run_id": 14325056586,
-            "workflow_name": "Deploy [dominio1 / subdomain2 / destination3 ] Version type :major by @nriofrio2508",
-            "head_branch": "main",
-            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586",
-            "run_attempt": 1,
-            "node_id": "CR_kwDOMhiutM8AAAAJWRBJEg",
-            "head_sha": "b7497245647aaad1d093f28b2a71e783422e1b8c",
-            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40148945170",
-            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586/job/40148945170",
-            "status": "completed",
-            "conclusion": "success",
-            "created_at": "2025-04-08T04:21:23Z",
-            "started_at": "2025-04-08T04:21:27Z",
-            "completed_at": "2025-04-08T04:21:44Z",
-            "name": "get_last_tag (dominio1-mi_subdominio-path2)",
-            "steps": [
-                {
-                    "name": "Set up job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 1,
-                    "started_at": "2025-04-08T04:21:28Z",
-                    "completed_at": "2025-04-08T04:21:30Z"
-                },
-                {
-                    "name": "Build WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 2,
-                    "started_at": "2025-04-08T04:21:30Z",
-                    "completed_at": "2025-04-08T04:21:34Z"
-                },
-                {
-                    "name": "Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 3,
-                    "started_at": "2025-04-08T04:21:34Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "fix",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 4,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Get Previous tag",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 5,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Get last tag Step",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 6,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Get last stable release by TAG",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 7,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:38Z"
-                },
-                {
-                    "name": "Print last stable release TAG",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 8,
-                    "started_at": "2025-04-08T04:21:38Z",
-                    "completed_at": "2025-04-08T04:21:38Z"
-                },
-                {
-                    "name": "Print PATH",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 9,
-                    "started_at": "2025-04-08T04:21:38Z",
-                    "completed_at": "2025-04-08T04:21:38Z"
-                },
-                {
-                    "name": "Get SemVer from release",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 10,
-                    "started_at": "2025-04-08T04:21:38Z",
-                    "completed_at": "2025-04-08T04:21:38Z"
-                },
-                {
-                    "name": "Get all next version",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 11,
-                    "started_at": "2025-04-08T04:21:38Z",
-                    "completed_at": "2025-04-08T04:21:39Z"
-                },
-                {
-                    "name": "Get next release version",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 12,
-                    "started_at": "2025-04-08T04:21:39Z",
-                    "completed_at": "2025-04-08T04:21:39Z"
-                },
-                {
-                    "name": "Diff between next release and last tag semver",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 13,
-                    "started_at": "2025-04-08T04:21:39Z",
-                    "completed_at": "2025-04-08T04:21:39Z"
-                },
-                {
-                    "name": "Generate JSON",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 14,
-                    "started_at": "2025-04-08T04:21:39Z",
-                    "completed_at": "2025-04-08T04:21:39Z"
-                },
-                {
-                    "name": "Upload pre release",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 15,
-                    "started_at": "2025-04-08T04:21:39Z",
-                    "completed_at": "2025-04-08T04:21:40Z"
-                },
-                {
-                    "name": "Post Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 30,
-                    "started_at": "2025-04-08T04:21:40Z",
-                    "completed_at": "2025-04-08T04:21:40Z"
-                },
-                {
-                    "name": "Complete job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 31,
-                    "started_at": "2025-04-08T04:21:40Z",
-                    "completed_at": "2025-04-08T04:21:40Z"
-                }
-            ],
-            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40148945170",
-            "labels": [
-                "ubuntu-latest"
-            ],
-            "runner_id": 1000001085,
-            "runner_name": "GitHub Actions",
-            "runner_group_id": 0,
-            "runner_group_name": ""
+        "run_attempt": 1,
+        "run_started_at": "2020-01-22T19:33:08Z",
+        "triggering_actor": {
+          "login": "octocat",
+          "id": 1,
+          "node_id": "MDQ6VXNlcjE=",
+          "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+          "gravatar_id": "",
+          "url": "https://api.github.com/users/octocat",
+          "html_url": "https://github.com/octocat",
+          "followers_url": "https://api.github.com/users/octocat/followers",
+          "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+          "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+          "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+          "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+          "organizations_url": "https://api.github.com/users/octocat/orgs",
+          "repos_url": "https://api.github.com/users/octocat/repos",
+          "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+          "received_events_url": "https://api.github.com/users/octocat/received_events",
+          "type": "User",
+          "site_admin": false
         },
-        {
-            "id": 40148945171,
-            "run_id": 14325056586,
-            "workflow_name": "Deploy [dominio1 / subdomain2 / destination3 ] Version type :major by @nriofrio2508",
-            "head_branch": "main",
-            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586",
-            "run_attempt": 1,
-            "node_id": "CR_kwDOMhiutM8AAAAJWRBJEw",
-            "head_sha": "b7497245647aaad1d093f28b2a71e783422e1b8c",
-            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40148945171",
-            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586/job/40148945171",
-            "status": "completed",
-            "conclusion": "success",
-            "created_at": "2025-04-08T04:21:23Z",
-            "started_at": "2025-04-08T04:21:28Z",
-            "completed_at": "2025-04-08T04:21:39Z",
-            "name": "get_last_tag (dominio1-mi_subdominio-mi_path)",
-            "steps": [
-                {
-                    "name": "Set up job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 1,
-                    "started_at": "2025-04-08T04:21:28Z",
-                    "completed_at": "2025-04-08T04:21:29Z"
-                },
-                {
-                    "name": "Build WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 2,
-                    "started_at": "2025-04-08T04:21:29Z",
-                    "completed_at": "2025-04-08T04:21:33Z"
-                },
-                {
-                    "name": "Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 3,
-                    "started_at": "2025-04-08T04:21:33Z",
-                    "completed_at": "2025-04-08T04:21:35Z"
-                },
-                {
-                    "name": "fix",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 4,
-                    "started_at": "2025-04-08T04:21:35Z",
-                    "completed_at": "2025-04-08T04:21:35Z"
-                },
-                {
-                    "name": "Get Previous tag",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 5,
-                    "started_at": "2025-04-08T04:21:35Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get last tag Step",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 6,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get last stable release by TAG",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 7,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Print last stable release TAG",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 8,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Print PATH",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 9,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get SemVer from release",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 10,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get all next version",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 11,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Get next release version",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 12,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Diff between next release and last tag semver",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 13,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Generate JSON",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 14,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Upload pre release",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 15,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Post Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 30,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Complete job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 31,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                }
-            ],
-            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40148945171",
-            "labels": [
-                "ubuntu-latest"
-            ],
-            "runner_id": 1000001086,
-            "runner_name": "GitHub Actions",
-            "runner_group_id": 0,
-            "runner_group_name": ""
+        "jobs_url": "https://api.github.com/repos/octo-org/octo-repo/actions/runs/30433642/jobs",
+        "logs_url": "https://api.github.com/repos/octo-org/octo-repo/actions/runs/30433642/logs",
+        "check_suite_url": "https://api.github.com/repos/octo-org/octo-repo/check-suites/414944374",
+        "artifacts_url": "https://api.github.com/repos/octo-org/octo-repo/actions/runs/30433642/artifacts",
+        "cancel_url": "https://api.github.com/repos/octo-org/octo-repo/actions/runs/30433642/cancel",
+        "rerun_url": "https://api.github.com/repos/octo-org/octo-repo/actions/runs/30433642/rerun",
+        "workflow_url": "https://api.github.com/repos/octo-org/octo-repo/actions/workflows/159038",
+        "head_commit": {
+          "id": "acb5820ced9479c074f688cc328bf03f341a511d",
+          "tree_id": "d23f6eedb1e1b9610bbc754ddb5197bfe7271223",
+          "message": "Create linter.yaml",
+          "timestamp": "2020-01-22T19:33:05Z",
+          "author": {
+            "name": "Octo Cat",
+            "email": "octocat@github.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "email": "noreply@github.com"
+          }
         },
-        {
-            "id": 40148945187,
-            "run_id": 14325056586,
-            "workflow_name": "Deploy [dominio1 / subdomain2 / destination3 ] Version type :major by @nriofrio2508",
-            "head_branch": "main",
-            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586",
-            "run_attempt": 1,
-            "node_id": "CR_kwDOMhiutM8AAAAJWRBJIw",
-            "head_sha": "b7497245647aaad1d093f28b2a71e783422e1b8c",
-            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40148945187",
-            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586/job/40148945187",
-            "status": "completed",
-            "conclusion": "success",
-            "created_at": "2025-04-08T04:21:23Z",
-            "started_at": "2025-04-08T04:21:28Z",
-            "completed_at": "2025-04-08T04:21:39Z",
-            "name": "get_last_tag (dominio1-mi_subdominio2-mi_path)",
-            "steps": [
-                {
-                    "name": "Set up job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 1,
-                    "started_at": "2025-04-08T04:21:29Z",
-                    "completed_at": "2025-04-08T04:21:30Z"
-                },
-                {
-                    "name": "Build WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 2,
-                    "started_at": "2025-04-08T04:21:30Z",
-                    "completed_at": "2025-04-08T04:21:33Z"
-                },
-                {
-                    "name": "Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 3,
-                    "started_at": "2025-04-08T04:21:33Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "fix",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 4,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get Previous tag",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 5,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get last tag Step",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 6,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get last stable release by TAG",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 7,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Print last stable release TAG",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 8,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Print PATH",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 9,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get SemVer from release",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 10,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get all next version",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 11,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Get next release version",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 12,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Diff between next release and last tag semver",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 13,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Generate JSON",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 14,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Upload pre release",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 15,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:37Z"
-                },
-                {
-                    "name": "Post Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 30,
-                    "started_at": "2025-04-08T04:21:37Z",
-                    "completed_at": "2025-04-08T04:21:38Z"
-                },
-                {
-                    "name": "Complete job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 31,
-                    "started_at": "2025-04-08T04:21:38Z",
-                    "completed_at": "2025-04-08T04:21:38Z"
-                }
-            ],
-            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40148945187",
-            "labels": [
-                "ubuntu-latest"
-            ],
-            "runner_id": 1000001087,
-            "runner_name": "GitHub Actions",
-            "runner_group_id": 0,
-            "runner_group_name": ""
+        "repository": {
+          "id": 1296269,
+          "node_id": "MDEwOlJlcG9zaXRvcnkxMjk2MjY5",
+          "name": "Hello-World",
+          "full_name": "octocat/Hello-World",
+          "owner": {
+            "login": "octocat",
+            "id": 1,
+            "node_id": "MDQ6VXNlcjE=",
+            "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/octocat",
+            "html_url": "https://github.com/octocat",
+            "followers_url": "https://api.github.com/users/octocat/followers",
+            "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+            "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+            "organizations_url": "https://api.github.com/users/octocat/orgs",
+            "repos_url": "https://api.github.com/users/octocat/repos",
+            "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/octocat/received_events",
+            "type": "User",
+            "site_admin": false
+          },
+          "private": false,
+          "html_url": "https://github.com/octocat/Hello-World",
+          "description": "This your first repo!",
+          "fork": false,
+          "url": "https://api.github.com/repos/octocat/Hello-World",
+          "archive_url": "https://api.github.com/repos/octocat/Hello-World/{archive_format}{/ref}",
+          "assignees_url": "https://api.github.com/repos/octocat/Hello-World/assignees{/user}",
+          "blobs_url": "https://api.github.com/repos/octocat/Hello-World/git/blobs{/sha}",
+          "branches_url": "https://api.github.com/repos/octocat/Hello-World/branches{/branch}",
+          "collaborators_url": "https://api.github.com/repos/octocat/Hello-World/collaborators{/collaborator}",
+          "comments_url": "https://api.github.com/repos/octocat/Hello-World/comments{/number}",
+          "commits_url": "https://api.github.com/repos/octocat/Hello-World/commits{/sha}",
+          "compare_url": "https://api.github.com/repos/octocat/Hello-World/compare/{base}...{head}",
+          "contents_url": "https://api.github.com/repos/octocat/Hello-World/contents/{+path}",
+          "contributors_url": "https://api.github.com/repos/octocat/Hello-World/contributors",
+          "deployments_url": "https://api.github.com/repos/octocat/Hello-World/deployments",
+          "downloads_url": "https://api.github.com/repos/octocat/Hello-World/downloads",
+          "events_url": "https://api.github.com/repos/octocat/Hello-World/events",
+          "forks_url": "https://api.github.com/repos/octocat/Hello-World/forks",
+          "git_commits_url": "https://api.github.com/repos/octocat/Hello-World/git/commits{/sha}",
+          "git_refs_url": "https://api.github.com/repos/octocat/Hello-World/git/refs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/octocat/Hello-World/git/tags{/sha}",
+          "git_url": "git:github.com/octocat/Hello-World.git",
+          "issue_comment_url": "https://api.github.com/repos/octocat/Hello-World/issues/comments{/number}",
+          "issue_events_url": "https://api.github.com/repos/octocat/Hello-World/issues/events{/number}",
+          "issues_url": "https://api.github.com/repos/octocat/Hello-World/issues{/number}",
+          "keys_url": "https://api.github.com/repos/octocat/Hello-World/keys{/key_id}",
+          "labels_url": "https://api.github.com/repos/octocat/Hello-World/labels{/name}",
+          "languages_url": "https://api.github.com/repos/octocat/Hello-World/languages",
+          "merges_url": "https://api.github.com/repos/octocat/Hello-World/merges",
+          "milestones_url": "https://api.github.com/repos/octocat/Hello-World/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/octocat/Hello-World/notifications{?since,all,participating}",
+          "pulls_url": "https://api.github.com/repos/octocat/Hello-World/pulls{/number}",
+          "releases_url": "https://api.github.com/repos/octocat/Hello-World/releases{/id}",
+          "ssh_url": "git@github.com:octocat/Hello-World.git",
+          "stargazers_url": "https://api.github.com/repos/octocat/Hello-World/stargazers",
+          "statuses_url": "https://api.github.com/repos/octocat/Hello-World/statuses/{sha}",
+          "subscribers_url": "https://api.github.com/repos/octocat/Hello-World/subscribers",
+          "subscription_url": "https://api.github.com/repos/octocat/Hello-World/subscription",
+          "tags_url": "https://api.github.com/repos/octocat/Hello-World/tags",
+          "teams_url": "https://api.github.com/repos/octocat/Hello-World/teams",
+          "trees_url": "https://api.github.com/repos/octocat/Hello-World/git/trees{/sha}",
+          "hooks_url": "http://api.github.com/repos/octocat/Hello-World/hooks"
         },
-        {
-            "id": 40148945189,
-            "run_id": 14325056586,
-            "workflow_name": "Deploy [dominio1 / subdomain2 / destination3 ] Version type :major by @nriofrio2508",
-            "head_branch": "main",
-            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586",
-            "run_attempt": 1,
-            "node_id": "CR_kwDOMhiutM8AAAAJWRBJJQ",
-            "head_sha": "b7497245647aaad1d093f28b2a71e783422e1b8c",
-            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40148945189",
-            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586/job/40148945189",
-            "status": "completed",
-            "conclusion": "failure",
-            "created_at": "2025-04-08T04:21:23Z",
-            "started_at": "2025-04-08T04:21:28Z",
-            "completed_at": "2025-04-08T04:21:37Z",
-            "name": "get_last_tag (dominio1-mi_subdominio-path3)",
-            "steps": [
-                {
-                    "name": "Set up job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 1,
-                    "started_at": "2025-04-08T04:21:29Z",
-                    "completed_at": "2025-04-08T04:21:29Z"
-                },
-                {
-                    "name": "Build WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 2,
-                    "started_at": "2025-04-08T04:21:29Z",
-                    "completed_at": "2025-04-08T04:21:33Z"
-                },
-                {
-                    "name": "Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 3,
-                    "started_at": "2025-04-08T04:21:33Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "fix",
-                    "status": "completed",
-                    "conclusion": "failure",
-                    "number": 4,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get Previous tag",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 5,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get last tag Step",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 6,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get last stable release by TAG",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 7,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Print last stable release TAG",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 8,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Print PATH",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 9,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get SemVer from release",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 10,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get all next version",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 11,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Get next release version",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 12,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Diff between next release and last tag semver",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 13,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Generate JSON",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 14,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Upload pre release",
-                    "status": "completed",
-                    "conclusion": "skipped",
-                    "number": 15,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Post Run actions/checkout@v3",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 30,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                },
-                {
-                    "name": "Complete job",
-                    "status": "completed",
-                    "conclusion": "success",
-                    "number": 31,
-                    "started_at": "2025-04-08T04:21:36Z",
-                    "completed_at": "2025-04-08T04:21:36Z"
-                }
-            ],
-            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40148945189",
-            "labels": [
-                "ubuntu-latest"
-            ],
-            "runner_id": 1000001088,
-            "runner_name": "GitHub Actions",
-            "runner_group_id": 0,
-            "runner_group_name": ""
-        },
-        {
-            "id": 40148954132,
-            "run_id": 14325056586,
-            "workflow_name": "Deploy [dominio1 / subdomain2 / destination3 ] Version type :major by @nriofrio2508",
-            "head_branch": "main",
-            "run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586",
-            "run_attempt": 1,
-            "node_id": "CR_kwDOMhiutM8AAAAJWRBsFA",
-            "head_sha": "b7497245647aaad1d093f28b2a71e783422e1b8c",
-            "url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/actions/jobs/40148954132",
-            "html_url": "https://github.com/nriofrio2508/new_flow_automatic_version/actions/runs/14325056586/job/40148954132",
-            "status": "in_progress",
-            "conclusion": null,
-            "created_at": "2025-04-08T04:21:44Z",
-            "started_at": "2025-04-08T04:21:48Z",
-            "completed_at": null,
-            "name": "validate_matrix_get_last_tag",
-            "steps": [],
-            "check_run_url": "https://api.github.com/repos/nriofrio2508/new_flow_automatic_version/check-runs/40148954132",
-            "labels": [
-                "ubuntu-latest"
-            ],
-            "runner_id": 1000001089,
-            "runner_name": "GitHub Actions",
-            "runner_group_id": 0,
-            "runner_group_name": ""
+        "head_repository": {
+          "id": 217723378,
+          "node_id": "MDEwOlJlcG9zaXRvcnkyMTc3MjMzNzg=",
+          "name": "octo-repo",
+          "full_name": "octo-org/octo-repo",
+          "private": true,
+          "owner": {
+            "login": "octocat",
+            "id": 1,
+            "node_id": "MDQ6VXNlcjE=",
+            "avatar_url": "https://github.com/images/error/octocat_happy.gif",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/octocat",
+            "html_url": "https://github.com/octocat",
+            "followers_url": "https://api.github.com/users/octocat/followers",
+            "following_url": "https://api.github.com/users/octocat/following{/other_user}",
+            "gists_url": "https://api.github.com/users/octocat/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/octocat/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/octocat/subscriptions",
+            "organizations_url": "https://api.github.com/users/octocat/orgs",
+            "repos_url": "https://api.github.com/users/octocat/repos",
+            "events_url": "https://api.github.com/users/octocat/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/octocat/received_events",
+            "type": "User",
+            "site_admin": false
+          },
+          "html_url": "https://github.com/octo-org/octo-repo",
+          "description": null,
+          "fork": false,
+          "url": "https://api.github.com/repos/octo-org/octo-repo",
+          "forks_url": "https://api.github.com/repos/octo-org/octo-repo/forks",
+          "keys_url": "https://api.github.com/repos/octo-org/octo-repo/keys{/key_id}",
+          "collaborators_url": "https://api.github.com/repos/octo-org/octo-repo/collaborators{/collaborator}",
+          "teams_url": "https://api.github.com/repos/octo-org/octo-repo/teams",
+          "hooks_url": "https://api.github.com/repos/octo-org/octo-repo/hooks",
+          "issue_events_url": "https://api.github.com/repos/octo-org/octo-repo/issues/events{/number}",
+          "events_url": "https://api.github.com/repos/octo-org/octo-repo/events",
+          "assignees_url": "https://api.github.com/repos/octo-org/octo-repo/assignees{/user}",
+          "branches_url": "https://api.github.com/repos/octo-org/octo-repo/branches{/branch}",
+          "tags_url": "https://api.github.com/repos/octo-org/octo-repo/tags",
+          "blobs_url": "https://api.github.com/repos/octo-org/octo-repo/git/blobs{/sha}",
+          "git_tags_url": "https://api.github.com/repos/octo-org/octo-repo/git/tags{/sha}",
+          "git_refs_url": "https://api.github.com/repos/octo-org/octo-repo/git/refs{/sha}",
+          "trees_url": "https://api.github.com/repos/octo-org/octo-repo/git/trees{/sha}",
+          "statuses_url": "https://api.github.com/repos/octo-org/octo-repo/statuses/{sha}",
+          "languages_url": "https://api.github.com/repos/octo-org/octo-repo/languages",
+          "stargazers_url": "https://api.github.com/repos/octo-org/octo-repo/stargazers",
+          "contributors_url": "https://api.github.com/repos/octo-org/octo-repo/contributors",
+          "subscribers_url": "https://api.github.com/repos/octo-org/octo-repo/subscribers",
+          "subscription_url": "https://api.github.com/repos/octo-org/octo-repo/subscription",
+          "commits_url": "https://api.github.com/repos/octo-org/octo-repo/commits{/sha}",
+          "git_commits_url": "https://api.github.com/repos/octo-org/octo-repo/git/commits{/sha}",
+          "comments_url": "https://api.github.com/repos/octo-org/octo-repo/comments{/number}",
+          "issue_comment_url": "https://api.github.com/repos/octo-org/octo-repo/issues/comments{/number}",
+          "contents_url": "https://api.github.com/repos/octo-org/octo-repo/contents/{+path}",
+          "compare_url": "https://api.github.com/repos/octo-org/octo-repo/compare/{base}...{head}",
+          "merges_url": "https://api.github.com/repos/octo-org/octo-repo/merges",
+          "archive_url": "https://api.github.com/repos/octo-org/octo-repo/{archive_format}{/ref}",
+          "downloads_url": "https://api.github.com/repos/octo-org/octo-repo/downloads",
+          "issues_url": "https://api.github.com/repos/octo-org/octo-repo/issues{/number}",
+          "pulls_url": "https://api.github.com/repos/octo-org/octo-repo/pulls{/number}",
+          "milestones_url": "https://api.github.com/repos/octo-org/octo-repo/milestones{/number}",
+          "notifications_url": "https://api.github.com/repos/octo-org/octo-repo/notifications{?since,all,participating}",
+          "labels_url": "https://api.github.com/repos/octo-org/octo-repo/labels{/name}",
+          "releases_url": "https://api.github.com/repos/octo-org/octo-repo/releases{/id}",
+          "deployments_url": "https://api.github.com/repos/octo-org/octo-repo/deployments"
         }
+      }
     ]
-}
+  }

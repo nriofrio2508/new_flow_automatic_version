@@ -105,7 +105,7 @@ jobs:
   get_last_tag:
     needs: [get_dynamic_jobs,generate_fail_matrix]
     uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
-    
+    if: ${{ always() }}
     strategy:
       max-parallel: 20
       fail-fast: false

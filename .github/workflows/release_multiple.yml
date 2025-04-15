@@ -120,9 +120,9 @@ jobs:
       - name: get matrix list
         id: generate_matrix
         run: |
-          jobs="${{ needs.get_jobs_matrix.outputs.jobs }}"
+          jobs=${{ needs.get_jobs_matrix.outputs.jobs }}
           if [ "${{ inputs.execute_only_fails }}" = "true" ]; then
-            jobs="${{ needs.generate_fail_matrix.outputs.jobs }}"
+            jobs=${{ needs.generate_fail_matrix.outputs.jobs }}
           fi
           echo "$jobs"
           echo "$jobs" >> "$GITHUB_OUTPUT"

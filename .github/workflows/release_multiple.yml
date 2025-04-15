@@ -55,8 +55,8 @@ jobs:
     needs: get_last_fail_jobs
     uses: nriofrio2508/my_reusable/.github/workflows/get_status_matrix.yml@main
     with:
-      status: "success"
-      job_name: "get_last_fail_jobs"
+      status: "skipped,failure"
+      job_name: "validate_deploy"
       run_id: ${{ needs.get_last_fail_jobs.outputs.last_run_id }}
       run_attempt: ${{ needs.get_last_fail_jobs.outputs.last_run_attempt }}
     

@@ -126,6 +126,14 @@ jobs:
           fi
           echo "$jobs"
           echo "jobs=$jobs" >> "$GITHUB_OUTPUT"
+  print_result:
+    runs-on: ubuntu-latest
+    needs: [get_dynamic_jobs]
+    steps:
+      - name: print
+        run: |
+          echo "Value:${{ needs.get_dynamic_jobs.outputs.jobs}}"
+
       
   get_last_tag:
     needs: [get_dynamic_jobs]

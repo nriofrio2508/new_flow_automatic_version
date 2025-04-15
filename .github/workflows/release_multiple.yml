@@ -63,8 +63,11 @@ jobs:
   generate_fail_matrix:
     needs: get_list_matrix_fail
     runs-on: ubuntu-latest
+    outputs:
+      jobs: ${{ steps.get_fail_jobs.outputs.jobs}}
     steps:
       - name: print
+        id: get_fail_jobs
         run: |
           echo "resultado es ${{ needs.get_list_matrix_fail.outputs.matrix_status}}"
           valores='[]'
@@ -74,9 +77,9 @@ jobs:
           echo "jobs=$valores" >> "$GITHUB_OUTPUT"
           echo "valores es $valores"
 
-  get_dynamic_jobs:
+  get_jobs_matrix:
     runs-on: ubuntu-latest
-    if: ${{ ! inputs.execute_only_fails && false }}
+    if: ${{ ! inputs.execute_only_fails }}
     outputs:
       jobs: ${{ steps.generate_matrix.outputs.jobs}}
     steps:
@@ -106,6 +109,21 @@ jobs:
       - name: print
         run: |
           echo ${{ steps.generate_matrix.outputs.jobs}}
+
+  get_dynamic_jobs:
+    runs-on: ubuntu-latest
+    needs: [get_jobs_matrix,generate_fail_matrix]
+    if: ${{ always() }}
+    outputs:
+      jobs: ${{ steps.generate_matrix.outputs.jobs}}
+    steps:
+      - name: get matrix list
+        run: |
+          jobs="${{ needs.get_jobs_matrix.outputs.jobs }}"
+          if [ "${{ needs.generate_fail_matrix.outputs.jobs }} = '[]' "  ]; then
+            jobs="${{ needs.generate_fail_matrix.outputs.jobs }}"
+          fi
+          echo "jobs=$jobs" >> "$GITHUB_OUTPUT"
       
   get_last_tag:
     needs: [get_dynamic_jobs,generate_fail_matrix]

@@ -60,15 +60,14 @@ jobs:
       run_id: ${{ needs.get_last_fail_jobs.outputs.last_run_id }}
       run_attempt: ${{ needs.get_last_fail_jobs.outputs.last_run_attempt }}
     
-  print_data:
+  generate_fail_matrix:
     needs: get_list_matrix_fail
     runs-on: ubuntu-latest
     steps:
       - name: print
         run: |
           valores=($(echo "${{ needs.get_list_matrix_fail.outputs.matrix_status}}" | sed -n 's/[^)]*)/(&\n)/g;p' | grep -oP '\(\K[^)]*(?=\))' || true))
-          echo "${valores[@]}"
-          echo ${{ needs.get_list_matrix_fail.outputs.matrix_status}}
+          echo "$JOBS" >> "$GITHUB_OUTPUT"
 
   get_dynamic_jobs:
     runs-on: ubuntu-latest
@@ -104,14 +103,14 @@ jobs:
           echo ${{ steps.generate_matrix.outputs.jobs}}
       
   get_last_tag:
-    needs: get_dynamic_jobs
+    needs: [get_dynamic_jobs,generate_fail_matrix]
     uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
     if: ${{ needs.get_dynamic_jobs.outputs.jobs != '[]' && false}}
     strategy:
       max-parallel: 20
       fail-fast: false
       matrix:
-        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
+        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) ||fromJSON(needs.generate_fail_matrix.outputs.jobs)  }}
     with:
       version_name: ${{ matrix.dominio }}
       version_type: ${{ inputs.version_type }}

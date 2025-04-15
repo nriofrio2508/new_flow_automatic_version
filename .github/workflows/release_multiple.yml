@@ -120,7 +120,7 @@ jobs:
       - name: get matrix list
         run: |
           jobs="${{ needs.get_jobs_matrix.outputs.jobs }}"
-          if [ "${{ needs.generate_fail_matrix.outputs.jobs }} = '[]' "  ]; then
+          if [ "${{ needs.get_jobs_matrix.outputs.jobs }} != '' "  ]; then
             jobs="${{ needs.generate_fail_matrix.outputs.jobs }}"
           fi
           echo "jobs=$jobs" >> "$GITHUB_OUTPUT"

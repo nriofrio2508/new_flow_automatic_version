@@ -123,6 +123,7 @@ jobs:
           if [ "${{ needs.get_jobs_matrix.outputs.jobs }}" = ''  ]; then
             jobs="${{ needs.generate_fail_matrix.outputs.jobs }}"
           fi
+          echo "$jobs"
           echo "jobs=$jobs" >> "$GITHUB_OUTPUT"
       
   get_last_tag:

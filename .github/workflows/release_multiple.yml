@@ -66,6 +66,8 @@ jobs:
     steps:
       - name: print
         run: |
+          valores=($(echo "${{ needs.get_list_matrix_fail.outputs.matrix_status}}" | sed -n 's/[^)]*)/(&\n)/g;p' | grep -oP '\(\K[^)]*(?=\))'))
+          echo $valores
           echo ${{ needs.get_list_matrix_fail.outputs.matrix_status}}
 
   get_dynamic_jobs:

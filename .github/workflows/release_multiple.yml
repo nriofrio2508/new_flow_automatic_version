@@ -14,72 +14,17 @@ on:
           - major
           - minor
           - patch
-      domain:
-        description: 'Domain'
-        required: true
-        type: choice
-        options:
-          - all jobs
-          - dominio1
-          - dominio2
-          - technology
-      
-      execute_only_fails:
-        type: boolean
-        default: false
-        description: (Optional) Execute only last fail
+      path:
+        description: 'Domain or Domain/Subdomain'
         required: false
-      workflow_id_last_fail:
         type: string
-        required: false
+      
 
 run-name:  Deploy Multi job by @${{ github.actor }}
 
 jobs:
-  get_last_fail_jobs:
-    runs-on: ubuntu-latest
-    if: ${{ inputs.execute_only_fails == true  }}
-    steps:
-      - name: Get last fail jobs
-        run: |          
-          URL="https://api.github.com/repos/${{ github.repository }}/actions/workflows/release_multiple.yml/runs?page=1"
-          response=$(curl -s -H "Authorization: Bearer ${{  secrets.GITHUB_TOKEN  }}" "$URL")
-          last_run_id=$(echo "$response" | jq '.workflow_runs[0].id')
-          last_run_attempt=$(echo "$response" | jq '.workflow_runs[0].run_attempt')
-          echo "last_run_id=$last_run_id" >> "$GITHUB_OUTPUT"
-          echo "last_run_attempt=$last_run_attempt" >> "$GITHUB_OUTPUT"
-          echo "last_run_id $last_run_id"
-          echo "last_run_attempt $last_run_attempt"
-
-  get_list_matrix_fail:
-    needs: get_last_fail_jobs
-    uses: nriofrio2508/my_reusable/.github/workflows/get_status_matrix.yml@main
-    with:
-      status: "skipped,failure"
-      job_name: "validate_deploy"
-      run_id: ${{ needs.get_last_fail_jobs.outputs.last_run_id }}
-      run_attempt: ${{ needs.get_last_fail_jobs.outputs.last_run_attempt }}
-    
-  generate_fail_matrix:
-    needs: get_list_matrix_fail
-    runs-on: ubuntu-latest
-    outputs:
-      jobs: ${{ steps.get_fail_jobs.outputs.jobs}}
-    steps:
-      - name: print
-        id: get_fail_jobs
-        run: |
-          echo "resultado es ${{ needs.get_list_matrix_fail.outputs.matrix_status}}"
-          valores='[]'
-          if [ -n "${{ needs.get_list_matrix_fail.outputs.matrix_status}}" ]; then
-            valores=($(echo "${{ needs.get_list_matrix_fail.outputs.matrix_status}}" | sed -n 's/[^)]*)/(&\n)/g;p' | grep -oP '\(\K[^)]*(?=\))' || true))
-          fi
-          echo "jobs=$valores" >> "$GITHUB_OUTPUT"
-          echo "valores es $valores"
-
   get_jobs_matrix:
     runs-on: ubuntu-latest
-    if: ${{ ! inputs.execute_only_fails }}
     outputs:
       jobs: ${{ steps.generate_matrix.outputs.jobs}}
     steps:
@@ -90,10 +35,9 @@ jobs:
       - name: Get 3th level
         id: generate_matrix
         run: |
-          echo "Value:${{ inputs.domain}}"
-          BLACKLIST=("demo" "dominio1" "dominio2")
-          if [ "${{ inputs.domain}}" != "all jobs" ]; then
-            BLACKLIST=("${{ inputs.domain }}")
+          BLACKLIST=("${{ inputs.path }}")
+          if [ -z "${{ inputs.path }}" ]; then            
+            BLACKLIST=("demo" "dominio1" "dominio2")
           fi
           BLACKLIST_PATTERN=$(IFS=\|; echo "${BLACKLIST[*]}")
           DIRECTORIES=$(find . -mindepth 3 -maxdepth 3 -type d | grep -E "^./(${BLACKLIST_PATTERN})/.*" | sed 's|^\./||')      
@@ -110,41 +54,16 @@ jobs:
         run: |
           echo ${{ steps.generate_matrix.outputs.jobs}}
 
-  get_dynamic_jobs:
-    runs-on: ubuntu-latest
-    needs: [get_jobs_matrix,generate_fail_matrix]
-    if: ${{ always() }}
-    outputs:
-      jobs: ${{ steps.generate_matrix.outputs.jobs }} 
-    steps:
-      - name: get matrix list
-        id: generate_matrix
-        run: |
-          jobs=${{ needs.get_jobs_matrix.outputs.jobs }}
-          if [ "${{ inputs.execute_only_fails }}" = "true" ]; then
-            jobs=${{ needs.generate_fail_matrix.outputs.jobs }}
-          fi
-          jobs=$(echo "$jobs" | jq -R -s 'split(",") | map(.)')
-          echo "jobs=$jobs" >> "$GITHUB_OUTPUT"
-          echo "jobs es $jobs"
-  print_result:
-    runs-on: ubuntu-latest
-    needs: [get_dynamic_jobs]
-    steps:
-      - name: print
-        run: |
-          echo "Value:${{ needs.get_dynamic_jobs.outputs.jobs}}"
-
       
   get_last_tag:
-    needs: [get_dynamic_jobs]
+    needs: [get_jobs_matrix]
     uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
-    if: ${{  always() && needs.get_dynamic_jobs.outputs.jobs != '[]' }}
+    if: ${{ needs.get_jobs_matrix.outputs.jobs != '[]' }}
     strategy:
       max-parallel: 20
       fail-fast: false
       matrix:
-        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs)  }}
+        dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs)  }}
     with:
       version_name: ${{ matrix.dominio }}
       version_type: ${{ inputs.version_type }}
@@ -159,12 +78,12 @@ jobs:
       job_name: "get_last_tag"
     
   validate_deploy:
-    needs: [get_last_tag,validate_status_matrix_get_last_tag,get_dynamic_jobs]
+    needs: [get_last_tag,validate_status_matrix_get_last_tag,get_jobs_matrix]
     strategy:
       max-parallel: 20
       fail-fast: false
       matrix:
-        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
+        dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs) }}
     uses: nriofrio2508/my_reusable/.github/workflows/validate_deploy.yml@main
     secrets: inherit
     with:
@@ -184,8 +103,8 @@ jobs:
       max-parallel: 20
       fail-fast: false
       matrix:
-        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
-    needs: [validate_deploy, get_last_tag,get_dynamic_jobs,validate_status_matrix_get_last_tag,validate_status_matrix_validate_deploy] 
+        dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs) }}
+    needs: [validate_deploy, get_last_tag,get_jobs_matrix,validate_status_matrix_get_last_tag,validate_status_matrix_validate_deploy] 
     uses: nriofrio2508/my_reusable/.github/workflows/generate_pre_release.yml@main
     with:
       execute_matrix: ${{ contains(needs.validate_status_matrix_validate_deploy.outputs.matrix_status, matrix.dominio )}}
@@ -213,8 +132,8 @@ jobs:
       max-parallel: 20
       fail-fast: false
       matrix:
-        dominio: ${{ fromJSON(needs.get_dynamic_jobs.outputs.jobs) }}
-    needs: [validate_status_matrix_generate_pre_release,get_last_tag,get_dynamic_jobs]
+        dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs) }}
+    needs: [validate_status_matrix_generate_pre_release,get_last_tag,get_jobs_matrix]
     uses: nriofrio2508/my_reusable/.github/workflows/generate_release.yml@main
     secrets: inherit
     with:

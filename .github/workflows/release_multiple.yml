@@ -105,7 +105,7 @@ jobs:
       matrix:
         dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs) }}
     needs: [validate_deploy, get_jobs_matrix,validate_status_matrix_validate_deploy] 
-    uses: ./.github/workflows/generate_release.yml@main
+    uses: ./.github/workflows/generate_release.yml
     with:
       matrix_dominio: ${{ matrix.dominio }}
       execute_matrix: ${{ contains(needs.validate_status_matrix_validate_deploy.outputs.matrix_status, matrix.dominio )}}      

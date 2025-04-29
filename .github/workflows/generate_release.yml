@@ -45,7 +45,7 @@ jobs:
 
   generateRelease:
     needs: getReleaseFromJson
-    uses: nriofrio2508/my_reusable/.github/workflows/generate_pre_release.yml
+    uses: nriofrio2508/my_reusable/.github/workflows/generate_pre_release.yml@main
     with:
       execute_matrix: ${{ inputs.execute_matrix }}
       matrix_dominio: ${{ inputs.matrix_dominio }}

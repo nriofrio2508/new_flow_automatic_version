@@ -73,7 +73,7 @@ jobs:
     needs: get_last_tag
     steps:
       - name: Test step
-        run: echo "${{ toJson(needs)}}"
+        run: echo "${{ fromJson(needs.read.outputs.last_stable_release).dominio2-mi_subdominio5-mi_path }}"
 
   validate_status_matrix_get_last_tag:
     needs: [get_last_tag]

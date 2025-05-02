@@ -104,7 +104,7 @@ runs:
         echo '{"last_tag_repo": "${{steps.get_previous_tag.outputs.tag}}" , "next_tag_repo": "${{ steps.generate_candidate_release.outputs.new_rc_version }}", "last_stable_release": "${{ steps.get_last_release.outputs.name }}" }'> "${{ inputs.version_name }}.json"
       shell: bash
     - name: PRINT MATIRX
-      run: echo " es matrix ${{{ inputs.is_matrix }}}"
+      run: echo " es matrix ${{ inputs.is_matrix }}"
       shell: bash
     
     - name: Upload pre release

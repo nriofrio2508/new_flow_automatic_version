@@ -105,6 +105,7 @@ runs:
       shell: bash
     - name: PRINT MATIRX
       run: echo " es matrix ${{{ inputs.is_matrix }}}"
+      shell: bash
     
     - name: Upload pre release
       if: ${{ inputs.is_matrix == true }}

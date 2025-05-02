@@ -1,0 +1,108 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Get Candidate release 
+inputs:
+  version_name: #Example: customNamev.1.0.0 -> send customName
+    description: 'Version name, Example: domain-subdomain-destination'
+    required: true
+    type: string
+  version_type:
+    description: 'Version Type'
+    required: true
+    type: string
+  is_matrix:
+    description: 'Recovery artifact from matrix'
+    required: false
+    type: boolean
+    default: false
+
+outputs:
+  last_tag:
+    description: "Last tag"
+    value: ${{ steps.get_previous_tag.outputs.tag }}
+  next_candidate_release:
+    description: "Next candidate release"
+    value: ${{ steps.generate_candidate_release.outputs.new_rc_version }}
+  last_stable_release:
+    description: "Set last stable release"
+    value: ${{ steps.get_last_release.outputs.name || '' }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 
+
+    - name: 'Get Previous tag'
+      id: get_previous_tag
+      uses: "WyriHaximus/github-action-get-previous-tag@a8f2215feac0522ff78eba734c1e91e5b59fb434" #main
+      with:
+        prefix: '${{ inputs.version_name }}-v'
+        fallback: '${{ inputs.version_name }}-v0.0.0'
+
+    - name: Print previous tag
+      run: echo "Previous tag -  ${{ steps.get_previous_tag.outputs.tag }}"
+
+    - name: Get last stable release by TAG
+      id: get_last_release
+      working-directory: ./.github/scripts
+      run: |
+        chmod +x get_last_release_by_tag.sh
+        ./get_last_release_by_tag.sh ${{github.repository}} ${{ inputs.version_name }}
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Print last stable release TAG
+      run: echo "Last stable release - ${{ steps.get_last_release.outputs.name }}"  
+      
+    - name: Get SemVer from release
+      id: semver_release_step        
+      run: |
+        version_number="0.0.0"
+        if [ ${{ steps.get_last_release.outputs.name }} ]; then
+          version_number=$(echo ${{ steps.get_last_release.outputs.name}} | awk -F'-v' '{print $2}')          
+        fi
+        echo "semver_release=$version_number" >> $GITHUB_OUTPUT
+    
+    - name: 'Get all next semver version'
+      id: semvers
+      uses: "WyriHaximus/github-action-next-semvers@d079934efaf011a4cf8912d4637097fe35d32b93"
+      with:
+        version: ${{ steps.semver_release_step.outputs.semver_release }}
+
+    - name: Get next release version
+      id: get_next_release_version
+      run: |
+        case "${{inputs.version_type}}" in
+            major) echo "new_release_version=${{ inputs.version_name }}-v${{steps.semvers.outputs.major }}"  >> $GITHUB_OUTPUT ;;
+            minor) echo "new_release_version=${{ inputs.version_name }}-v${{steps.semvers.outputs.minor }}"  >> $GITHUB_OUTPUT ;;
+            patch) echo "new_release_version=${{ inputs.version_name }}-v${{steps.semvers.outputs.patch }}"  >> $GITHUB_OUTPUT ;;
+            *) echo "Parameter is not major, minor, or patch" ;;
+        esac
+        echo new_release_version
+    
+    - name: Diff between next release and last tag semver
+      id: generate_candidate_release
+      run: |
+        last_tag_semver=$(echo "${{ steps.get_previous_tag.outputs.tag}}" | awk -F'-rc.' '{print $1}')
+        rc=1
+        if [ "$last_tag_semver" = "${{steps.get_next_release_version.outputs.new_release_version}}" ]; then
+          rc=$(echo ${{ steps.get_previous_tag.outputs.tag }} | awk -F'-rc.' '{print $2}')
+          ((rc++))
+        fi
+
+        new_rc_version="${{steps.get_next_release_version.outputs.new_release_version}}-rc.$rc"
+        echo "new_rc_version=$new_rc_version" >> $GITHUB_OUTPUT
+        
+    - name: Generate JSON
+      run: |
+        echo '{"last_tag_repo": "${{steps.get_previous_tag.outputs.tag}}" , "next_tag_repo": "${{ steps.generate_candidate_release.outputs.new_rc_version }}", "last_stable_release": "${{ steps.get_last_release.outputs.name }}" }'> "${{ inputs.version_name }}.json"
+    
+    - name: Upload pre release
+      if: ${{ inputs.is_matrix == true}}
+      uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+      with:
+        name: ${{ inputs.version_name }}
+        path: "${{ inputs.version_name }}.json"
+        retention-days: 1

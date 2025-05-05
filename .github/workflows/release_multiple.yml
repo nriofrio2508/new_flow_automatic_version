@@ -66,7 +66,7 @@ jobs:
         dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs)  }}    
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/get_next_candidate_release
+      - uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
         with:
           version_name: ${{ matrix.dominio }}
           version_type: ${{ inputs.version_type }}

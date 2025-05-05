@@ -28,6 +28,7 @@ runs:
   using: "composite"
   steps:
     - name: Get matrix status
+      shell: bash
       id: get_matrix_status
       run: |
         list_matrix_status=""

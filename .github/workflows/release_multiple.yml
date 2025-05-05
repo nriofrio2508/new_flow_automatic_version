@@ -56,7 +56,6 @@ jobs:
 
       
   get_last_tag:
-    runs-on: ubuntu-latest
     needs: [get_jobs_matrix]    
     if: ${{ needs.get_jobs_matrix.outputs.jobs != '[]' }}
     strategy:
@@ -64,13 +63,11 @@ jobs:
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs)  }}    
-    steps:
-      - uses: actions/checkout@v4
-      - uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
-        with:
-          version_name: ${{ matrix.dominio }}
-          version_type: ${{ inputs.version_type }}
-          is_matrix: true
+    uses: nriofrio2508/my_reusable/.github/workflows/get_next_candidate_release.yml@main
+    with:
+      version_name: ${{ matrix.dominio }}
+      version_type: ${{ inputs.version_type }}
+      is_matrix: true
 
   validate_status_matrix_get_last_tag:
     needs: [get_last_tag]

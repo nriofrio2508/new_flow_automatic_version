@@ -71,12 +71,13 @@ jobs:
 
   validate_status_matrix_get_last_tag:
     needs: [get_last_tag]
-    uses: ./.github/actions/get_matrix_by_status
-    secrets: inherit
-    with:
-      status: "success"
-      job_name: "get_last_tag"
-      github_token: "${{ secrets.GITHUB_TOKEN }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/get_matrix_by_status
+        with:
+          status: "success"
+          job_name: "get_last_tag"
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
     
   validate_deploy:
     needs: [get_last_tag,validate_status_matrix_get_last_tag,get_jobs_matrix]

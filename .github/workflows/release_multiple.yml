@@ -72,9 +72,12 @@ jobs:
   validate_status_matrix_get_last_tag:
     needs: [get_last_tag]
     runs-on: ubuntu-latest
+    outputs:
+      matrix_status: ${{ steps.get_matrix_status.outputs.matrix_status }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/get_matrix_by_status
+        id: get_matrix_status
         with:
           status: "success"
           job_name: "get_last_tag"

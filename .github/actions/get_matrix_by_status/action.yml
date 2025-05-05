@@ -2,27 +2,25 @@
 
 name: Get list of matrix by estatus
 
-on:
-  workflow_dispatch:
-    inputs:
-      status:
-        type: string
-        description: Matrix status
-      job_name:
-        type: string
-      run_id:
-        required: false 
-        type: string               
-      run_attempt:
-        required: false
-        type: string
-      github_token:
-        required: true
-        type: string
-    outputs:
-      matrix_status:
-        description: "List of matrix by specifit status"
-        value: ${{ steps.get_matrix_status.outputs.matrix_status }}
+inputs:
+  status:
+    type: string
+    description: Matrix status
+  job_name:
+    type: string
+  run_id:
+    required: false 
+    type: string               
+  run_attempt:
+    required: false
+    type: string
+  github_token:
+    required: true
+    type: string
+outputs:
+  matrix_status:
+    description: "List of matrix by specifit status"
+    value: ${{ steps.get_matrix_status.outputs.matrix_status }}
 
 runs:
   using: "composite"

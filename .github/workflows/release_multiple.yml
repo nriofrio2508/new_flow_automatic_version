@@ -73,6 +73,7 @@ jobs:
     needs: [get_last_tag]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/get_matrix_by_status
         with:
           status: "success"

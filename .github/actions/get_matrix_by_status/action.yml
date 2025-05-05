@@ -36,7 +36,7 @@ runs:
 
         while [ $num_jobs -gt 0 ]; do
           URL="https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ inputs.run_id || github.run_id}}/attempts/${{ inputs.run_attempt || github.run_attempt }}/jobs?per_page=100&page=$page"
-          jobs=$(curl -s -H "Authorization: Bearer ${{  secrets.GITHUB_TOKEN  }}" "$URL")
+          jobs=$(curl -s -H "Authorization: Bearer ${{  inputs.github_token }}" "$URL")
           num_jobs=$(echo "$jobs" | jq '.jobs | length')         
           matrix_status=$(echo "$jobs" | jq -r --arg status "${{ inputs.status }}" '.jobs | map(select(.conclusion as $e | ($status | split(",") | index($e)) and (.name | tostring | startswith("${{ inputs.job_name}}")))) | map(.name) | join("|")')
           list_matrix_status="$list_matrix_status $matrix_status"            
@@ -47,5 +47,3 @@ runs:
         echo $list_matrix_status
         list_matrix_status=$(echo "$list_matrix_status" | sed 's/^ *//;s/ *$//')
         echo "matrix_status=$list_matrix_status" >> $GITHUB_OUTPUT
-      env:
-        GH_TOKEN: ${{ inputs.github_token }}

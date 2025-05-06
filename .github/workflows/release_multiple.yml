@@ -98,11 +98,17 @@ jobs:
 
   validate_status_matrix_validate_deploy:
     needs: [validate_deploy]
-    uses: nriofrio2508/my_reusable/.github/workflows/get_matrix_status.yml@main
-    secrets: inherit
-    with:
-      status: "success"
-      job_name: "validate_deploy"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix_status: ${{ steps.get_matrix_status.outputs.matrix_status }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/get_matrix_by_status
+        id: get_matrix_status
+        with:
+          status: "success"
+          job_name: "validate_deploy"
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
 
   generate_pre_release:
     strategy:
@@ -111,10 +117,11 @@ jobs:
       matrix:
         dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs) }}
     needs: [validate_deploy, get_jobs_matrix,validate_status_matrix_validate_deploy] 
-    uses: nriofrio2508/my_reusable/.github/workflows/generate_pre_release.yml@main
+    uses: nriofrio2508/my_reusable/.github/workflows/generate_release.yml@main
     with:
       matrix_dominio: ${{ matrix.dominio }}
-      execute_matrix: ${{ contains(needs.validate_status_matrix_validate_deploy.outputs.matrix_status, matrix.dominio )}}      
+      execute_matrix: ${{ contains(needs.validate_status_matrix_validate_deploy.outputs.matrix_status, matrix.dominio )}}  
+      is_release: false    
     secrets: inherit
 
   promote_prd:
@@ -127,11 +134,17 @@ jobs:
 
   validate_status_matrix_generate_pre_release:
     needs: [promote_prd]
-    uses: nriofrio2508/my_reusable/.github/workflows/get_matrix_status.yml@main
-    secrets: inherit
-    with:
-      status: "success"
-      job_name: "generate_pre_release"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix_status: ${{ steps.get_matrix_status.outputs.matrix_status }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/get_matrix_by_status
+        id: get_matrix_status
+        with:
+          status: "success"
+          job_name: "generate_pre_release"
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
 
   generate_release:
     strategy:
@@ -139,7 +152,7 @@ jobs:
       fail-fast: false
       matrix:
         dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs) }}
-    needs: [validate_status_matrix_generate_pre_release,get_last_tag,get_jobs_matrix]
+    needs: [validate_status_matrix_generate_pre_release,get_jobs_matrix]
     uses: nriofrio2508/my_reusable/.github/workflows/generate_release.yml@main
     secrets: inherit
     with:

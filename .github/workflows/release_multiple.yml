@@ -117,11 +117,12 @@ jobs:
       matrix:
         dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs) }}
     needs: [validate_deploy, get_jobs_matrix,validate_status_matrix_validate_deploy] 
-    uses: nriofrio2508/my_reusable/.github/workflows/generate_release.yml@main
+    uses: nriofrio2508/my_reusable/.github/workflows/generate_release_matrix.yml@main
     with:
       matrix_dominio: ${{ matrix.dominio }}
-      execute_matrix: ${{ contains(needs.validate_status_matrix_validate_deploy.outputs.matrix_status, matrix.dominio )}}  
-      is_release: false    
+      execute: ${{ contains(needs.validate_status_matrix_validate_deploy.outputs.matrix_status, matrix.dominio )}}  
+      is_release: false
+      is_matrix: true
     secrets: inherit
 
   promote_prd:
@@ -153,12 +154,13 @@ jobs:
       matrix:
         dominio: ${{ fromJSON(needs.get_jobs_matrix.outputs.jobs) }}
     needs: [validate_status_matrix_generate_pre_release,get_jobs_matrix]
-    uses: nriofrio2508/my_reusable/.github/workflows/generate_release.yml@main
+    uses: nriofrio2508/my_reusable/.github/workflows/generate_release_matrix.yml@main
     secrets: inherit
     with:
-      execute_matrix: ${{ contains(needs.validate_status_matrix_generate_pre_release.outputs.matrix_status, matrix.dominio )}}
+      execute: ${{ contains(needs.validate_status_matrix_generate_pre_release.outputs.matrix_status, matrix.dominio )}}
       matrix_dominio: ${{ matrix.dominio }}
       is_release: true
+      is_matrix: true
 
   validate_deploy_prd:
     runs-on: ubuntu-latest

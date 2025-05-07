@@ -1,7 +1,16 @@
 # This is a basic workflow to help you get started with Actions
 
 name: Deploy release
-
+permissions:
+  security-events: write
+  pull-requests: write
+  packages: read
+  actions: write
+  contents: read
+  deployments: write
+  issues: write
+  checks: write
+  statuses: write # Used by CM to mark commit status
 # Controls when the workflow will run
 on:
   workflow_dispatch:

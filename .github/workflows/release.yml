@@ -5,8 +5,8 @@ permissions:
   security-events: write
   pull-requests: write
   packages: read
-  actions: write
-  contents: read
+  actions: read
+  contents: write
   deployments: write
   issues: write
   checks: write

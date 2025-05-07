@@ -4,7 +4,7 @@
     security-events: write
     pull-requests: write
     packages: read
-    actions: read
+    actions: write
     contents: read
     deployments: write
     issues: write

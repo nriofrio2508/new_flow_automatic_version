@@ -158,6 +158,7 @@ jobs:
     with:
       execute_matrix: ${{ contains(needs.validate_status_matrix_generate_pre_release.outputs.matrix_status, matrix.dominio )}}
       matrix_dominio: ${{ matrix.dominio }}
+      is_release: true
 
   validate_deploy_prd:
     runs-on: ubuntu-latest

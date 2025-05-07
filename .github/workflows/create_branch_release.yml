@@ -1,6 +1,15 @@
 ---
   name: Generate branch release
-  
+  permissions:
+    security-events: write
+    pull-requests: write
+    packages: read
+    actions: read
+    contents: read
+    deployments: write
+    issues: write
+    checks: write
+    statuses: write # Used by CM to mark commit status
   on:
     workflow_dispatch:
       inputs:

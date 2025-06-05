@@ -45,4 +45,4 @@ jobs:
           warehouse_id: "9d6103798fab286d"
           branch_name: "main"
           artifact_name: "data-execute-stg"
-          sufix_environment: "DESA"
+          sufix_environment: "CERT"

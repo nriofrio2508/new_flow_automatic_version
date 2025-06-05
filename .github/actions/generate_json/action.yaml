@@ -1,0 +1,71 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Get list of matrix by estatus
+
+inputs:
+  notebook_path:
+    type: string
+    description: Notebook path
+  warehouse_id:
+    description: 'Warehouse ID'
+    required: true
+    type: string
+  branch_name:
+    type: string
+    description: Branch name
+  artifact_name:
+    type: string
+    description: Artifact name
+  sufix_environment:
+    type: string
+    description: Sufix environment, e.g. DESA, CERT, PROD
+    default: DESA
+
+runs:
+  using: "composite"
+  steps:
+    - name: Define group name
+      id: generate_group_name
+      shell: bash
+      run: |
+        group_name="POAZ_QA_YADL_${{ inputs.sufix_environment }}"
+        if [ "${{ inputs.sufix_environment }}" = "DESA" ]; then
+          group_name="YADL_QA_CON_DESA"
+        fi
+
+        echo "group_name=$group_name" >> $GITHUB_OUTPUT
+    - name: Generate JSON info
+      shell: bash
+      run: |
+        echo '{
+            "git_source": {
+              "git_branch": "${{ inputs.branch_name }}",
+              "git_provider": "gitHub",
+              "git_url": "https://github.com/yaperos/dp-lakehouse-datacontracts.git"
+            },              
+            "tasks" : [
+              {
+                "task_key": "datacontract",
+                "notebook_task": {
+                  "notebook_path": "${{ inputs.notebook_path }}",
+                  "warehouse_id": "${{ inputs.warehouse_id }}",
+                  "source": "GIT"
+                }
+              }                  
+            ],
+            "access_control_list": [
+              {
+                "permission_level": "CAN_VIEW",
+                "group_name": "YADL_DATAOPS_VIEW_JOBS_${{ inputs.sufix_environment }}"
+              },
+              {
+                "permission_level": "CAN_VIEW",
+                "group_name": "${{ steps.generate_group_name.outputs.group_name }}"
+              }
+            ]
+          }' > data.json
+    - name: 'Upload Artifact'
+      uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: data.json

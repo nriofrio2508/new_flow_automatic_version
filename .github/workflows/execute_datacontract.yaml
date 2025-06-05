@@ -1,0 +1,48 @@
+---
+name: Execute Datacontract
+permissions:
+  security-events: write
+  pull-requests: write
+  packages: read
+  actions: read
+  contents: read
+  deployments: write
+  issues: write
+  checks: write
+  statuses: write # Used by CM to mark commit status
+
+on:
+  workflow_dispatch:
+    inputs:
+      catalog:
+        required: true
+        type: string
+        description: 'Catalog Name'
+      schema:
+        required: true
+        type: string
+        description: 'Schema Name'
+      table_name:
+        description: 'Table Name'
+        required: true
+        type: string
+      warehouse_id:
+        description: 'Warehouse ID'
+        required: true
+        type: string
+
+run-name: Execute to QA Datacontract at catalog ${{ inputs.catalog }} schema ${{ inputs.schema }} table ${{ inputs.table_name }} by @${{ github.actor }}
+
+jobs:
+  generate_json_info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ./.github/actions/generate_json
+        with:
+          notebook_path: "${{ inputs.catalog }}/${{ inputs.schema }}/${{ inputs.table_name }}"
+          warehouse_id: "9d6103798fab286d"
+          branch_name: "main"
+          artifact_name: "data-execute-stg"
+          sufix_environment: "DESA"

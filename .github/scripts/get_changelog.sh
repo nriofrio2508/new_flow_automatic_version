@@ -11,7 +11,7 @@ if [ "$4" == "true" ]; then
 fi
 
 fetch=$5
-path_filter=${6:-""}
+path_filter=${6:-"-- "}
 
 # By default a GitHub action checkout is shallow. Get all the tags, branches,
 # and history. Redirect output to standard error which we can collect in the
@@ -35,7 +35,7 @@ fi
 # and thats not a valid arg.
 log=$(git log "${base_ref}"..."${head_ref}" \
   --pretty=format:"- [%h](http://github.com/${repo_url}/commit/%H) - %s" \
-  ${extra_flags} -- ${path_filter})
+  ${extra_flags} ${path_filter})
 
 if [ -z "$log" ];
 then

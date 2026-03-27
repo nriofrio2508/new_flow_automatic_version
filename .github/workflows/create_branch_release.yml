@@ -107,7 +107,7 @@
         
         - name: 'Get all next version'
           id: semvers
-          uses: "WyriHaximus/github-action-next-semvers@v1"
+          uses: "WyriHaximus/github-action-next-semvers@18aa9ed4152808ab99b88d71f5481e41f8d89930"
           with:
             version: ${{ steps.semver_release_step.outputs.semver_release }}
   

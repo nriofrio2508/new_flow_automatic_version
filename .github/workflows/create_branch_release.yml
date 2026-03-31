@@ -49,14 +49,14 @@
     PREFIX_REPO: '${{inputs.domain}}-${{inputs.subdomain}}-${{inputs.destination}}'
 
   jobs:
-    get_last_tag:
+    get_release_candidate:
       # The type of runner that the job will run on
       if: ${{ github.ref_name == 'main'}}
       runs-on: ubuntu-latest
       environment:
         name: env-demo
       outputs:
-        next_rc_version: ${{  steps.validate_exists_branch.outputs.new_rc_version_validate || steps.generate_tag_rc.outputs.new_rc_version }}
+        next_rc: ${{  steps.generate_tag_rc.outputs.new_rc_version }}
       steps:
         - name: Display Branch Name
           run: |
@@ -144,42 +144,13 @@
 
         - name: Print next release candidate
           run: echo ${{ steps.generate_tag_rc.outputs.new_rc_version }}
-        
-        - name: validate if branch exists
-          id: validate_exists_branch
-          run: |
-            exists_branch=$(git branch -r | grep "release/${{ steps.generate_tag_rc.outputs.new_rc_version }}" || true)
-            if [ -n "$exists_branch" ]; then
-              latest_branch=$(git for-each-ref --sort=-refname --format='%(refname:short)' refs/remotes/ | grep "^origin/release/${{steps.get_next_release_version.outputs.new_release_version}}-rc." | head -n 1 || true)
-              last_rc=$(echo "$latest_branch" | awk -F'-rc.' '{print $2}')
-              ((last_rc++))
-              echo "new_rc_version_validate=${{steps.get_next_release_version.outputs.new_release_version}}-rc.$last_rc" >> $GITHUB_OUTPUT
-            fi
-        - name: Result Validate Branch
-          run: |
-            echo "Output ${{ steps.validate_exists_branch.outputs.new_rc_version_validate }}"
 
     create_branch:
-      needs: ['get_last_tag']
-      runs-on: ubuntu-latest
-      outputs: 
-        release_branch_name: "release/${{ needs.get_last_tag.outputs.next_rc_version}}"
-      steps:
-        - uses: peterjgrainger/action-create-branch@v3.0.0
-          id: create_branch
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-            branch: release/${{ needs.get_last_tag.outputs.next_rc_version}}
-        - name: Validate Branch
-          if: ${{ steps.create_branch.outputs.created == 'false' }}
-          run: |
-            echo "Ya existe la rama: release/${{ needs.get_last_tag.outputs.next_rc_version}}"
-            exit 1
-        - name: Get Branch Name
-          if: ${{ steps.create_branch.outputs.created == 'true' }}
-          run: |
-            echo "Branch generado:  release/${{ needs.get_last_tag.outputs.next_rc_version}}"
+      needs: get_release_candidate
+      uses: nriofrio2508/my_reusable/.github/workflows/generate_release_branch.yaml@main
+      with:
+        branch_name: '${{ needs.get_release_candidate.outputs.next_rc }}'
+      secrets: inherit
     
     deploy_stg:
       if: ${{ inputs.deploy_stg }}

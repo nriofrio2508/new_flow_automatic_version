@@ -54,4 +54,7 @@ jobs:
         uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
         with:
           name: "data-execute-stg"
-          cat : data.json
+      - name: 'Show JSON'
+        shell: bash
+        run: |
+          cat data.json

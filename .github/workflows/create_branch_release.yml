@@ -14,7 +14,7 @@
     workflow_dispatch:
       inputs:
         domain:
-          description: 'Domain'
+          description: "Domain"
           required: true
           type: choice
           options:

@@ -79,12 +79,12 @@ def decrypt_text(phrase: str, token: str) -> str:
 
 def example_usage() -> None:
 	# Cambia estas variables por tus propios valores.
-	phrase = "mi_frase_secreta"
+	phrase = ""
 	text_to_encrypt = "TEXTO_CIFRAR"
 	encrypted_text = encrypt_text(phrase, text_to_encrypt)
 	print(f"Texto cifrado: {encrypted_text}")
 
-	text_to_decrypt = "TEXTO_DESCIFRAR"
+	text_to_decrypt = "olZmyhx0b-Fko5Qa1SoQ91NI3xaFPyUXG4ciGvWaBmdLdFMK3lBLW5CKc99e0FHXfKUmldxAiufKsQfC3SQ39pH9wZsjw2Vz8XOBb6ueys6F9Q=="
 	decrypted_text = decrypt_text(phrase, text_to_decrypt)
 	print(f"Texto descifrado: {decrypted_text}")
 

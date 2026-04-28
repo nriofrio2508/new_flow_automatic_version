@@ -169,13 +169,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Changelog
         id: build_changelog
-        run: |          
-          chmod +x ./.github/scripts/get_changelog.sh
-          {
-            echo 'changelog<<EOF'
-            ./.github/scripts/get_changelog.sh "${{ needs.get_last_tag.outputs.next_tag_repo }}" "${{ needs.get_last_tag.outputs.last_stable_release || '' }}" ${{github.repository}} false true         
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
+        run: |
+          if [[ "${{ needs.get_last_tag.outputs.last_stable_release }}" == "" ]]; then
+            echo "changelog=No Changes." >> $GITHUB_OUTPUT
+          else
+            uuid=$(uuidgen)
+            changelog="$(git log "${{ needs.get_last_tag.outputs.last_stable_release }}"..."${{ needs.get_last_tag.outputs.next_tag_repo }}" --pretty=format:"- [%h](http://github.com/${{ github.repository }}/commit/%H) - %s" -- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}})"
+            echo "Delimiter $uuid"
+            echo "$changelog"
+            echo "changelog<<$uuid" >> $GITHUB_OUTPUT
+            echo "$changelog" >> $GITHUB_OUTPUT
+            echo "$uuid" >> $GITHUB_OUTPUT
+          fi
           
 
       - name: Create PreRelease        
@@ -236,16 +241,20 @@ jobs:
           git tag -a "${tag}" -m "${message}"
           git push origin "${tag}"
           echo "TAG_RELEASE_CANDIDATE=$tag" >> $GITHUB_OUTPUT
-      
-      - name: Build Changelog        
+      - name: Build Changelog
         id: changelog_prd
         run: |
-          chmod +x ./.github/scripts/get_changelog.sh
-          {
-            echo 'changelog<<EOF'
-            ./.github/scripts/get_changelog.sh "${{ steps.get_name_new_release.outputs.new_name_release || ''}}" "${{ steps.get_last_release.outputs.name || ''}}" ${{github.repository}} false true  "-- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}}"
-            echo EOF
-          } >> "$GITHUB_OUTPUT"
+          if [[ "${{ steps.get_last_release.outputs.name }}" == "" ]]; then
+            echo "changelog=No Changes." >> $GITHUB_OUTPUT
+          else
+            uuid=$(uuidgen)
+            changelog="$(git log "${{ steps.get_last_release.outputs.name }}"..."${{ steps.get_name_new_release.outputs.new_name_release }}" --pretty=format:"- [%h](http://github.com/${{ github.repository }}/commit/%H) - %s" -- ${{inputs.domain}}/${{inputs.subdomain}}/${{inputs.destination}})"
+            echo "Delimiter $uuid"
+            echo "$changelog"
+            echo "changelog<<$uuid" >> $GITHUB_OUTPUT
+            echo "$changelog" >> $GITHUB_OUTPUT
+            echo "$uuid" >> $GITHUB_OUTPUT
+          fi
           
       - name: Create Release
         uses: actions/create-release@v1

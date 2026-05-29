@@ -63,13 +63,13 @@ jobs:
       next_tag_repo: ${{ steps.generate_tag_rc.outputs.new_rc_version }}
       last_stable_release: ${{ steps.get_last_release.outputs.name || '' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags    
       
       - name: 'Get Previous tag'
         id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@04e8485ecb6487243907e330d522ff60f02283ce"
+        uses: "WyriHaximus/github-action-get-previous-tag@61819f33034117e6c686e6a31dba995a85afc9de" #v2
         with:
           prefix: '${{ env.PREFIX_REPO }}-v'
           fallback: '${{ env.PREFIX_REPO }}-v0.0.0' # Optional fallback tag to use when no tag can be found
@@ -152,7 +152,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [validate_deploy, get_last_tag] 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           fetch-depth: 0
       - name: Push new Tag ReleaseCandidate
@@ -183,14 +183,13 @@ jobs:
           fi
           
 
-      - name: Create PreRelease        
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PreRelease
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
           tag_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
-          release_name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
+          name: '${{ needs.get_last_tag.outputs.next_tag_repo }}'
           body: |
             Actor: ${{ env.USER_ACTOR }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
@@ -210,7 +209,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [promote_prd,get_last_tag]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           fetch-depth: 0
       - name: Get last stable release by TAG
@@ -257,12 +256,12 @@ jobs:
           fi
           
       - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda
+        id: create_release_step
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
-          release_name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
+          name: '${{ steps.get_name_new_release.outputs.new_name_release }}'
           body: |
             Actor: ${{ env.USER_ACTOR }}
             ActionRunner: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

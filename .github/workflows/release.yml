@@ -43,6 +43,9 @@ on:
         required: false
         description: 'Leave Empty'
 
+concurrency:
+  group: deploy-${{ inputs.domain }}-${{ inputs.subdomain }}-${{ inputs.destination }}
+  cancel-in-progress: false
 
 run-name:  Deploy [${{ inputs.domain }} / ${{ inputs.subdomain }} / ${{ inputs.destination }} ] Version type :${{ inputs.version_type }} by @${{ github.event.sender.type == 'Bot' && inputs.actor || github.actor }}
 

@@ -47,9 +47,77 @@ jobs:
         id: set_version
         run: |
           echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+  
+  validate_job:
+    needs: get_version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate detalles.md
+        id: check-details
+        shell: bash
+        env:
+          TARGET_PATH: "${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}"
+        run: |
+          set -euo pipefail
+
+          DETAILS_FILE="${TARGET_PATH}/detalles.md"
+
+          echo "Validating: ${DETAILS_FILE}"
+
+          # Default output
+          echo "isDestroy=false" >> "$GITHUB_OUTPUT"
+
+          if [[ ! -f "$DETAILS_FILE" ]]; then
+            echo "File not found: $DETAILS_FILE"
+            exit 1
+          fi
+
+          # Extract the value from:
+          # <details>
+          #   <action>destroy</action>
+          # </details>
+          ACTION=$(python - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+
+          file_path = Path(os.environ["TARGET_PATH"]) / "detalles.md"
+          content = file_path.read_text(encoding="utf-8")
+
+          match = re.search(
+              r"<action>\s*(.*?)\s*</action>",
+              content,
+              re.IGNORECASE | re.DOTALL
+          )
+
+          print(match.group(1).strip() if match else "")
+          PY
+          )
+
+          echo "Detected action: '${ACTION}'"
+
+          if [[ "${ACTION,,}" == "destroy" ]]; then
+            echo "isDestroy=true" >> "$GITHUB_OUTPUT"
+
+            echo "::error title=DESTROY detected::The resource at '${TARGET_PATH}' is marked for destruction."
+
+            {
+              echo "## ⚠️ DESTROY detected"
+              echo ""
+              echo "> [!WARNING]"
+              echo "> **This resource is marked for destruction.**"
+              echo ""
+              echo "**Path:** \`${TARGET_PATH}\`"
+              echo ""
+              echo "**Action:** \`destroy\`"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
 
   validate_deploy:
-    needs: get_version
+    needs: [get_version, validate_job]
     if: github.ref == 'refs/heads/qa'
     uses: nriofrio2508/my_reusable/.github/workflows/deploy_lakehouse.yml@main
     with:

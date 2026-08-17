@@ -51,15 +51,17 @@ jobs:
   validate_job:
     needs: get_version
     runs-on: ubuntu-latest
+    outputs:
+      isDestroy: ${{ steps.check-destroy.outputs.isDestroy }}
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Validate detalles.md
-        id: check-details
+        id: check-destroy
         shell: bash
         env:
-          TARGET_PATH: ${{ inputs.target_path }}
+          TARGET_PATH: ${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}
         run: |
           set -uo pipefail
 
@@ -130,7 +132,7 @@ jobs:
 
   validate_deploy:
     needs: [get_version, validate_job]
-    if: github.ref == 'refs/heads/qa'
+    if: github.ref == 'refs/heads/qa' && needs.validate_job.outputs.isDestroy == 'false'
     uses: nriofrio2508/my_reusable/.github/workflows/deploy_lakehouse.yml@main
     with:
       environment: qa
@@ -138,8 +140,18 @@ jobs:
       pathToDeploy: ${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}
     secrets: inherit
   
+  destroy_deploy:
+    needs: [get_version, validate_job]
+    if: github.ref == 'refs/heads/qa' && needs.validate_job.outputs.isDestroy == 'true'
+    uses: nriofrio2508/my_reusable/.github/workflows/deploy_lakehouse.yml@main
+    with:
+      environment: qa
+      releaseToDeploy: ${{ needs.get_version.outputs.version }}
+      pathToDeploy: ${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}
+    secrets: inherit
+
   validate_job_automation:
-    needs: validate_deploy
+    needs: [validate_deploy, destroy_deploy]
     if: vars.TESTS_ENABLED == 'true'
     uses: nriofrio2508/my_reusable/.github/workflows/validate_databricks_job_automation.yml@main
     with:

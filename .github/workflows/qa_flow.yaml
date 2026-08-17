@@ -71,42 +71,13 @@ jobs:
           echo "Checking path: ${TARGET_PATH}"
           echo "Checking file: ${DETAILS_FILE}"
 
-          # --------------------------------------------------
-          # 1. La ruta no existe
-          # --------------------------------------------------
-          if [[ ! -d "$TARGET_PATH" ]]; then
-            echo "Path does not exist: ${TARGET_PATH}"
-
-            {
-              echo "## ✅ Destroy validation"
-              echo ""
-              echo "Path \`${TARGET_PATH}\` does not exist."
-              echo ""
-              echo "**isDestroy:** \`false\`"
-            } >> "$GITHUB_STEP_SUMMARY"
-
+          # La ruta o el archivo no existen
+          if [[ ! -d "$TARGET_PATH" || ! -f "$DETAILS_FILE" ]]; then
             exit 0
           fi
 
           # --------------------------------------------------
-          # 2. detalles.md no existe
-          # --------------------------------------------------
-          if [[ ! -f "$DETAILS_FILE" ]]; then
-            echo "File does not exist: ${DETAILS_FILE}"
-
-            {
-              echo "## ✅ Destroy validation"
-              echo ""
-              echo "File \`${DETAILS_FILE}\` does not exist."
-              echo ""
-              echo "**isDestroy:** \`false\`"
-            } >> "$GITHUB_STEP_SUMMARY"
-
-            exit 0
-          fi
-
-          # --------------------------------------------------
-          # 3. Leer action
+          #  Leer action
           # --------------------------------------------------
           ACTION=$(python - <<'PY'
           import os

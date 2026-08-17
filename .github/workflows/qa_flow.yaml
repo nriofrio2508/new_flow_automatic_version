@@ -1,0 +1,103 @@
+name: QA Flow
+
+permissions:
+  security-events: write
+  pull-requests: write
+  packages: read
+  actions: read
+  contents: read
+  deployments: write
+  issues: write
+  checks: write
+  statuses: write # Used by CM to mark commit status
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain'
+        required: true
+        type: choice
+        options:
+          - dominio1
+          - dominio2
+          - technology
+      subdomain:
+        description: 'Subdomain'
+        required: true
+        type: string
+      destination:
+        description: 'Destination'
+        required: true
+        type: string
+
+run-name: Deploy to QA Databricks at domain ${{ inputs.domain }} subdomain ${{ inputs.subdomain }} destination ${{ inputs.destination }} by @${{ github.actor }}
+
+jobs:
+  get_version:
+    if: github.ref == 'refs/heads/qa'
+    name: Get version
+    outputs:
+      version: ${{ steps.set_version.outputs.VERSION }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+      - name: Set Version
+        id: set_version
+        run: |
+          echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+  validate_deploy:
+    needs: get_version
+    if: github.ref == 'refs/heads/qa'
+    uses: nriofrio2508/my_reusable/.github/workflows/deploy_lakehouse.yaml@main
+    with:
+      environment: qa
+      releaseToDeploy: ${{ needs.get_version.outputs.version }}
+      pathToDeploy: ${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}
+    secrets: inherit
+  
+  validate_job_automation:
+    needs: validate_deploy
+    if: vars.TESTS_ENABLED == 'true'
+    uses: nriofrio2508/my_reusable/.github/workflows/validate_databricks_job_automation.yaml@main
+    with:
+      domain: ${{ inputs.domain }}
+      subdomain: ${{ inputs.subdomain }}
+      destination: ${{ inputs.destination }}
+      development_branch_name: ${{ github.ref_name }}
+      development_framework_repository: app-lakehouse-yape
+      test_framework_repository: fwk-data-tests
+    secrets: inherit
+
+  execute_tests:
+    needs: validate_job_automation
+    if: needs.validate_job_automation.outputs.found == 'true' && vars.TESTS_ENABLED == 'true'
+    uses: nriofrio2508/my_reusable/.github/workflows/test_databricks_assets.yaml@main
+    with:
+      python_version: '3.11.8'
+      poetry_version: '1.8.3'
+      test_command: poetry run poe test:execute-jobs
+      resource_type: jobs
+      path_test: jobs/job_validations
+      resource_name: ${{ needs.validate_job_automation.outputs.job_name }}
+      environment: qa
+      slack_channel_notification_failure: '#automatech-alerts'
+      notify_on_success: true
+      vault_vars: >
+        DATABRICKS_HOSTNAME_QA, DATABRICKS_CLUSTER_ID_QA, DATABRICKS_HOSTNAME_STG, DATABRICKS_CLUSTER_ID_STG
+      vault_secrets: >
+        DATABRICKS_TOKEN_QA, DATABRICKS_TOKEN_STG
+    secrets: inherit
+
+  send_datadog:
+    needs: [validate_deploy, execute_tests]
+    if: always()
+    uses: nriofrio2508/my_reusable/.github/workflows/send_datadog.yaml@main
+    with:
+      environment: qa
+      actor: ${{ github.triggering_actor }}
+      deploy_status: ${{ needs.validate_deploy.result }}
+      artifact_extra_info: ${{ needs.execute_tests.outputs.status && 'tests_summary_info' || ''}}
+    secrets: inherit

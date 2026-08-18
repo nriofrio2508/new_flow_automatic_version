@@ -54,81 +54,9 @@ jobs:
     outputs:
       isDestroy: ${{ steps.check-destroy.outputs.isDestroy }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Validate detalles.md
-        id: check-destroy
-        shell: bash
-        env:
-          TARGET_PATH: ${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}
-        run: |
-          set -uo pipefail
-
-          DETAILS_FILE="${TARGET_PATH}/detalles.md"
-
-          # Default: no destroy
-          echo "isDestroy=false" >> "$GITHUB_OUTPUT"
-
-          echo "Checking path: ${TARGET_PATH}"
-          echo "Checking file: ${DETAILS_FILE}"
-
-          # La ruta o el archivo no existen
-          if [[ ! -d "$TARGET_PATH" || ! -f "$DETAILS_FILE" ]]; then
-            exit 0
-          fi
-
-          # --------------------------------------------------
-          #  Leer action
-          # --------------------------------------------------
-          ACTION=$(python - <<'PY'
-          import os
-          import re
-          from pathlib import Path
-
-          file_path = Path(os.environ["TARGET_PATH"]) / "detalles.md"
-
-          try:
-              content = file_path.read_text(encoding="utf-8")
-          except Exception:
-              print("")
-              raise SystemExit(0)
-
-          match = re.search(
-              r"<action>\s*(.*?)\s*</action>",
-              content,
-              re.IGNORECASE | re.DOTALL
-          )
-
-          print(match.group(1).strip() if match else "")
-          PY
-          )
-
-          echo "Detected action: '${ACTION}'"
-
-          # --------------------------------------------------
-          # 4. Detectar destroy
-          # --------------------------------------------------
-          if [[ "${ACTION,,}" == "destroy" ]]; then
-
-            echo "isDestroy=true" >> "$GITHUB_OUTPUT"
-
-            echo "::error title=DESTROY detected::The resource at '${TARGET_PATH}' is marked for destruction."
-
-            {
-              echo "## 🛑 DESTROY detected"
-              echo ""
-              echo "> [!WARNING]"
-              echo "> **This resource is marked for destruction.**"
-              echo ""
-              echo "**Path:** \`${TARGET_PATH}\`"
-              echo ""
-              echo "**Action:** \`destroy\`"
-              echo ""
-              echo "**isDestroy:** \`true\`"
-            } >> "$GITHUB_STEP_SUMMARY"
-
-          fi
+      - uses: ./.github/actions/validate_destroy
+        with:
+          validation_path: "${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}"
 
   validate_deploy:
     needs: [get_version, validate_job]
@@ -143,11 +71,12 @@ jobs:
   destroy_deploy:
     needs: [get_version, validate_job]
     if: github.ref == 'refs/heads/qa' && needs.validate_job.outputs.isDestroy == 'true'
-    uses: nriofrio2508/my_reusable/.github/workflows/deploy_lakehouse.yml@main
+    uses: nriofrio2508/my_reusable/.github/workflows/execute_databricks_bundle.yaml@main
     with:
       environment: qa
-      releaseToDeploy: ${{ needs.get_version.outputs.version }}
-      pathToDeploy: ${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}
+      slack_channel: deploys
+      pre_command: databricks bundle destroy -t qa --auto-approve
+      command: pwd
     secrets: inherit
 
   validate_job_automation:

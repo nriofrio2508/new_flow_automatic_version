@@ -1,0 +1,87 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Get list of matrix by estatus
+description: Validate if the deployment is a destroy or not by checking the detalles.md file in the target path
+
+inputs:
+  validation_path:
+    type: string
+    description: Validation path
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+
+    - name: Validate detalles.md
+      id: check-destroy
+      shell: bash
+      env:
+        TARGET_PATH: ${{ inputs.validation_path }}
+      run: |
+        set -uo pipefail
+
+        DETAILS_FILE="${TARGET_PATH}/detalles.md"
+
+        # Default: no destroy
+        echo "isDestroy=false" >> "$GITHUB_OUTPUT"
+
+        echo "Checking path: ${TARGET_PATH}"
+        echo "Checking file: ${DETAILS_FILE}"
+
+        # La ruta o el archivo no existen
+        if [[ ! -d "$TARGET_PATH" || ! -f "$DETAILS_FILE" ]]; then
+          exit 0
+        fi
+
+        # --------------------------------------------------
+        #  Leer action
+        # --------------------------------------------------
+        ACTION=$(python - <<'PY'
+        import os
+        import re
+        from pathlib import Path
+
+        file_path = Path(os.environ["TARGET_PATH"]) / "detalles.md"
+
+        try:
+            content = file_path.read_text(encoding="utf-8")
+        except Exception:
+            print("")
+            raise SystemExit(0)
+
+        match = re.search(
+            r"<action>\s*(.*?)\s*</action>",
+            content,
+            re.IGNORECASE | re.DOTALL
+        )
+
+        print(match.group(1).strip() if match else "")
+        PY
+        )
+
+        echo "Detected action: '${ACTION}'"
+
+        # --------------------------------------------------
+        # 4. Detectar destroy
+        # --------------------------------------------------
+        if [[ "${ACTION,,}" == "destroy" ]]; then
+
+          echo "isDestroy=true" >> "$GITHUB_OUTPUT"
+
+          echo "::error title=DESTROY detected::The resource at '${TARGET_PATH}' is marked for destruction."
+
+          {
+            echo "## 🛑 DESTROY detected"
+            echo ""
+            echo "> [!WARNING]"
+            echo "> **This resource is marked for destruction.**"
+            echo ""
+            echo "**Path:** \`${TARGET_PATH}\`"
+            echo ""
+            echo "**Action:** \`destroy\`"
+            echo ""
+            echo "**isDestroy:** \`true\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+        fi

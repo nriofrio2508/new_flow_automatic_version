@@ -49,7 +49,6 @@ jobs:
           echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
   
   validate_job_destroy:
-    if: github.ref == 'refs/heads/qa'
     needs: get_version
     runs-on: ubuntu-latest
     outputs:

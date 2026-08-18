@@ -7,6 +7,11 @@ inputs:
   validation_path:
     type: string
     description: Validation path
+outputs:
+  isDestroy:
+    description: "Indicates whether the resource should be destroyed"
+    value: ${{ steps.check-destroy.outputs.isDestroy }}
+    
 runs:
   using: "composite"
   steps:

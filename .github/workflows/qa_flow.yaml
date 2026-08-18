@@ -49,6 +49,7 @@ jobs:
           echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
   
   validate_job_destroy:
+    if: github.ref == 'refs/heads/qa'
     needs: get_version
     runs-on: ubuntu-latest
     outputs:
@@ -64,7 +65,7 @@ jobs:
 
   validate_deploy:
     needs: [get_version, validate_job_destroy]
-    if: github.ref == 'refs/heads/qa' && needs.validate_job_destroy.outputs.isDestroy == 'false'
+    if: needs.validate_job_destroy.outputs.isDestroy == 'false'
     uses: nriofrio2508/my_reusable/.github/workflows/deploy_lakehouse.yml@main
     with:
       environment: qa
@@ -74,11 +75,12 @@ jobs:
   
   destroy_deploy:
     needs: [get_version, validate_job_destroy]
-    if: github.ref == 'refs/heads/qa' && needs.validate_job_destroy.outputs.isDestroy == 'true'
+    if: needs.validate_job_destroy.outputs.isDestroy == 'true'
     uses: nriofrio2508/my_reusable/.github/workflows/execute_databricks_bundle.yaml@main
     with:
       environment: qa
       slack_channel: deploys
+      working_dir: ${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}
       pre_command: databricks bundle destroy -t qa --auto-approve
       command: pwd
     secrets: inherit

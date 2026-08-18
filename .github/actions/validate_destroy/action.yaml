@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Get list of matrix by estatus
+name: Validate Destroy Action
 description: Validate if the deployment is a destroy or not by checking the detalles.md file in the target path
 
 inputs:
@@ -10,9 +10,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout
-      uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
-
     - name: Validate detalles.md
       id: check-destroy
       shell: bash

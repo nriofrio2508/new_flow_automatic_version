@@ -255,7 +255,7 @@ jobs:
   destroy_deploy_prd:
     needs: [promote_prd, get_last_tag]
     if: always() && needs.promote_prd.result == 'success' && needs.get_last_tag.outputs.isDestroy == 'true'
-    uses: yaperos/reusable-workflows/.github/workflows/execute_databricks_bundle.yaml@main
+    uses: nriofrio2508/my_reusable/.github/workflows/execute_databricks_bundle.yaml@main
     with:
       environment: prd
       slack_channel: deploys

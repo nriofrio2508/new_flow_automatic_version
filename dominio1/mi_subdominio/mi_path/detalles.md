@@ -2,5 +2,5 @@
 
 
 <details>
-  <action>nada</action>
+  <action>destroy</action>
 </details>

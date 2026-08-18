@@ -11,7 +11,7 @@ outputs:
   isDestroy:
     description: "Indicates whether the resource should be destroyed"
     value: ${{ steps.check-destroy.outputs.isDestroy }}
-    
+
 runs:
   using: "composite"
   steps:
@@ -53,9 +53,9 @@ runs:
             raise SystemExit(0)
 
         match = re.search(
-            r"<action>\s*(.*?)\s*</action>",
-            content,
-            re.IGNORECASE | re.DOTALL
+          r"<details\b[^>]*>.*?<action\b[^>]*>\s*(.*?)\s*</action>.*?</details>",
+          content,
+          re.IGNORECASE | re.DOTALL
         )
 
         print(match.group(1).strip() if match else "")

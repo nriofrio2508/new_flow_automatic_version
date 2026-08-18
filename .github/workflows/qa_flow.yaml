@@ -48,22 +48,23 @@ jobs:
         run: |
           echo "VERSION=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
   
-  validate_job:
+  validate_job_destroy:
     needs: get_version
     runs-on: ubuntu-latest
     outputs:
-      isDestroy: ${{ steps.check-destroy.outputs.isDestroy }}
+      isDestroy: ${{ steps.validate_destroy.outputs.isDestroy }}
     steps:
       - name: Checkout
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
 
       - uses: ./.github/actions/validate_destroy
+        id: validate_destroy
         with:
           validation_path: "${{ inputs.domain }}/${{ inputs.subdomain }}/${{ inputs.destination }}"
 
   validate_deploy:
-    needs: [get_version, validate_job]
-    if: github.ref == 'refs/heads/qa' && needs.validate_job.outputs.isDestroy == 'false'
+    needs: [get_version, validate_job_destroy]
+    if: github.ref == 'refs/heads/qa' && needs.validate_job_destroy.outputs.isDestroy == 'false'
     uses: nriofrio2508/my_reusable/.github/workflows/deploy_lakehouse.yml@main
     with:
       environment: qa
@@ -72,8 +73,8 @@ jobs:
     secrets: inherit
   
   destroy_deploy:
-    needs: [get_version, validate_job]
-    if: github.ref == 'refs/heads/qa' && needs.validate_job.outputs.isDestroy == 'true'
+    needs: [get_version, validate_job_destroy]
+    if: github.ref == 'refs/heads/qa' && needs.validate_job_destroy.outputs.isDestroy == 'true'
     uses: nriofrio2508/my_reusable/.github/workflows/execute_databricks_bundle.yaml@main
     with:
       environment: qa

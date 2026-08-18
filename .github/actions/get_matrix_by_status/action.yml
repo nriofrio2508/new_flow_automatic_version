@@ -1,7 +1,7 @@
 # This is a basic workflow to help you get started with Actions
 
 name: Get list of matrix by estatus
-
+description: This action generates a JSON file with the information needed to run a Databricks job, including git source, tasks, and access control list. The generated JSON file is then uploaded as an artifact for further use in the workflow.
 inputs:
   status:
     type: string

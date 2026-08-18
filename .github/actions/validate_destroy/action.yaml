@@ -81,9 +81,6 @@ runs:
             echo ""
             echo "**Path:** \`${TARGET_PATH}\`"
             echo ""
-            echo "**Action:** \`destroy\`"
-            echo ""
-            echo "**isDestroy:** \`true\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
         fi

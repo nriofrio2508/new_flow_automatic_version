@@ -85,7 +85,7 @@ jobs:
     secrets: inherit
 
   validate_job_automation:
-    needs: [validate_deploy, destroy_deploy]
+    needs: [validate_deploy]
     if: vars.TESTS_ENABLED == 'true'
     uses: nriofrio2508/my_reusable/.github/workflows/validate_databricks_job_automation.yml@main
     with:
